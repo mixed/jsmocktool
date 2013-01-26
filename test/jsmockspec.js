@@ -2,15 +2,22 @@
  * @author mixed
  */
 
-
-module("jsmock",{
+function getValueById(id){
+  return document.getElementById(id).value;
+}
+function $ (id) {
+  return document.getElementById(id);
+}
+module("jsmock - Object type",{
   "setup":function(){
-    document.getElementById("mock_test1").value = "";
-    document.getElementById("mock_test2").value = "";
-    document.getElementById("mock_test3").value = "";
+    this.mock = mock("RECEIVE");
+    $("mock_test1").value = "";
+    $("mock_test2").value = "";
+    $("mock_test3").value = "";
   },
   "teardown":function(){
-    RECEIVE4 = undefined;
+    this.mock = undefined;
+    RECEIVE = undefined;
   }
 });
 
@@ -70,341 +77,459 @@ test("Return value of should_receive is MockMethod.",function(){
 
 test("The and_return is  setting value to return.",function(){
   //Given
-  var receive = mock("RECEIVE4");
+  mock("RECEIVE4").should_receive("test").and_return(3);
   //When
-  receive.should_receive("test").and_return(3);
+  var returnVal = RECEIVE4.test();
   //Then
-  equal(RECEIVE4.test(),3);
+  equal(returnVal,3);
 });
 
 test("If use with_param, mock will return value when same param.",function(){
   //Given
-  var receive = mock("RECEIVE4");
+  mock("RECEIVE4").should_receive("test").with_param(1,2).and_return(4);
   //When
-  receive.should_receive("test").with_param(1,2).and_return(4);
+  var returnVal = RECEIVE4.test(1,2);
   //Then
-  equal(RECEIVE4.test(1,2),4);  
+  equal(returnVal,4);  
 });
 
-test("Must be work mock before set parameter when add new parameter.",function(){
+test("The Mock must be work mock before set parameter when add new parameter.",function(){
   //Given
-  var receive = mock("RECEIVE4");
+  this.mock.should_receive("test").and_return(3);
+  this.mock.should_receive("test").with_param(1,2).and_return(4);
+  this.mock.should_receive("test").with_param(1,2,3).and_return(5);
   //When
-  receive.should_receive("test").and_return(3);
-  receive.should_receive("test").with_param(1,2).and_return(4);
-  receive.should_receive("test").with_param(1,2,3).and_return(5);
+  var noneParam = RECEIVE.test();
+  var oneParam  = RECEIVE.test(1,2);
+  var twoParam  = RECEIVE.test(1,2,3);
   //Then
-  equal(RECEIVE4.test(),3);
-  equal(RECEIVE4.test(1,2),4);
-  equal(RECEIVE4.test(1,2,3),5);
+  equal(noneParam , 3);
+  equal(oneParam  , 4);
+  equal(twoParam  , 5);
 });
 
-//   	'같은 함수에 파라메터만 변경되었을때에도 기존의 기능은 정상 작동해야 한다.':function(){
-//   		mock("RECEIVE4").should_receive("test").with_param(1,2,3).and_return(5);
-  		
-//   		value_of(RECEIVE4.test()).should_be(3);
-//   		value_of(RECEIVE4.test(1,2)).should_be(4);
-//   		value_of(RECEIVE4.test(1,2,3)).should_be(5);
-//   	},
-//   	'같은 함수, 같은 파라메터이고 return만 변경되었을때에 새로 적용된 return값이 리턴 되어야 한다.':function(){
-//   		value_of(RECEIVE4.test(1,2,3)).should_be(5);
-  		
-//   		mock("RECEIVE4").should_receive("test").with_param(1,2,3).and_return(6);
-  		
-//   		value_of(RECEIVE4.test()).should_be(3);
-//   		value_of(RECEIVE4.test(1,2)).should_be(4);
-//   		value_of(RECEIVE4.test(1,2,3)).should_be(6);
-//   	},
-//   	'and_throw은 정상적으로 해당 셋팅된 예외을 던져야 한다.':function(){
-//   		mock("RECEIVE4").should_receive("test2").and_throw(new Error("and_throw test."));
-//   		var error_message = "";
-//   		try{
-//   			RECEIVE4.test2();
-//   		}catch(e){
-//   			error_message = e.message;
-//   		}
-//   		value_of(error_message).should_be("and_throw test.");
-  		
-//   	},
-//   	'with_param 을 설정한 경우에는 with_param에 맞는 경우만 해당 셋팅된 예외을 던져야 한다.':function(){
-//   		mock("RECEIVE4").should_receive("test2").with_param(1,2).and_throw(new Error("and_throw test2."));
-  		
-//   		var error_message = "";
-//   		try{
-//   			RECEIVE4.test2(1,2);
-//   		}catch(e){
-//   			error_message = e.message;
-//   		}
-  		
-//   		value_of(error_message).should_be("and_throw test2.");
-//   	}
-//   	,
-//   	'같은 함수에 파라메터만 변경되었을때에도 기존의 기능(and_throw)은 정상 작동해야 한다.':function(){
-  		
-//   		mock("RECEIVE4").should_receive("test2").with_param(1,2,3).and_throw(new Error("and_throw test3."));
-  		
-//   		var error_message = "";
-//   		try{
-//   			RECEIVE4.test2();
-//   		}catch(e){
-//   			error_message = e.message;
-//   		}
-//   		value_of(error_message).should_be("and_throw test.");
-  		
-//   		try{
-//   			RECEIVE4.test2(1,2);
-//   		}catch(e){
-//   			error_message = e.message;
-//   		}
-//   		value_of(error_message).should_be("and_throw test2.");
-  		
-//   		try{
-//   			RECEIVE4.test2(1,2,3);
-//   		}catch(e){
-//   			error_message = e.message;
-//   		}
-//   		value_of(error_message).should_be("and_throw test3.");
-  		
-//   	},
-//   	'같은 함수, 같은 파라메터이고 thorw만 변경되었을때에 새로 셋팅된 예외을 던져야 한다.':function(){
-//   		var error_message = "";
-  		
-//   		try{
-//   			RECEIVE4.test2(1,2,3);
-//   		}catch(e){
-//   			error_message = e.message;
-//   		}
-  		
-//   		value_of(error_message).should_be("and_throw test3.");
-  		
-//   		mock("RECEIVE4").should_receive("test2").with_param(1,2,3).and_throw(new Error("and_throw test4."));
-  		
-//   		try{
-//   			RECEIVE4.test2(1,2,3);
-//   		}catch(e){
-//   			error_message = e.message;
-//   		}
-//   		value_of(error_message).should_be("and_throw test4.");
-//   	},
-//   	'and_function은 정상적으로 해당 셋팅된 함수를 실행 시켜야 한다.':function(){
-  		
-//   		value_of(document.getElementById("mock_test1").value).should_be("");
-//   		mock("RECEIVE4").should_receive("test3").and_function(function(){
-//   			document.getElementById("mock_test1").value="first";
-//   		});
-//   		RECEIVE4.test3();
-//   		value_of(document.getElementById("mock_test1").value).should_be("first");
-  		
-//   	},
-//   	'with_param 을 설정한 경우에는 with_param에 맞는 경우만 해당 함수가 실행된다.':function(){
-//   		value_of(document.getElementById("mock_test2").value).should_be("");
-  		
-//   		mock("RECEIVE4").should_receive("test3").with_param(1,2).and_function(function(){
-//   			document.getElementById("mock_test2").value="second";
-//   		});
-//   		RECEIVE4.test3(1,2);
-  		
-//   		value_of(document.getElementById("mock_test2").value).should_be("second");
-//   	},
-//   	'같은 함수에 파라메터만 변경되었을때에도 기존의 기능은 정상 작동해야 한다3.':function(){
-  		
-//   		value_of(document.getElementById("mock_test3").value).should_be("");
-  		
-//   		mock("RECEIVE4").should_receive("test3").with_param(1,2,3).and_function(function(){
-//   			document.getElementById("mock_test3").value="third";
-//   		});
-//   		RECEIVE4.test3(1,2,3);
-  		
-//   		value_of(document.getElementById("mock_test3").value).should_be("third");
-  		
-//   		value_of(document.getElementById("mock_test1").value).should_be("");
-//   		RECEIVE4.test3();
-//   		value_of(document.getElementById("mock_test1").value).should_be("first");
-  		
-//   		value_of(document.getElementById("mock_test2").value).should_be("");
-//   		RECEIVE4.test3(1,2);
-//   		value_of(document.getElementById("mock_test2").value).should_be("second");
-//   	},
-//   	'같은 함수, 같은 파라메터이고 and_function만 변경되었을때에 새로 적용된 함수가 실행되어야 한다.':function(){
-  		
-//   		RECEIVE4.test3(1,2,3);
-//   		value_of(document.getElementById("mock_test3").value).should_be("third");
-  		
-//   		mock("RECEIVE4").should_receive("test3").with_param(1,2,3).and_function(function(){
-//   			document.getElementById("mock_test3").value="third2";
-//   		});
-  		
-//   		RECEIVE4.test3(1,2,3);
-//   		value_of(document.getElementById("mock_test3").value).should_be("third2");
-  		
-//   	},
-//   	'instance 타입도 정상 작동 되어야 한다.':function(){
-//   		mock("MockInstance",Mock.INSTANCE).should_receive("test").with_param(1).and_return("1");
-//   		mock("MockInstance",Mock.INSTANCE).should_receive("test").with_param(2).and_throw(new Error("test"));
-//   		mock("MockInstance",Mock.INSTANCE).should_receive("test").with_param(3).and_function(function(){
-//   			document.getElementById("mock_test1").value="test";
-//   		});
-  		
-//   		var mockInstance = new MockInstance();
-  		
-//   		value_of(mockInstance.test(1)).should_be("1");
-  		
-//   		var errormessage = ""; 
-//   		try{
-//   			mockInstance.test(2);
-//   		}catch(e){
-//   			errormessage = e.message;
-//   		}
-//   		value_of(errormessage).should_be("test");
-  		
-//   		value_of(document.getElementById("mock_test1").value).should_be("");
-//   		mockInstance.test(3);
-//   		value_of(document.getElementById("mock_test1").value).should_be("test");
-  		
-  		
-  		
-//   	},
-//   	'일반 함수도 정상 작동 해야 한다.':function(){
-//   		mock(window).should_receive("commonfunc").with_param(1).and_return("1");
-//   		mock(window).should_receive("commonfunc").with_param(2).and_throw(new Error("test2"));
-//   		mock(window).should_receive("commonfunc").with_param(3).and_function(function(){
-//   			document.getElementById("mock_test1").value="commonfunc";
-//   		});
-  		
-  		
-//   		value_of(commonfunc(1)).should_be("1");
-  		
-//   		var errormessage = ""; 
-//   		try{
-//   			commonfunc(2);
-//   		}catch(e){
-//   			errormessage = e.message;
-//   		}
-//   		value_of(errormessage).should_be("test2");
-  		
-//   		value_of(document.getElementById("mock_test1").value).should_be("");
-//   		commonfunc(3);
-//   		value_of(document.getElementById("mock_test1").value).should_be("commonfunc");
-//   	},
-//   	'param에 anything이 들어가면 해당 파라메터에는 어떤 것이 와도 상관 없이 호출되어야 한다.':function(){
-//   		mock("Foo").should_receive("test").with_param(1,2).and_return("1");
-//   		mock("Foo").should_receive("test").with_param(1,2,Mock.anything()).and_return("2");
-//   		mock("Foo").should_receive("test").with_param(1,2,Mock.anything(),Mock.anything()).and_return("3");
-  		
-//   		value_of(Foo.test(1,2)).should_be("1");
-//   		value_of(Foo.test(1,2,3)).should_be("2");
-//   		value_of(Foo.test(1,2,1)).should_be("2");
-//   		value_of(Foo.test(1,2,4)).should_be("2");
-//   		value_of(Foo.test(1,2,4,5)).should_be("3");
-//   		value_of(Foo.test(1,2,4,6)).should_be("3");
-//   	},
-//   	'param에 anything이 들어간 파라메터에서 다시 설정한 경우에 다시 설정한 값으로 반환 해야 한다.':function(){
-//   		mock("Foo").should_receive("test").with_param("5","6",Mock.anything()).and_return("5");
-//   		value_of(Foo.test("5","6","3")).should_be("5");
-  		
-//   		mock("Foo").should_receive("test").with_param("5","6",Mock.anything()).and_return("6");
-//   		value_of(Foo.test("5","6","3")).should_be("6");
-  		
-//   	},
-//   	'namespace를 사용한 경우에도 정상적으로 사용 가능해야 한다.':function(){
-//   		mock("Test").should_receive("test").and_return("test");
-//   		value_of(Test.test()).should_be("test");
-  		
-//   		mock("aaa.bbb.ccc.ddd").should_receive("test").and_return("test");
-//   		value_of(aaa.bbb.ccc.ddd.test()).should_be("test");
-  		
-//   		mock("aaaa.bbbb.cccc",Mock.INSTANCE).should_receive("test").and_return("test");
-//   		value_of(new aaaa.bbbb.cccc().test()).should_be("test");
-  		
-//   		window["aaaaa"] = {};
-//   		aaaaa.bbbbb = {};
-  		
-//   		mock("aaaaa.bbbbb").should_receive("test").and_return("test");
-//   		value_of(aaaaa.bbbbb.test()).should_be("test");
-  		
-//   		mock("aaaaa.bbbbb.ccccc").should_receive("test").and_return("test");
-//   		value_of(aaaaa.bbbbb.ccccc.test()).should_be("test");
-//   	},
-//   	'namespace를 사용한 경우에도 param도 정상 작동 되어야 한다.':function(){
-  		
-//   		mock("param.test").should_receive("commonfunc").with_param(1).and_return("1");
-//   		mock("param.test").should_receive("commonfunc").with_param(2).and_throw(new Error("test2"));
-//   		mock("param.test").should_receive("commonfunc").with_param(3).and_function(function(){
-//   			document.getElementById("mock_test1").value="commonfunc";
-//   		});
-  		
-  		
-//   		value_of(param.test.commonfunc(1)).should_be("1");
-  		
-//   		var errormessage = ""; 
-//   		try{
-//   			param.test.commonfunc(2);
-//   		}catch(e){
-//   			errormessage = e.message;
-//   		}
-//   		value_of(errormessage).should_be("test2");
-  		
-//   		value_of(document.getElementById("mock_test1").value).should_be("");
-//   		param.test.commonfunc(3);
-//   		value_of(document.getElementById("mock_test1").value).should_be("commonfunc");
-//   	},
-// 	"verify는 정상적으로 호춯되어야 한다.": function(){
-// 		mock("Verify").should_receive("kall").with_param(1,2).and_return("1");
-// 		mock("Verify").should_receive("kall2").and_return("1");
-		
-// 		Verify.kall(1,2);
-		
-// 		value_of(mock("Verify").verify("kall")).should_be({"total":1, "param":{"[1, 2]":1}});
-// 		try{
-// 			mock("Verify").verify("kall2");
-// 		}catch(e){
-// 			value_of(e.message).should_be("kall2 is not called.");
-// 		}
-		
-// 		try{
-// 			mock("Verify").verify("kall3");
-// 		}catch(e){
-// 			value_of(e.message).should_be("kall3 isn't method.");
-// 		}
-		
-// 	},
-// 	"verify_all은 전체를 확인이 해야 한다.":function(){
-// 		mock("Verify2").should_receive("kall").with_param(1,2).and_return("1");
-// 		mock("Verify2").should_receive("kall2").and_return("1");
-// 		Verify2.kall(1,2);
-// 		Verify2.kall2();
-// 		value_of(mock("Verify2").verify_all()).should_be({"kall":{"total":1, "param":{"[1, 2]":1}}, "kall2":{"total":1, "param":{"[]":1}}});
-		
-// 		mock("Verify3").should_receive("kall").with_param(1,2).and_return("1");
-// 		try{
-// 			mock("Verify3").verify_all();
-// 		}catch(e){
-// 			value_of(e.message).should_be("kall is not called.");
-// 		}
-// 	},
-// 	"reset은 정상적으로 값이 삭제되어야 한다.":function(){
-// 		mock("Verify4").should_receive("kall").with_param(1,2).and_return("1");
-// 		Verify4.kall(1,2);
-// 		value_of(mock("Verify4").verify_all()).should_be({"kall":{"total":1, "param":{"[1, 2]":1}}});
-// 		mock("Verify4").reset("kall");
-// 		try{
-// 			mock("Verify4").verify("kall");
-// 		}catch(e){
-// 			value_of(e.message).should_be("kall is not called.");
-// 		}
-// 	},
-// 	"reset_all은 전체를 확인이 해야 한다.":function(){
-// 		mock("Verify5").should_receive("kall").with_param(1,2).and_return("1");
-// 		mock("Verify5").should_receive("kall2").and_return("1");
-// 		Verify5.kall(1,2);
-// 		Verify5.kall2();
-// 		value_of(mock("Verify5").verify_all()).should_be({"kall":{"total":1, "param":{"[1, 2]":1}}, "kall2":{"total":1, "param":{"[]":1}}});
-// 		mock("Verify5").reset_all();
-// 		try{
-// 			mock("Verify5").verify_all();
-// 		}catch(e){
-// 			value_of(e.message).should_be("kall is not called.");
-// 		}
-// 	}
-// });
+test("The Mock must be change return value when add same parameter.",function(){
+  //Given
+  this.mock.should_receive("test").and_return(3);
+  this.mock.should_receive("test").with_param(1,2).and_return(4);
+  this.mock.should_receive("test").with_param(1,2).and_return(5);
+  //When
+  var noneParam = RECEIVE.test();
+  var twoParam  = RECEIVE.test(1,2);
+  //Then
+  equal(noneParam, 3);
+  equal(twoParam , 5);
+});
+
+test("The add_throw is throw exception when match param.",function() {
+  //Given
+  var error_message = "";
+  this.mock.should_receive("test2").and_throw(new Error("and_throw test."));
+  //When
+  try{
+    RECEIVE.test2();
+  }catch(e){
+    error_message = e.message;
+  }
+  //Then
+  equal(error_message,"and_throw test.");
+});
+
+test("If set with_param of and_throw then throw exception when match parameter.",function() {
+  //Given
+  this.mock.should_receive("test2").with_param(1,2).and_throw(new Error("and_throw test2."));
+  var error_message = "";
+
+  //When
+  try{
+    RECEIVE.test2(1,2);
+  }catch(e){
+    error_message = e.message;
+  }
+
+  //Then
+  equal(error_message,"and_throw test2.");
+});
+
+test("The and_throw is well work when change parameter",function  () {
+  //Given
+  this.mock.should_receive("test2").with_param().and_throw(new Error("and_throw test"));
+  this.mock.should_receive("test2").with_param(1,2).and_throw(new Error("and_throw test2"));
+  this.mock.should_receive("test2").with_param(1,2,3).and_throw(new Error("and_throw test3"));
+  var error_message = "";
+
+  //When
+  try{
+   RECEIVE.test2();
+  }catch(e){
+   error_message = e.message;
+  }
+  //Then
+  equal(error_message,"and_throw test");
+
+  //When
+  try{
+   RECEIVE.test2(1,2);
+  }catch(e){
+   error_message = e.message;
+  }
+  //Then
+  equal(error_message,"and_throw test2");
+
+  //When
+  try{
+   RECEIVE.test2(1,2,3);
+  }catch(e){
+   error_message = e.message;
+  }
+  //Then
+  equal(error_message,"and_throw test3");
+});
+test("The and_throw throw new exception when some function, same parameter, change exception.",function  () {
+  //Given
+  this.mock.should_receive("test2").with_param(1,2,3).and_throw(new Error("and_throw test"));
+  var error_message = "";
+  //When
+  try{
+   RECEIVE.test2(1,2,3);
+  }catch(e){
+   error_message = e.message;
+  }
+  //Then
+  equal(error_message,"and_throw test");
+
+  //Then
+  this.mock.should_receive("test2").with_param(1,2,3).and_throw(new Error("change throw"));
+  try{
+   RECEIVE.test2(1,2,3);
+  }catch(e){
+   error_message = e.message;
+  }
+  //When
+  equal(error_message,"change throw"); 
+});
+
+test("The and_function run function when set new function",function  () {
+
+  //Given
+  this.mock.should_receive("test3").and_function(function(){
+    $("mock_test1").value="first";
+  });
+  //Then
+  RECEIVE.test3();
+  //When
+  equal(getValueById("mock_test1"),"first");  
+});
+
+test("If set a with_param then the and_functon run function when only match parameter.",function(){
+  //Given
+  this.mock.should_receive("test3").with_param(1,2).and_function(function(){
+   $("mock_test2").value = "second";
+  });
+  //Then
+  RECEIVE.test3(1,2);
+  //When
+  equal(getValueById("mock_test2"),"second");
+});
+
+test("Then and_function is well work when same function change parameter.",function(){
+  //Given
+  this.mock.should_receive("test3").with_param().and_function(function(){
+   $("mock_test1").value="first";
+  });
+  this.mock.should_receive("test3").with_param(1,2).and_function(function(){
+   $("mock_test2").value="second";
+  });
+  this.mock.should_receive("test3").with_param(1,2,3).and_function(function(){
+   $("mock_test3").value="third";
+  });
+  //When
+  RECEIVE.test3();
+  //Then
+  equal(getValueById("mock_test1"),"first");
+
+  //When
+  RECEIVE.test3(1,2);
+  //Then
+  equal(getValueById("mock_test2"),"second");
+
+  //When
+  RECEIVE.test3(1,2,3);
+  //Then
+  equal(getValueById("mock_test3"),"third");
+});
+test("The and_function run new function when some function, same parameter, change and_function.",function(){
+  //Given
+  this.mock.should_receive("test3").with_param(1,2,3).and_function(function(){
+   $("mock_test3").value="third";
+  });
+  this.mock.should_receive("test3").with_param(1,2,3).and_function(function(){
+   $("mock_test3").value="change third";
+  });
+  //When
+  RECEIVE.test3(1,2,3);
+  //Then
+  equal(getValueById("mock_test3"),"change third");
+});
+test("If use Mock.anything when run function without reference to parameter.",function(){
+  //Given
+  this.mock.should_receive("test").with_param(1,2).and_return("1");
+  this.mock.should_receive("test").with_param(1,2,Mock.anything()).and_return("2");
+  this.mock.should_receive("test").with_param(1,2,Mock.anything(),Mock.anything()).and_return("3");
+
+  //When, Then
+  equal(RECEIVE.test(1,2),"1");
+  equal(RECEIVE.test(1,2,3),"2");
+  equal(RECEIVE.test(1,2,1),"2");
+  equal(RECEIVE.test(1,2,4),"2");
+  equal(RECEIVE.test(1,2,4,5),"3");
+  equal(RECEIVE.test(1,2,4,6),"3");
+});
+
+//    'param에 anything이 들어간 파라메터에서 다시 설정한 경우에 다시 설정한 값으로 반환 해야 한다.':function(){
+//      mock("Foo").should_receive("test").with_param("5","6",Mock.anything()).and_return("5");
+//      value_of(Foo.test("5","6","3")).should_be("5");
+      
+//      mock("Foo").should_receive("test").with_param("5","6",Mock.anything()).and_return("6");
+//      value_of(Foo.test("5","6","3")).should_be("6");
+      
+//    },
+
+module("jsmock - other type",{
+  "setup":function(){
+    
+    $("mock_test1").value = "";
+    $("mock_test2").value = "";
+    $("mock_test3").value = "";
+  },
+  "teardown":function(){
+    this.mock = undefined;
+    MockInstance = undefined;
+  }
+});
+
+test("The instance type is well work too.",function(){
+  //Given
+  var receive = mock("MockInstance",Mock.INSTANCE);
+  receive.should_receive("test").with_param(1).and_return("1");
+  receive.should_receive("test").with_param(2).and_throw(new Error("test"));
+  receive.should_receive("test").with_param(3).and_function(function(){
+    $("mock_test1").value="test";
+  });
+  var errormessage = ""; 
+
+  //When
+  var mockInstance = new MockInstance();
+  //Then
+  equal(mockInstance.test(1),"1");
+
+  //When
+  try{
+   mockInstance.test(2);
+  }catch(e){
+   errormessage = e.message;
+  }
+  //Then
+  equal(errormessage,"test");
+
+  //When
+  mockInstance.test(3);
+  //Then
+  equal(getValueById("mock_test1"),"test");
+});
+
+test("The normal functon is well work too.",function(){
+  //Given
+  var receive = mock(window);
+  receive.should_receive("commonfunc").with_param(1).and_return("1");
+  receive.should_receive("commonfunc").with_param(2).and_throw(new Error("test2"));
+  receive.should_receive("commonfunc").with_param(3).and_function(function(){
+   $("mock_test1").value="commonfunc";
+  });
+  var errormessage = ""; 
+
+  //Then
+  var returnVal = commonfunc(1);
+  //When
+  equal(returnVal,"1");
+
+  //Then
+  try{
+   commonfunc(2);
+  }catch(e){
+   errormessage = e.message;
+  }
+  //When
+  equal(errormessage,"test2");
+
+  //Then
+  commonfunc(3);
+  //When
+  equal(getValueById("mock_test1"),"commonfunc");
+});
+test("The namespace type is well work too.",function(){
+  //Given
+  mock("aaa.bbb.ccc.ddd").should_receive("test").and_return("test");
+  //Then,When
+  equal(aaa.bbb.ccc.ddd.test(),"test");
+
+  //Given
+  mock("aaaa.bbbb.cccc",Mock.INSTANCE).should_receive("test").and_return("test");
+  //Then,When
+  equal(new aaaa.bbbb.cccc().test(),"test");
+
+  //Given
+  window["aaaaa"] = {};
+  aaaaa.bbbbb = {};
+  mock("aaaaa.bbbbb").should_receive("test").and_return("test");
+  //Then,When
+  equal(aaaaa.bbbbb.test(),"test");
+
+  //Given
+  mock("aaaaa.bbbbb.ccccc").should_receive("test").and_return("test");
+  //Then,When
+  equal(aaaaa.bbbbb.ccccc.test(),"test");
+});
+
+test("The with_param well work when use namespace.",function(){
+  //Given
+  mock("param.test").should_receive("commonfunc").with_param(1).and_return("1");
+  mock("param.test").should_receive("commonfunc").with_param(2).and_throw(new Error("test2"));
+  mock("param.test").should_receive("commonfunc").with_param(3).and_function(function(){
+   $("mock_test1").value="commonfunc";
+  });
+
+  //Then, When
+  equal(param.test.commonfunc(1),"1");
+
+  //Given
+  var errormessage = ""; 
+  try{
+   param.test.commonfunc(2);
+  }catch(e){
+   errormessage = e.message;
+  }
+  //Then, When
+  equal(errormessage,"test2");
+
+  //Then
+  param.test.commonfunc(3);
+  //When
+  equal(getValueById("mock_test1"),"commonfunc");  
+});
+
+module("jsmock - verify",{
+  "setup":function(){
+    this.mock = mock("Verify");
+    $("mock_test1").value = "";
+    $("mock_test2").value = "";
+    $("mock_test3").value = "";
+  },
+  "teardown":function(){
+    this.mock = undefined;
+    Verify = undefined;
+  }
+});
+
+test("The verify is well work.",function(){
+  //Given
+  this.mock.should_receive("kall").with_param(1,2).and_return("1");
+  this.mock.should_receive("kall2").and_return("1");
+  Verify.kall(1,2);
+  var errormessage = "";
+  //Then
+  var result = this.mock.verify("kall");
+  //When
+  deepEqual(result,{"total":1, "param":{"[1,2]":1}});
+
+  //Then
+  try{
+    mock("Verify").verify("kall2");
+  }catch(e){
+    errormessage = e.message;
+  }
+  //When
+  equal(errormessage,"kall2 is not called.");
+
+  //Then
+  try{
+    mock("Verify").verify("kall3");
+  }catch(e){
+    errormessage = e.message;
+  }
+  //When
+  equal(errormessage,"kall3 isn't method.");
+});
+test("The verify_all is check all method.",function(){
+
+  //Given
+  mock("Verify2").should_receive("kall").with_param(1,2).and_return("1");
+  mock("Verify2").should_receive("kall2").and_return("1");
+  Verify2.kall(1,2);
+  Verify2.kall2();
+  var returnVal;
+  //Then
+  returnVal = mock("Verify2").verify_all();
+  //When
+  deepEqual(returnVal,{"kall":{"total":1, "param":{"[1,2]":1}}, "kall2":{"total":1, "param":{"[]":1}}});
+
+
+  //Given
+  mock("Verify3").should_receive("kall").with_param(1,2).and_return("1");
+  var errormessage;
+  //Then
+  try{
+    mock("Verify3").verify_all();
+  }catch(e){
+    errormessage = e.message;
+  }
+  //When
+  equal(errormessage,"kall is not called.");
+});
+test("The reset is remove info of function call.",function(){
+  //Given
+  mock("Verify4").should_receive("kall").with_param(1,2).and_return("1");
+  Verify4.kall(1,2);
+  //Then
+  var returnVal = mock("Verify4").verify_all();
+  //When
+  deepEqual(returnVal,{"kall":{"total":1, "param":{"[1,2]":1}}});
+  
+  //Given
+  var errormessage;
+  //Then
+  mock("Verify4").reset("kall");
+  try{
+    mock("Verify4").verify("kall");
+  }catch(e){
+    errormessage = e.message;
+  }
+  //When
+  equal(errormessage,"kall is not called.");
+});
+test("The reset_all is remove all info of function call.",function(){
+  //Given
+  mock("Verify5").should_receive("kall").with_param(1,2).and_return("1");
+  mock("Verify5").should_receive("kall2").and_return("1");
+  Verify5.kall(1,2);
+  Verify5.kall2();
+  //Then
+  var returnVal = mock("Verify5").verify_all();
+  //When
+  deepEqual(returnVal,{"kall":{"total":1, "param":{"[1,2]":1}}, "kall2":{"total":1, "param":{"[]":1}}});
+
+  //Given
+  var errormessage;
+  //Then
+  mock("Verify5").reset_all();
+  try{
+    mock("Verify5").verify_all();
+  }catch(e){
+    errormessage = e.message;
+  }
+  //When
+  equal(errormessage,"kall is not called.");
+});
+
+
 
