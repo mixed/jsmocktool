@@ -79,7 +79,11 @@
  	//When
 	var stub_obj = this.stub.should_receive("test");
 	//Then
-	ok(stub_obj instanceof StubMethod);
+	//The StubMethod is private. so I can't test.
+	//Instead, I made a Ducktyping test(?).
+	//I believe correct when The return value of should_receive have and_return function.
+	// ok(stub_obj instanceof StubMethod);
+	equal(stub_obj.and_return.constructor,Function);
  });
  test("The and_return is return value when and_return set value.",function () {
  	//Given

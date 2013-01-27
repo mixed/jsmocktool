@@ -1,3 +1,4 @@
+ // http://flesler.blogspot.com/2008/05/jsdump-pretty-dump-of-any-javascript.html
  if(Object.prototype.toSource){
 	_toSource = function(vValue){
 		return vValue.toSource();
