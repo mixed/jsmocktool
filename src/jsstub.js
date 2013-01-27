@@ -1,3 +1,5 @@
+ 
+
  function Stub(vName, sType){
  	if(!(this instanceof arguments.callee)){
 		return new arguments.callee(vName,sType);
