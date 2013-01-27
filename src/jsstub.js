@@ -10,7 +10,7 @@
  	this._vReturnValue = "_js_stub_none";
  	this._stubType = Stub.OBJECT;
  	if(typeof vName=="string"){
-		this.makeEnableObj(vName,sType);
+		this.makeEnableObj(vName,sType);	
 		this._stubType = sType;
 	}else if(typeof vName=="object"||typeof vName=="function"){
 		this._stubObj = vName;
