@@ -1,0 +1,28 @@
+ 
+	(function(){
+		var global = this;
+		function Stub(vName, sType){
+			this.stubMethod = new StubMethod();
+		}
+		Stub.prototype.with_param = function(){
+			return this.stubMethod;
+		}
+		 
+		function StubMethod(iStub){
+		}
+		StubMethod.prototype.and_return = function(vReturn){
+		}
+
+		global.stub = global.Stub = Stub;
+	})();
+ 
+ 
+test("with_param은 반환 값이 StubMethod 인스턴스여야 한다.",function(){
+ 	//Given
+ 	var stubInstance = stub("Stub");
+ 	//When
+ 	var stubMethod = stubInstance.with_param();
+ 	//Then
+ 	// ok(stubMethod instanceof StubMethod);
+ 	equal(typeof stubMethod.and_return,"function");
+});

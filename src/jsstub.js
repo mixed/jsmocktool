@@ -90,6 +90,7 @@
 	 Stub.INSTANCE = "instance";
 	 Stub.OBJECT = "object";
 	 
+	 
 	 global.stub = global.Stub = Stub;
 })();
  

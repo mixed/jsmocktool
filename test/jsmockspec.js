@@ -71,8 +71,12 @@ test("Return value of should_receive is MockMethod.",function(){
   var receive = mock("RECEIVE3");
   //When
   var mock_method = receive.should_receive("test");
+  //The MockMethod is private. so I can't test.
+  //Instead, I made a Ducktyping test(?).
+  //I believe correct when The return value of should_receive have and_return function.
+  // ok(stub_obj instanceof MockMethod);
   //Then
-  ok(mock_method instanceof MockMethod);
+  equal(mock_method.and_return.constructor,Function);
 });
 
 test("The and_return is  setting value to return.",function(){
