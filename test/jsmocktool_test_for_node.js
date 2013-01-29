@@ -9,12 +9,12 @@ testrunner.setup({
 
 testrunner.run([
     {
-            code: "/Users/mixed/Sites/jsmocktool/src/jsstub.js",
-            tests: "/Users/mixed/Sites/jsmocktool/test/jsstub_test.js"
+            code: "../src/jsstub.js",
+            tests: "jsstub_test.js"
     },
     {
-            code: "/Users/mixed/Sites/jsmocktool/src/jsmock.js",
-            tests: "/Users/mixed/Sites/jsmocktool/test/jsmock_test.js"
+            code: "../src/jsmock.js",
+            tests: "jsmock_test.js"
     }
 ],function(err,report){
     var str = "Node.js test ";
