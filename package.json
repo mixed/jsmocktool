@@ -1,17 +1,17 @@
 {
   "name": "jsmocktool",
+  "main": "lib",
   "version": "1.1.0",
   "description": "Javascript Mock Tool of RSpec Style",
   "keywords": [
-    "Javascript",
+    "JavaScript",
     "mock",
     "stub",
     "test",
     "tdd",
     "unit test"
   ],
-  "author": "YongWoo, Jeon <i.nevalose@gmail.com> (http://mixed.kr/)",
-  "main": "lib",
+  "author": "YongWoo, Jeon <i.nevalose@gmail.com> (http://mixed.kr/)",  
   "repository": {
     "type": "git",
     "url": "git@github.com:mixed/jsmocktool.git"
@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "qunit": "~0.5.15",
-    "cli-color": "~0.2.1"
+    "cli-color": "~0.2.1",
+    "grunt": "~0.3.17"
   },
   "devDependencies": {},
   "licence": "MIT"

@@ -49,7 +49,7 @@
 		deepEqual(FOO2,{});
 
 		//when
-		stub("FOO3",Stub.INSTANCE);
+		stub("FOO3",stub.INSTANCE);
 		//Then
 		equal(FOO3.constructor,Function);
 	 });
@@ -62,7 +62,7 @@
 
 		//Given
 		//When
-		stub("STUB2",Stub.INSTANCE).should_receive("test");
+		stub("STUB2",stub.INSTANCE).should_receive("test");
 		//Then
 		equal(STUB2.prototype.test.constructor,Function);
 	 });
@@ -109,7 +109,7 @@
 
 		//Given
 		//When
-		stub("aaaa.bbbb.cccc",Stub.INSTANCE).should_receive("test").and_return("test");
+		stub("aaaa.bbbb.cccc",stub.INSTANCE).should_receive("test").and_return("test");
 		//Then
 		equal(new aaaa.bbbb.cccc().test(),"test");
 

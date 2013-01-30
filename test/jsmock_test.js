@@ -43,7 +43,7 @@
 
     //Given
     //When
-    mock("FOO3",Mock.INSTANCE);
+    mock("FOO3",mock.INSTANCE);
     //Then
     equal(FOO3.constructor,Function);
   });
@@ -57,7 +57,7 @@
     equal(RECEIVE.test.constructor,Function);
 
     //Given
-    var receiveMock2 = mock("RECEIVE2",Mock.INSTANCE);
+    var receiveMock2 = mock("RECEIVE2",mock.INSTANCE);
     //Then
     receiveMock2.should_receive("test");
     //When
@@ -280,8 +280,8 @@
   test("If use Mock.anything when run function without reference to parameter.",function(){
     //Given
     this.mock.should_receive("test").with_param(1,2).and_return("1");
-    this.mock.should_receive("test").with_param(1,2,Mock.anything()).and_return("2");
-    this.mock.should_receive("test").with_param(1,2,Mock.anything(),Mock.anything()).and_return("3");
+    this.mock.should_receive("test").with_param(1,2,mock.anything()).and_return("2");
+    this.mock.should_receive("test").with_param(1,2,mock.anything(),mock.anything()).and_return("3");
 
     //When, Then
     equal(RECEIVE.test(1,2),"1");
@@ -317,7 +317,7 @@
   test("The instance type is well work too.",function(){
     //Given
     var that = this;
-    var receive = mock("MockInstance",Mock.INSTANCE);
+    var receive = mock("MockInstance",mock.INSTANCE);
     receive.should_receive("test").with_param(1).and_return("1");
     receive.should_receive("test").with_param(2).and_throw(new Error("test"));
     receive.should_receive("test").with_param(3).and_function(function(){
@@ -382,7 +382,7 @@
     equal(aaa.bbb.ccc.ddd.test(),"test");
 
     //Given
-    mock("aaaa.bbbb.cccc",Mock.INSTANCE).should_receive("test").and_return("test");
+    mock("aaaa.bbbb.cccc",mock.INSTANCE).should_receive("test").and_return("test");
     //Then,When
     equal(new aaaa.bbbb.cccc().test(),"test");
 
