@@ -2,14 +2,14 @@
 Javascript Mock Tool is Mock library of RSpec style.
 ============================================================
 ### Compatibility.
-Internet Explorer - 6+
-Firefox - 2+
-Chrome - 7+
-Opera - 10+
-Safari - 3+
-Mobile Safari - 3+
-Android browser - 2+
-Node.js - 0.2+
+Internet Explorer - 6+, Firefox - 2+, Chrome - 7+, Opera - 10+, Safari - 3+, Mobile Safari - 3+, Android browser - 2+, Node.js - 0.2+
+
+### Installation.
+You can install JSMockTool via NPM:
+```
+npm install jsmocktool
+```
+But. not yet.
 
 ## Stub of JSMockTool.
 ### Create Stub. and make method.
