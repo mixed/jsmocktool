@@ -11,7 +11,7 @@ module.exports = function( grunt ) {
 		min :{
 			all: {
 				src: ['lib/jsmock.js','lib/jsstub.js'],
-				dest: 'jsmocktool.min.js'
+				dest: 'dist/jsmocktool.min.js'
 			}
 		},
 		qunit : {
@@ -21,7 +21,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask("node_test",function(){
 		var testrunner = require("qunit");
 		var clc = require('cli-color');
-
+		var done = this.async();
 		testrunner.setup({
 		    log: {
 		        summary: true
@@ -41,11 +41,16 @@ module.exports = function( grunt ) {
 		    var str = "Node.js test ";
 		    if(report.failed > 0){
 		        console.log(clc.red.bold(str+"FAIL!!!!"));
+		        done(false);
 		    }else{
 		        console.log(clc.white.bgGreen.bold(str+"SUCCESS!"));
+		        done(true);
 		    }
+
 		});
 	});
 
-	grunt.registerTask("default", "lint jshint min node_test browser_test");
+	grunt.registerTask("test", "node_test qunit");
+	grunt.registerTask("default", "node_test qunit lint min");
+
 }

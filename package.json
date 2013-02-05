@@ -23,6 +23,9 @@
   "engines": {
     "node": ">=0.1.103"
   },
+  "scripts": {
+    "preinstall": "npm i -g grunt"
+  },
   "dependencies": {
     "qunit": "~0.5.15",
     "cli-color": "~0.2.1",
