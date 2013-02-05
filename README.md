@@ -9,7 +9,6 @@ You can install JSMockTool via NPM:
 ```
 npm install jsmocktool
 ```
-But. not yet.
 
 ## Stub of JSMockTool.
 ### Create Stub. and make method.
