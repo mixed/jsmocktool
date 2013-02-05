@@ -24,7 +24,8 @@
     "node": ">=0.1.103"
   },
   "scripts": {
-    "preinstall": "npm i -g grunt"
+    "preinstall": "npm i -g grunt",
+    "test": "grunt travis --verbose"
   },
   "dependencies": {
     "qunit": "~0.5.15",

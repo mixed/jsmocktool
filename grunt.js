@@ -51,6 +51,7 @@ module.exports = function( grunt ) {
 	});
 
 	grunt.registerTask("test", "node_test qunit");
+	grunt.registerTask('travis', 'lint node_test');
 	grunt.registerTask("default", "node_test qunit lint min");
 
 }
