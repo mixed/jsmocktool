@@ -1,7 +1,7 @@
 {
   "name": "jsmocktool",
   "main": "./lib/jsmocktool.js",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Javascript Mock Tool of RSpec Style",
   "keywords": [
     "JavaScript",
@@ -24,7 +24,6 @@
     "node": ">=0.1.103"
   },
   "scripts": {
-    // "preinstall": "npm i -g grunt",
     "test": "grunt travis --verbose"
   },
   "dependencies": {
