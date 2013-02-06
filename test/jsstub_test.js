@@ -3,7 +3,10 @@
  */
  (function(){
  	var global = this;
-
+	if(typeof stub === "undefined"){
+		var jsmocktool = require("../lib/jsmocktool");
+		global.stub = jsmocktool.stub;
+	}
 	 QUnit.module("jsstub",{
 	 	"setup":function(){
 	 		this.stub = stub("STUB");

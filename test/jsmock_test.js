@@ -4,6 +4,10 @@
 
 (function(){
   var global = this;
+  if(typeof mock === "undefined"){
+    var jsmocktool = require("../lib/jsmocktool");
+    global.mock = jsmocktool.mock;
+  }
 
   
   QUnit.module("jsmock - Object type",{

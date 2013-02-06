@@ -1,7 +1,7 @@
 {
   "name": "jsmocktool",
-  "main": "lib",
-  "version": "1.1.0",
+  "main": "./lib/jsmocktool.js",
+  "version": "1.1.1",
   "description": "Javascript Mock Tool of RSpec Style",
   "keywords": [
     "JavaScript",
@@ -18,7 +18,7 @@
   },
   "bugs": {
     "email": "i.nevalose@gmail.com",
-    "url": "https://github.com/mixed/jsmocktool/issues"
+    "url": "https://github.com/mixed/jsmocktool/issues/"
   },
   "engines": {
     "node": ">=0.1.103"
