@@ -16,6 +16,7 @@ npm install jsmocktool
 ```
 //Browser
 git clone git@github.com:mixed/jsmocktool.git
+npm install
 grunt
 ```
 
