@@ -57,27 +57,6 @@ mock("FOO").should_receive("test").with_param(1,2).and_exception(new Error()||""
 mock("FOO").should_receive("test").with_param(1,2).and_run(function(){});
 
 
-Mocks and Stubs - 정보의 흐름 차이.
-
-Mocks 과 Stub은 비슷하게 보일지 모르지만 둘은 정보의 방향이 전혀 틀리다.
-
-Stubs provide input for the application under test so that the test can be performed on something else.
-
-Stubs은 test를 진행 할수 있도록 다른 행위를 application under test에 등록을 제공한다.
-
-Mocks provide input to the test to decide on pass\fail. the opposite direction.
-
-Mocks은 test의 성공과 실패를 결정하는 등록을 제공한다.Stubs과는 반대 방향이다.
-
-
-간단히 설명하면 (제가 이해하기로 .-_-;)
-
-Stub은 test를 진행하는데  Stub의 등록한 함수가 test의 성공이나 실패에 상관 없지만 있어야 하는 경우.
-ex) 
-
-Mock은 test를 진행하는데 Mock에 등록한 함수에 의해 test의 성공이나 실패를 결정하는 경우에 사용.
-ex) 서버쪽에 개발이 안되어있어 test가 필요한 경우
-
 
 $Ajax("aaa.com"{
 	onload : function
