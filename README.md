@@ -1,6 +1,6 @@
 Javascript Mock Tool is Mock library of RSpec style.
-RSpec 스타일의 자바스크립트 Mock 라이브러리.
 ============================================================
+RSpec 스타일의 자바스크립트 Mock 라이브러리.
 ### Compatibility.
 Internet Explorer - 6+, Firefox - 2+, Chrome - 7+, Opera - 10+, Safari - 3+, Mobile Safari - 3+, Android browser - 2+, Node.js - 0.2+
 
