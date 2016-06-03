@@ -11,7 +11,7 @@
     "tdd",
     "unit test"
   ],
-  "author": "YongWoo, Jeon <i.nevalose@gmail.com> (http://mixed.kr/)",  
+  "author": "YongWoo, Jeon <i.nevalose@gmail.com> (http://mixed.kr/)",
   "repository": {
     "type": "git",
     "url": "git@github.com:mixed/jsmocktool.git"
@@ -26,12 +26,19 @@
   "scripts": {
     "test": "grunt travis --verbose"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "grunt" : "~0.3.17",
-    "qunit" : "~0.5.15",
-    "cli-color": "~0.2.1"
+    "babel-core": "^6.9.1",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-class-properties": "^6.9.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-function-bind": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "cli-color": "~0.2.1",
+    "grunt": "~0.3.17",
+    "qunitjs": "^2.0.0-rc1",
+    "webpack": "^1.13.1"
   },
   "licence": "MIT"
 }
