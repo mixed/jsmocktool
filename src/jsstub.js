@@ -1,4 +1,6 @@
 
+var global = window;
+
 class Stub {
     static INSTANCE = "instance";
     static OBJECT = "object";
@@ -32,7 +34,7 @@ class Stub {
     makeEnableObj(name, type){
         let depth = name.split(".");
         let objectName = depth[0];
-        var obj = window;
+        var obj = global;
         var returnObj;
 
         if(depth.length > 1){

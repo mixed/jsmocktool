@@ -5,7 +5,6 @@
  import mock from '../src/jsmock';
 
  var global = window;
- var RECEIVE;
   
   QUnit.module("jsmock - Object type",{
     "beforeEach":function(){
@@ -302,7 +301,6 @@
         
   //    },
 
-  var MockInstance;
   QUnit.module("jsmock - other type",{
     "beforeEach":function(){
       
@@ -429,7 +427,6 @@
     assert.equal(that.mock_test1,"commonfunc");  
   });
 
-  var Verify;
   QUnit.module("jsmock - verify",{
     "beforeEach":function(){
       this.mock = mock("Verify");
@@ -519,6 +516,7 @@
     //When
     assert.equal(errormessage,"kall is not called.");
   });
+
   QUnit.test("The reset_all is remove all info of function call.",function(assert){
     //Given
     mock("Verify5").should_receive("kall").with_param(1,2).and_return("1");
@@ -542,7 +540,5 @@
     //When
     assert.equal(errormessage,"kall is not called.");
   });
-
-
 
 

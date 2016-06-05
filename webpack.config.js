@@ -4,8 +4,7 @@ var webpack = require("webpack");
 module.exports = {
     entry: {
         "jsmocktool" : ['./src/jsmock.js','./src/jsstub.js'],
-        // "jsmocktool.test" : ['./test/jsmock_test.js','./test/jsstub_test.js']
-        "jsmocktool.test" : ['./test/jsstub_test.js']
+        "jsmocktool.test" : ['./test/jsmock_test.js','./test/jsstub_test.js']
     },
     output: {
         path: __dirname+"/dist/",

@@ -1,241 +1,198 @@
 
 var global = window;
-var _toSource;
-if(Object.prototype.toSource){
-    _toSource = function(vValue){
-        return vValue.toSource();
-    };
-}else{
-    _toSource = function(vValue){
-        var func = {
-            $ : function($) {
-                if (typeof $ == "undefined") return '""';
-                if (typeof $ == "boolean") return $?"true":"false";
-                if (typeof $ == "string") return this.s($);
-                if (typeof $ == "number") return $;
-                if ($ instanceof Array) return this.a($);
-                if ($ instanceof Object) return this.o($);
-            },
-            s : function(s) {
-                var e = {'"':'\\"',"\\":"\\\\","\n":"\\n","\r":"\\r","\t":"\\t"};
-                var c = function(m){ return (typeof e[m] != "undefined")?e[m]:m;};
-                return '"'+s.replace(/[\\"'\n\r\t]/g, c)+'"';
-            },
-            a : function(a) {
-                var s = "[",c = "",n=a.length;
-                for(var i=0; i < n; i++) {
-                    if (typeof a[i] == "function") continue;
-                    s += c+this.$(a[i]);
-                    if (!c) c = ",";
+
+
+class Mock{
+    static INSTANCE = "instance";
+    static OBJECT = "object";
+
+    constructor(name, type = "object"){
+        this.createMock(name, type);
+    }
+
+    createMock(name, type){
+        this.returnValue = "_js_mock_none";
+        this.mockType = Mock.OBJECT;
+
+        if(typeof name=="string"){
+            this.makeEnableObj(name, type);
+            this.mockType = type;
+        }else if(typeof name === "object" || typeof name == "function"){
+            this.mockObj = name;
+        }else{
+            throw new Error("Name of Mock is incorrect.The Type only have String or Object or Function.");
+        }
+    }
+
+    getMock(){
+        if(this.mockType === Mock.OBJECT){
+            return this.mockObj;
+        }else{
+            return this.mockObj.prototype;
+        }
+    }
+
+    makeEnableObj(name, type){
+        let depth = name.split(".");
+        let objectName = depth[0];
+        var obj = global;
+        var returnObj;
+
+        if(depth.length > 1){
+            depth.splice(0,depth.length-1).forEach((v, i) => {
+                if (typeof obj[v] == "undefined"){
+                    obj[v] = {};
+                } 
+                obj = obj[v];
+            });
+            objectName = depth[depth.length-1];
+        }
+
+        returnObj = obj[objectName];
+        this.mockObj = returnObj
+        if(type === Mock.OBJECT && !returnObj){
+            this.mockObj = obj[objectName] = {};
+        }else if(type === Mock.INSTANCE && !returnObj){
+            this.mockObj = obj[objectName] = ()=>{};
+            this.mockObj.prototype = obj[objectName].prototype = {};
+        }
+    }
+
+    should_receive( methodName ){
+        return MockFactory.getMethod(this.getMock(),methodName);
+    }
+
+    reset_all(){
+        var obj = MockFactory.getData(this.getMock());
+        for(var i in obj){
+            if(i != "current_obj"){
+                obj[i].record = {"total":0,"param":{}};
+            }
+        }
+    }
+
+    reset( methodName ){
+        var obj = MockFactory.getData(this.getMock());
+        obj[methodName].record = {"total":0,"param":{}};
+    }
+
+    verify( methodName ){
+        var obj = MockFactory.getData(this.getMock());
+        if( obj[methodName] ){
+            if( obj[methodName].record.total === 0 ){
+                throw new Error(methodName+" is not called.");
+            }else{
+                return obj[methodName].record;
+            }
+        }else{
+            throw new Error(methodName+" isn't method.");
+        }
+    }
+
+    verify_all(){
+        var obj = MockFactory.getData(this.getMock());
+        var returnValue = {};
+        for( var i in obj ){
+            if( i != "current_obj" ) returnValue[i] = this.verify(i);
+        }
+        return returnValue;
+    }
+
+}
+
+
+class MockMethod{
+
+    constructor( obj, methodName ){
+        
+        this.excuteObjs = {
+        //      key:{
+        //          arg:[],
+        //          type:"function",
+        //          excute : function(){}
+        //      }
+        };
+        this.record = {"total":0,"param":{}};
+        this.currentParam = JSON.stringify([]);
+        this.excuteObjs[this.currentParam] = {};
+        this.setup(obj, methodName);
+
+    }
+
+    setup(obj, methodName){
+        var that = this;
+        obj[methodName] = function(){
+            that.record.total++;
+            var argString = JSON.stringify(argumentsToArray(arguments));
+
+            if(that.record.param[argString]){
+                that.record.param[argString] += 1;
+            }else{
+                that.record.param[argString] = 1;
+            }
+
+            var dataObj = that.excuteObjs[argString];
+
+            if(dataObj){
+                if(dataObj.type === "function"){
+                    return dataObj.excute.apply(dataObj,argumentsToArray(arguments));
+                }else if(dataObj.type === "exception"){
+                    throw dataObj.excute;
+                }else if(dataObj.type === "return"){
+                    return dataObj.excute;
                 }
-                return s+"]";
-            },
-            o : function(o) {
-                var s = "{",c = "";
-                for(var x in o) {
-                    if (typeof o[x] == "function") continue;
-                    s += c+this.s(x)+":"+this.$(o[x]);
-                    if (!c) c = ",";
+            }else{
+                for(var i in that.excuteObjs){
+                    var  currentParam = argumentsToArray(arguments);
+                    var arg = that.excuteObjs[i].arg;
+
+                    if(arg&&(arg.length === currentParam.length)){
+                        var paramMatch = true;
+                        for(var j = 0 , l = arg.length; j < l ; j++){
+                            if(arg[j] != currentParam[j] && arg[j] != mockWrap.anything()){
+                                paramMatch = false;
+                                break;
+                            }
+                        }
+                        if(paramMatch){
+                            return that.excuteObjs[i].excute;
+                        }
+                    }
                 }
-                return s+"}";
             }
         };
 
-        return func.$(vValue);
+    }
 
-    };
+    with_param(){
+        var arg = argumentsToArray(arguments);
+        this.currentParam = JSON.stringify(arg);
+        this.excuteObjs[this.currentParam] = {
+            arg : arg
+        };
+
+        return this;
+    }
+
+    _and_template( type, excute){
+        this.excuteObjs[this.currentParam].type = type;
+        this.excuteObjs[this.currentParam].excute = excute;
+        this.currentParam = JSON.stringify([]);
+    }
+
+    and_return( returnVal ){
+        this._and_template("return", returnVal);
+    }
+
+    and_function( returnFunction ){
+        this._and_template("function", returnFunction);
+    }
+
+    and_throw( returnException ){
+        this._and_template("exception", returnException);
+    }
+
 }
-
-function Mock(vName,sType){
-    if(!(this instanceof Mock)){
-        return new Mock(vName,sType);
-    }else{
-        this.createMock(vName,sType||Mock.OBJECT);
-    }
-}
-
-Mock.prototype.createMock = function(vName,sType){
-    this._vReturnValue = "_js_mock_none";
-    this._mockType = Mock.OBJECT;
-    if(typeof vName=="string"){
-        this.makeEnableObj(vName,sType);
-        this._mockType = sType;
-    }else if(typeof vName=="object"||typeof vName=="function"){
-        this._mockObj = vName;
-    }else{
-        throw new Error("Name of Mock is incorrect.The Type only have String or Object or Function.");
-    }
-};
-
-Mock.prototype.getMock = function(){
-    if(this._mockType==Mock.OBJECT){
-        return this._mockObj;
-    }else{
-        return this._mockObj.prototype;
-    }
-};
-
-Mock.prototype.makeEnableObj = function(sName,sType){
-    var depth = sName.split(".");
-    var objectName = depth[0];
-    var obj;
-    if(depth.length > 1){
-        obj = global;
-
-        for (var i = 0, l = depth.length; i < l-1 ; i++) {
-            if (typeof obj[depth[i]] == "undefined"){
-                obj[depth[i]] = {};
-            } 
-
-            obj = obj[depth[i]];
-        }
-        objectName = depth[depth.length-1];
-    }else{
-        obj = global;
-    }
-
-    var returnObj;
-    if(sType==Mock.OBJECT){
-        returnObj = obj[objectName];
-        if(returnObj){
-            this._mockObj = returnObj;
-        }else{
-            this._mockObj = obj[objectName] = {};
-        }
-    }else if(sType==Mock.INSTANCE){
-        returnObj = obj[objectName];
-        if(returnObj){
-            this._mockObj = returnObj;
-        }else{
-            this._mockObj = obj[objectName] = function(){};
-            this._mockObj.prototype = obj[objectName].prototype = {};
-        }
-    }
-};
-
-Mock.prototype.should_receive = function(sMethodName){
-    return MockFactory.getMockMethod(this.getMock(),sMethodName);
-};
-
-Mock.prototype.reset_all = function(){
-    var oObj = MockFactory.getData(this.getMock());
-    for(var i in oObj){
-        if(i!="current_obj") oObj[i].record = {"total":0,"param":{}};
-    }
-};
-
-Mock.prototype.reset = function(sMethodName){
-    var oObj = MockFactory.getData(this.getMock());
-    oObj[sMethodName].record = {"total":0,"param":{}};
-};
-
-Mock.prototype.verify = function(sMethodName){
-    var oObj = MockFactory.getData(this.getMock());
-    if(oObj[sMethodName]){
-        if(oObj[sMethodName].record.total === 0){
-            throw new Error(sMethodName+" is not called.");
-        }else{
-            return oObj[sMethodName].record;
-        }
-    }else{
-        throw new Error(sMethodName+" isn't method.");
-    }
-};
-
-Mock.prototype.verify_all = function(){
-    var oObj = MockFactory.getData(this.getMock());
-    var oReturn = {};
-    for(var i in oObj){
-        if(i!="current_obj") oReturn[i] = this.verify(i);
-    }
-    return oReturn;
-};
-
-Mock.INSTANCE = "instance";
-Mock.OBJECT = "object";
-
-Mock.anything = function(){
-    return "_js_mock_anything_param";
-};
-
-function MockMethod(oObj,sMethodName){
-    var that = this;
-    this.excuteObjs = {
-    //      key:{
-    //          arg:[],
-    //          type:"function",
-    //          excute : function(){}
-    //      }
-    };
-    this.record = {"total":0,"param":{}};
-    this.currentParam = _toSource([]);
-    this.excuteObjs[this.currentParam] = {};
-    oObj[sMethodName] = function(){
-        that.record.total++;
-        var argString = _toSource(argumentsToArray(arguments));
-        if(that.record.param[argString]){
-            that.record.param[argString] += 1;
-        }else{
-            that.record.param[argString] = 1;
-        }
-        var dataObj = that.excuteObjs[argString];
-        if(dataObj){
-            if(dataObj.type == "function"){
-                return dataObj.excute.apply(dataObj,argumentsToArray(arguments));
-            }else if(dataObj.type == "exception"){
-                throw dataObj.excute;
-            }else if(dataObj.type == "return"){
-                return dataObj.excute;
-            }
-        }else{
-            for(var i in that.excuteObjs){
-                var  currentParam = argumentsToArray(arguments);
-                var arg = that.excuteObjs[i].arg;
-
-                if(arg&&(arg.length == currentParam.length)){
-                    var paramMatch = true;
-                    for(var j = 0 , l = arg.length; j < l ; j++){
-                        if(arg[j] != currentParam[j]&&arg[j]!="_js_mock_anything_param"){
-                            paramMatch = false;
-                            break;
-                        }
-                    }
-                    if(paramMatch){
-                        return that.excuteObjs[i].excute;
-                    }
-                }
-            }
-        }
-    };
-}
-
-MockMethod.prototype.with_param = function(){
-    var arg = argumentsToArray(arguments);
-    this.currentParam = _toSource(arg);
-    this.excuteObjs[this.currentParam] = {
-        arg : arg
-    };
-
-    return this;
-};
-
-MockMethod.prototype._and_template = function(sType,vExcute){
-    this.excuteObjs[this.currentParam].type = sType;
-    this.excuteObjs[this.currentParam].excute = vExcute;
-    this.currentParam = _toSource([]);
-};
-
-MockMethod.prototype.and_return = function(vReturnValue){
-    this._and_template("return",vReturnValue);
-};
-
-MockMethod.prototype.and_function = function(fpFunction){
-    this._and_template("function",fpFunction);
-};
-
-MockMethod.prototype.and_throw = function(xException){
-    this._and_template("exception",xException); 
-};
 
 
 var MockFactory = {
@@ -245,49 +202,59 @@ var MockFactory = {
     //          current_functions : {} mock method
     //      }
     ],
-    createData : function(oObj){
-        var dataObj = {current_obj : oObj};
+    createData : function(obj){
+        var dataObj = {current_obj : obj};
         this.storage.push(dataObj);
 
         return dataObj;
     },
-    createMockMethod : function(oObj,sMethodName){
-        var dataObj = this.getData(oObj);
-        dataObj[sMethodName] = new MockMethod(oObj,sMethodName);
+    createMethod : function(obj, methodName){
+        var dataObj = this.getData(obj);
+        dataObj[methodName] = new MockMethod(obj,methodName);
 
-        return dataObj[sMethodName];
+        return dataObj[methodName];
     },
-    getData : function(oObj){
+    getData : function(obj){
         for (var i = 0, l = this.storage.length; i < l; i++) {
-            if (this.storage[i].current_obj == oObj) {
+            if (this.storage[i].current_obj == obj) {
                 return this.storage[i];
             }
         }
-        return this.createData(oObj);
+        return this.createData(obj);
     },
-    getMockMethod : function(oObj,sMethodName){
-        var dataObj = this.getData(oObj);
-        if(!dataObj[sMethodName]){
-            dataObj[sMethodName] = this.createMockMethod(oObj,sMethodName);
+    getMethod : function(obj, methodName){
+        var dataObj = this.getData(obj);
+        if(!dataObj[methodName]){
+            dataObj[methodName] = this.createMethod(obj,methodName);
         }
-        return dataObj[sMethodName];
+        return dataObj[methodName];
     }
 };
 
 
-function argumentsToArray(aArg){
+function argumentsToArray(arg){
     var returnVal = [];
-    if(!!aArg.length){
-        for(var i = 0 , l = aArg.length; i < l; i++){
-            returnVal[i] = aArg[i];
+    if(!!arg.length){
+        for(var i = 0 , l = arg.length; i < l; i++){
+            returnVal[i] = arg[i];
         }
     }
     return returnVal;
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Mock;
-}else{
-    global.mock = global.Mock = Mock;   
-}
-export default Mock;
+
+function mockWrap(name, type){
+    if(!(this instanceof Mock)){
+        return new Mock(name,type);
+    }else{
+        this.createMock(name,type);
+    }
+};
+
+mockWrap.OBJECT = Mock.OBJECT;
+mockWrap.INSTANCE = Mock.INSTANCE;
+mockWrap.anything = () => "_js_mock_anything_param";
+
+export default mockWrap;
+
+
