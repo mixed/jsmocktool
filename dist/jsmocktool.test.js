@@ -101,6 +101,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var global = window;
+	
 	var Stub = function (_TestDouble) {
 	    _inherits(Stub, _TestDouble);
 	
@@ -112,6 +114,7 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Stub).call(this, name, type));
 	
 	        _this.type = "Stub";
+	        global.console && console.warn && console.warn("[WARN] : Deprecated Stub. You should be change to Mock.");
 	        return _this;
 	    }
 	
@@ -918,47 +921,47 @@
 	  });
 	  var errormessage = "";
 	
-	  //Then
-	  var returnVal = commonfunc(1);
 	  //When
+	  var returnVal = commonfunc(1);
+	  //Then
 	  assert.equal(returnVal, "1");
 	
-	  //Then
+	  //When
 	  try {
 	    commonfunc(2);
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //When
+	  //Then
 	  assert.equal(errormessage, "test2");
 	
-	  //Then
-	  commonfunc(3);
 	  //When
+	  commonfunc(3);
+	  //Then
 	  assert.equal(that.mock_test1, "commonfunc");
 	});
 	
 	(0, _qunit.test)("The namespace type is well work too.", function (assert) {
 	  //Given
 	  (0, _jsmocktool.mock)("aaa.bbb.ccc.ddd").should_receive("test").and_return("test");
-	  //Then,When
+	  //When, Then
 	  assert.equal(aaa.bbb.ccc.ddd.test(), "test");
 	
 	  //Given
 	  (0, _jsmocktool.mock)("aaaa.bbbb.cccc", _jsmocktool.mock.INSTANCE).should_receive("test").and_return("test");
-	  //Then,When
+	  //When, Then
 	  assert.equal(new aaaa.bbbb.cccc().test(), "test");
 	
 	  //Given
 	  global["aaaaa"] = {};
 	  aaaaa.bbbbb = {};
 	  (0, _jsmocktool.mock)("aaaaa.bbbbb").should_receive("test").and_return("test");
-	  //Then,When
+	  //When, Then
 	  assert.equal(aaaaa.bbbbb.test(), "test");
 	
 	  //Given
 	  (0, _jsmocktool.mock)("aaaaa.bbbbb.ccccc").should_receive("test").and_return("test");
-	  //Then,When
+	  //When,Then
 	  assert.equal(aaaaa.bbbbb.ccccc.test(), "test");
 	});
 	
@@ -971,7 +974,7 @@
 	    that.mock_test1 = "commonfunc";
 	  });
 	
-	  //Then, When
+	  //When, Then
 	  assert.equal(param.test.commonfunc(1), "1");
 	
 	  //Given
@@ -981,12 +984,12 @@
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //Then, When
+	  //When, Then
 	  assert.equal(errormessage, "test2");
 	
-	  //Then
-	  param.test.commonfunc(3);
 	  //When
+	  param.test.commonfunc(3);
+	  //Then
 	  assert.equal(that.mock_test1, "commonfunc");
 	});
 	
@@ -1009,27 +1012,27 @@
 	  this.mock.should_receive("kall2").and_return("1");
 	  Verify.kall(1, 2);
 	  var errormessage = "";
-	  //Then
-	  var result = this.mock.verify("kall");
 	  //When
+	  var result = this.mock.verify("kall");
+	  //Then
 	  assert.deepEqual(result, { "total": 1, "param": { "[1,2]": 1 } });
 	
-	  //Then
+	  //When
 	  try {
 	    (0, _jsmocktool.mock)("Verify").verify("kall2");
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //When
+	  //Then
 	  assert.equal(errormessage, "kall2 isn't called.");
 	
-	  //Then
+	  //When
 	  try {
 	    (0, _jsmocktool.mock)("Verify").verify("kall3");
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //When
+	  //Then
 	  assert.equal(errormessage, "kall3 isn't method.");
 	});
 	(0, _qunit.test)("The verify_all is check all method.", function (assert) {
@@ -1040,42 +1043,42 @@
 	  Verify2.kall(1, 2);
 	  Verify2.kall2();
 	  var returnVal;
-	  //Then
-	  returnVal = (0, _jsmocktool.mock)("Verify2").verify_all();
 	  //When
+	  returnVal = (0, _jsmocktool.mock)("Verify2").verify_all();
+	  //Then
 	  assert.deepEqual(returnVal, { "kall": { "total": 1, "param": { "[1,2]": 1 } }, "kall2": { "total": 1, "param": { "[]": 1 } } });
 	
 	  //Given
 	  (0, _jsmocktool.mock)("Verify3").should_receive("kall").with_param(1, 2).and_return("1");
 	  var errormessage;
-	  //Then
+	  //When
 	  try {
 	    (0, _jsmocktool.mock)("Verify3").verify_all();
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //When
+	  //Then
 	  assert.equal(errormessage, "kall isn't called.");
 	});
 	(0, _qunit.test)("The reset is remove info of function call.", function (assert) {
 	  //Given
 	  (0, _jsmocktool.mock)("Verify4").should_receive("kall").with_param(1, 2).and_return("1");
 	  Verify4.kall(1, 2);
-	  //Then
-	  var returnVal = (0, _jsmocktool.mock)("Verify4").verify_all();
 	  //When
+	  var returnVal = (0, _jsmocktool.mock)("Verify4").verify_all();
+	  //Then
 	  assert.deepEqual(returnVal, { "kall": { "total": 1, "param": { "[1,2]": 1 } } });
 	
 	  //Given
 	  var errormessage;
-	  //Then
+	  //When
 	  (0, _jsmocktool.mock)("Verify4").reset("kall");
 	  try {
 	    (0, _jsmocktool.mock)("Verify4").verify("kall");
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //When
+	  //Then
 	  assert.equal(errormessage, "kall isn't called.");
 	});
 	
@@ -1085,21 +1088,21 @@
 	  (0, _jsmocktool.mock)("Verify5").should_receive("kall2").and_return("1");
 	  Verify5.kall(1, 2);
 	  Verify5.kall2();
-	  //Then
-	  var returnVal = (0, _jsmocktool.mock)("Verify5").verify_all();
 	  //When
+	  var returnVal = (0, _jsmocktool.mock)("Verify5").verify_all();
+	  //Then
 	  assert.deepEqual(returnVal, { "kall": { "total": 1, "param": { "[1,2]": 1 } }, "kall2": { "total": 1, "param": { "[]": 1 } } });
 	
 	  //Given
 	  var errormessage;
-	  //Then
+	  //When
 	  (0, _jsmocktool.mock)("Verify5").reset_all();
 	  try {
 	    (0, _jsmocktool.mock)("Verify5").verify_all();
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //When
+	  //Then
 	  assert.equal(errormessage, "kall isn't called.");
 	});
 	
@@ -5731,6 +5734,24 @@
 		(0, _jsmocktool.stub)("aaaaa.bbbbb.ccccc").should_receive("test").and_return("test");
 		//Then
 		assert.equal(aaaaa.bbbbb.ccccc.test(), "test");
+	});
+	
+	(0, _qunit.test)("deprecated stub.", function (assert) {
+		//Given
+		var message = "";
+		var originConsole = global.console;
+		global.console = {
+			"warn": function warn(msg) {
+				message = msg;
+			}
+		};
+		// When
+		(0, _jsmocktool.stub)("FOO");
+	
+		//Then
+		assert.equal(message, "[WARN] : Deprecated Stub. You should be change to Mock.");
+	
+		global.console = originConsole;
 	});
 
 /***/ },

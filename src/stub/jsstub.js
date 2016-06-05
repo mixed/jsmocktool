@@ -1,11 +1,14 @@
 import StubMethod from './jsstubMethod';
 import TestDouble from '../testDouble';
 
+var global = window;
+
 class Stub extends TestDouble{
 
     constructor(name, type = "object"){
         super(name, type);
         this.type = "Stub";
+        global.console&&console.warn&&console.warn("[WARN] : Deprecated Stub. You should be change to Mock.");
     }
 
     should_receive(functionName){

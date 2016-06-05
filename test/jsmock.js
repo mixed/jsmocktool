@@ -357,48 +357,48 @@
     });
     var errormessage = ""; 
 
-    //Then
-    var returnVal = commonfunc(1);
     //When
+    var returnVal = commonfunc(1);
+    //Then
     assert.equal(returnVal,"1");
     
 
-    //Then
+    //When
     try{
      commonfunc(2);
     }catch(e){
      errormessage = e.message;
     }
-    //When
+    //Then
     assert.equal(errormessage,"test2");
 
-    //Then
-    commonfunc(3);
     //When
+    commonfunc(3);
+    //Then
     assert.equal(that.mock_test1,"commonfunc");
   });
 
   test("The namespace type is well work too.",function(assert){
     //Given
     mock("aaa.bbb.ccc.ddd").should_receive("test").and_return("test");
-    //Then,When
+    //When, Then
     assert.equal(aaa.bbb.ccc.ddd.test(),"test");
 
     //Given
     mock("aaaa.bbbb.cccc",mock.INSTANCE).should_receive("test").and_return("test");
-    //Then,When
+    //When, Then
     assert.equal(new aaaa.bbbb.cccc().test(),"test");
 
     //Given
     global["aaaaa"] = {};
     aaaaa.bbbbb = {};
     mock("aaaaa.bbbbb").should_receive("test").and_return("test");
-    //Then,When
+    //When, Then
     assert.equal(aaaaa.bbbbb.test(),"test");
 
     //Given
     mock("aaaaa.bbbbb.ccccc").should_receive("test").and_return("test");
-    //Then,When
+    //When,Then
     assert.equal(aaaaa.bbbbb.ccccc.test(),"test");
   });
 
@@ -411,7 +411,7 @@
      that.mock_test1="commonfunc";
     });
 
-    //Then, When
+    //When, Then
     assert.equal(param.test.commonfunc(1),"1");
 
     //Given
@@ -421,12 +421,12 @@
     }catch(e){
      errormessage = e.message;
     }
-    //Then, When
+    //When, Then
     assert.equal(errormessage,"test2");
 
-    //Then
-    param.test.commonfunc(3);
     //When
+    param.test.commonfunc(3);
+    //Then
     assert.equal(that.mock_test1,"commonfunc");  
   });
 
@@ -449,27 +449,27 @@
     this.mock.should_receive("kall2").and_return("1");
     Verify.kall(1,2);
     var errormessage = "";
-    //Then
-    var result = this.mock.verify("kall");
     //When
+    var result = this.mock.verify("kall");
+    //Then
     assert.deepEqual(result,{"total":1, "param":{"[1,2]":1}});
 
-    //Then
+    //When
     try{
       mock("Verify").verify("kall2");
     }catch(e){
       errormessage = e.message;
     }
-    //When
+    //Then
     assert.equal(errormessage,"kall2 isn't called.");
 
-    //Then
+    //When
     try{
       mock("Verify").verify("kall3");
     }catch(e){
       errormessage = e.message;
     }
-    //When
+    //Then
     assert.equal(errormessage,"kall3 isn't method.");
   });
   test("The verify_all is check all method.",function(assert){
@@ -480,43 +480,43 @@
     Verify2.kall(1,2);
     Verify2.kall2();
     var returnVal;
-    //Then
-    returnVal = mock("Verify2").verify_all();
     //When
+    returnVal = mock("Verify2").verify_all();
+    //Then
     assert.deepEqual(returnVal,{"kall":{"total":1, "param":{"[1,2]":1}}, "kall2":{"total":1, "param":{"[]":1}}});
 
 
     //Given
     mock("Verify3").should_receive("kall").with_param(1,2).and_return("1");
     var errormessage;
-    //Then
+    //When
     try{
       mock("Verify3").verify_all();
     }catch(e){
       errormessage = e.message;
     }
-    //When
+    //Then
     assert.equal(errormessage,"kall isn't called.");
   });
   test("The reset is remove info of function call.",function(assert){
     //Given
     mock("Verify4").should_receive("kall").with_param(1,2).and_return("1");
     Verify4.kall(1,2);
-    //Then
-    var returnVal = mock("Verify4").verify_all();
     //When
+    var returnVal = mock("Verify4").verify_all();
+    //Then
     assert.deepEqual(returnVal,{"kall":{"total":1, "param":{"[1,2]":1}}});
     
     //Given
     var errormessage;
-    //Then
+    //When
     mock("Verify4").reset("kall");
     try{
       mock("Verify4").verify("kall");
     }catch(e){
       errormessage = e.message;
     }
-    //When
+    //Then
     assert.equal(errormessage,"kall isn't called.");
   });
 
@@ -526,21 +526,21 @@
     mock("Verify5").should_receive("kall2").and_return("1");
     Verify5.kall(1,2);
     Verify5.kall2();
-    //Then
-    var returnVal = mock("Verify5").verify_all();
     //When
+    var returnVal = mock("Verify5").verify_all();
+    //Then
     assert.deepEqual(returnVal,{"kall":{"total":1, "param":{"[1,2]":1}}, "kall2":{"total":1, "param":{"[]":1}}});
 
     //Given
     var errormessage;
-    //Then
+    //When
     mock("Verify5").reset_all();
     try{
       mock("Verify5").verify_all();
     }catch(e){
       errormessage = e.message;
     }
-    //When
+    //Then
     assert.equal(errormessage,"kall isn't called.");
   });
 

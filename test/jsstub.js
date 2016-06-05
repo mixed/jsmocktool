@@ -134,5 +134,24 @@ test("The namespace type is well work too.",function(assert){
 	//Then
 	assert.equal(aaaaa.bbbbb.ccccc.test(),"test");
 });
- 
+
+
+test("deprecated stub.", function(assert){
+	//Given
+	let message = "";
+	var originConsole = global.console;
+	global.console = {
+		"warn" : function(msg){
+			message = msg;
+		}
+	}
+	// When
+	stub("FOO");
+
+	//Then
+	assert.equal(message,"[WARN] : Deprecated Stub. You should be change to Mock.");
+
+	global.console = originConsole;
+});
+
 
