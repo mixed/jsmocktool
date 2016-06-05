@@ -50,7 +50,7 @@
 	__webpack_require__(6);
 	__webpack_require__(7);
 	__webpack_require__(2);
-	__webpack_require__(3);
+	module.exports = __webpack_require__(3);
 
 
 /***/ },
@@ -89,13 +89,13 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _jsstub = __webpack_require__(3);
+	var _jsstubMethod = __webpack_require__(3);
 	
-	var _jsstub2 = _interopRequireDefault(_jsstub);
+	var _jsstubMethod2 = _interopRequireDefault(_jsstubMethod);
 	
-	var _test = __webpack_require__(4);
+	var _testDouble = __webpack_require__(4);
 	
-	var _test2 = _interopRequireDefault(_test);
+	var _testDouble2 = _interopRequireDefault(_testDouble);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -129,12 +129,12 @@
 	                    return _this2.returnValue;
 	                }
 	            };
-	            return new _jsstub2.default(this);
+	            return new _jsstubMethod2.default(this);
 	        }
 	    }]);
 	
 	    return Stub;
-	}(_test2.default);
+	}(_testDouble2.default);
 	
 	function stubWrap(name, type) {
 	    if (!(this instanceof Stub)) {
@@ -144,8 +144,8 @@
 	    }
 	};
 	
-	stubWrap.OBJECT = _test2.default.OBJECT;
-	stubWrap.INSTANCE = _test2.default.INSTANCE;
+	stubWrap.OBJECT = _testDouble2.default.OBJECT;
+	stubWrap.INSTANCE = _testDouble2.default.INSTANCE;
 	
 	exports.default = stubWrap;
 
@@ -278,13 +278,13 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _jsmock = __webpack_require__(6);
+	var _jsmockMethodFactory = __webpack_require__(6);
 	
-	var _jsmock2 = _interopRequireDefault(_jsmock);
+	var _jsmockMethodFactory2 = _interopRequireDefault(_jsmockMethodFactory);
 	
-	var _test = __webpack_require__(4);
+	var _testDouble = __webpack_require__(4);
 	
-	var _test2 = _interopRequireDefault(_test);
+	var _testDouble2 = _interopRequireDefault(_testDouble);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -311,12 +311,12 @@
 	    _createClass(Mock, [{
 	        key: 'should_receive',
 	        value: function should_receive(methodName) {
-	            return _jsmock2.default.getMethod(this.getTestDouble(), methodName);
+	            return _jsmockMethodFactory2.default.getMethod(this.getTestDouble(), methodName);
 	        }
 	    }, {
 	        key: 'reset_all',
 	        value: function reset_all() {
-	            var obj = _jsmock2.default.getData(this.getTestDouble());
+	            var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
 	            for (var i in obj) {
 	                if (i != "current_obj") {
 	                    obj[i].record = { "total": 0, "param": {} };
@@ -326,13 +326,13 @@
 	    }, {
 	        key: 'reset',
 	        value: function reset(methodName) {
-	            var obj = _jsmock2.default.getData(this.getTestDouble());
+	            var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
 	            obj[methodName].record = { "total": 0, "param": {} };
 	        }
 	    }, {
 	        key: 'verify',
 	        value: function verify(methodName) {
-	            var obj = _jsmock2.default.getData(this.getTestDouble());
+	            var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
 	            if (obj[methodName]) {
 	                if (obj[methodName].record.total === 0) {
 	                    throw new Error(methodName + ' isn\'t called.');
@@ -346,7 +346,7 @@
 	    }, {
 	        key: 'verify_all',
 	        value: function verify_all() {
-	            var obj = _jsmock2.default.getData(this.getTestDouble());
+	            var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
 	            var returnValue = {};
 	            for (var i in obj) {
 	                if (i != "current_obj") returnValue[i] = this.verify(i);
@@ -356,7 +356,7 @@
 	    }]);
 	
 	    return Mock;
-	}(_test2.default);
+	}(_testDouble2.default);
 	
 	function mockWrap(name, type) {
 	    if (!(this instanceof Mock)) {
@@ -366,8 +366,8 @@
 	    }
 	};
 	
-	mockWrap.OBJECT = _test2.default.OBJECT;
-	mockWrap.INSTANCE = _test2.default.INSTANCE;
+	mockWrap.OBJECT = _testDouble2.default.OBJECT;
+	mockWrap.INSTANCE = _testDouble2.default.INSTANCE;
 	mockWrap.anything = function () {
 	    return "_js_mock_anything_param";
 	};
@@ -384,13 +384,13 @@
 	    value: true
 	});
 	
-	var _jsmock = __webpack_require__(7);
+	var _jsmockMethod = __webpack_require__(7);
 	
-	var _jsmock2 = _interopRequireDefault(_jsmock);
+	var _jsmockMethod2 = _interopRequireDefault(_jsmockMethod);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var MockFactory = {
+	var MockMethodFactory = {
 	    storage: [
 	        //      {
 	        //          current_obj : {}, object
@@ -405,7 +405,7 @@
 	    },
 	    createMethod: function createMethod(obj, methodName) {
 	        var dataObj = this.getData(obj);
-	        dataObj[methodName] = new _jsmock2.default(obj, methodName);
+	        dataObj[methodName] = new _jsmockMethod2.default(obj, methodName);
 	
 	        return dataObj[methodName];
 	    },
@@ -426,7 +426,7 @@
 	    }
 	};
 	
-	exports.default = MockFactory;
+	exports.default = MockMethodFactory;
 
 /***/ },
 /* 7 */

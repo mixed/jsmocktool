@@ -1,5 +1,5 @@
-import StubMethod from './jsstub.method';
-import TestDouble from '../test.double';
+import StubMethod from './jsstubMethod';
+import TestDouble from '../testDouble';
 
 class Stub extends TestDouble{
 

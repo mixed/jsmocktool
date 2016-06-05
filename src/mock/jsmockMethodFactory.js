@@ -1,6 +1,6 @@
-import MockMethod from './jsmock.method';
+import MockMethod from './jsmockMethod';
 
-var MockFactory = {
+var MockMethodFactory = {
     storage : [
     //      {
     //          current_obj : {}, object
@@ -36,4 +36,4 @@ var MockFactory = {
     }
 };
 
-export default MockFactory;
+export default MockMethodFactory;

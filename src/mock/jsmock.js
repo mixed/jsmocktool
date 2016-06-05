@@ -1,5 +1,5 @@
-import MockFactory from './jsmock.factory';
-import TestDouble from '../test.double';
+import MockMethodFactory from './jsmockMethodFactory';
+import TestDouble from '../testDouble';
 
 class Mock extends TestDouble{
 
@@ -9,11 +9,11 @@ class Mock extends TestDouble{
     }
 
     should_receive( methodName ){
-        return MockFactory.getMethod(this.getTestDouble(),methodName);
+        return MockMethodFactory.getMethod(this.getTestDouble(),methodName);
     }
 
     reset_all(){
-        var obj = MockFactory.getData(this.getTestDouble());
+        var obj = MockMethodFactory.getData(this.getTestDouble());
         for(var i in obj){
             if(i != "current_obj"){
                 obj[i].record = {"total":0,"param":{}};
@@ -22,12 +22,12 @@ class Mock extends TestDouble{
     }
 
     reset( methodName ){
-        var obj = MockFactory.getData(this.getTestDouble());
+        var obj = MockMethodFactory.getData(this.getTestDouble());
         obj[methodName].record = {"total":0,"param":{}};
     }
 
     verify( methodName ){
-        var obj = MockFactory.getData(this.getTestDouble());
+        var obj = MockMethodFactory.getData(this.getTestDouble());
         if( obj[methodName] ){
             if( obj[methodName].record.total === 0 ){
                 throw new Error(`${methodName} isn't called.`);
@@ -40,7 +40,7 @@ class Mock extends TestDouble{
     }
 
     verify_all(){
-        var obj = MockFactory.getData(this.getTestDouble());
+        var obj = MockMethodFactory.getData(this.getTestDouble());
         var returnValue = {};
         for( var i in obj ){
             if( i != "current_obj" ) returnValue[i] = this.verify(i);
