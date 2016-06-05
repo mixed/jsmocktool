@@ -2,11 +2,12 @@
  * @author mixed
  */
 
- import mock from '../src/jsmock';
+ import { mock } from '../src/jsmocktool';
+ import { module, test } from '../node_modules/qunitjs/qunit/qunit';
 
  var global = window;
   
-  QUnit.module("jsmock - Object type",{
+  module("jsmock - Object type",{
     "beforeEach":function(){
       this.mock = mock("RECEIVE");
       this.mock_test1 = "";
@@ -19,7 +20,7 @@
     }
   });
 
-  QUnit.test("Must be first prameter is string or object",function(assert){
+  test("Must be first prameter is string or object",function(assert){
     //Given
     //When
     mock("FOO");
@@ -31,40 +32,40 @@
     //When
     mock(BAR);
     //Then
-    assert.deepEqual(BAR,BAR);
+    assert.deepEqual(BAR, BAR);
   });
 
-  QUnit.test("Must be second parameter is 'instance','object',none.",function(assert){
+  test("Must be second parameter is 'instance','object',none.",function(assert){
     //Given
     //When
     mock("FOO2");
     //Then
-    assert.deepEqual(FOO2,{});
+    assert.deepEqual(FOO2, {});
 
     //Given
     //When
     mock("FOO3",mock.INSTANCE);
     //Then
-    assert.equal(FOO3.constructor,Function);
+    assert.equal(FOO3.constructor, Function);
   });
 
-  QUnit.test("The should_receive is set method of mock Object.",function(assert){
+  test("The should_receive is set method of mock Object.",function(assert){
     //Given
     var receiveMock = mock("RECEIVE");
     //Then
     receiveMock.should_receive("test");
     //When
-    assert.equal(RECEIVE.test.constructor,Function);
+    assert.equal(RECEIVE.test.constructor, Function);
 
     //Given
     var receiveMock2 = mock("RECEIVE2",mock.INSTANCE);
     //Then
     receiveMock2.should_receive("test");
     //When
-    assert.equal(RECEIVE2.prototype.test.constructor,Function);
+    assert.equal(RECEIVE2.prototype.test.constructor, Function);
   });
 
-  QUnit.test("Return value of should_receive is MockMethod.",function(assert){
+  test("Return value of should_receive is MockMethod.",function(assert){
     //Given
     var receive = mock("RECEIVE3");
     //When
@@ -74,10 +75,10 @@
     //I believe correct when The return value of should_receive have and_return function.
     // ok(stub_obj instanceof MockMethod);
     //Then
-    assert.equal(mock_method.and_return.constructor,Function);
+    assert.equal(mock_method.and_return.constructor, Function);
   });
 
-  QUnit.test("The and_return is  setting value to return.",function(assert){
+  test("The and_return is  setting value to return.",function(assert){
     //Given
     mock("RECEIVE4").should_receive("test").and_return(3);
     //When
@@ -86,7 +87,7 @@
     assert.equal(returnVal,3);
   });
 
-  QUnit.test("If use with_param, mock will return value when same param.",function(assert){
+  test("If use with_param, mock will return value when same param.",function(assert){
     //Given
     mock("RECEIVE4").should_receive("test").with_param(1,2).and_return(4);
     //When
@@ -95,7 +96,7 @@
     assert.equal(returnVal,4);  
   });
 
-  QUnit.test("The Mock must be work mock before set parameter when add new parameter.",function(assert){
+  test("The Mock must be work mock before set parameter when add new parameter.",function(assert){
     //Given
     this.mock.should_receive("test").and_return(3);
     this.mock.should_receive("test").with_param(1,2).and_return(4);
@@ -110,7 +111,7 @@
     assert.equal(twoParam  , 5);
   });
 
-  QUnit.test("The Mock must be change return value when add same parameter.",function(assert){
+  test("The Mock must be change return value when add same parameter.",function(assert){
     //Given
     this.mock.should_receive("test").and_return(3);
     this.mock.should_receive("test").with_param(1,2).and_return(4);
@@ -123,7 +124,7 @@
     assert.equal(twoParam , 5);
   });
 
-  QUnit.test("The add_throw is throw exception when match param.",function(assert) {
+  test("The add_throw is throw exception when match param.",function(assert) {
     //Given
     var error_message = "";
     this.mock.should_receive("test2").and_throw(new Error("and_throw test."));
@@ -137,7 +138,7 @@
     assert.equal(error_message,"and_throw test.");
   });
 
-  QUnit.test("If set with_param of and_throw then throw exception when match parameter.",function(assert) {
+  test("If set with_param of and_throw then throw exception when match parameter.",function(assert) {
     //Given
     this.mock.should_receive("test2").with_param(1,2).and_throw(new Error("and_throw test2."));
     var error_message = "";
@@ -153,7 +154,7 @@
     assert.equal(error_message,"and_throw test2.");
   });
 
-  QUnit.test("The and_throw is well work when change parameter",function  (assert) {
+  test("The and_throw is well work when change parameter",function  (assert) {
     //Given
     this.mock.should_receive("test2").with_param().and_throw(new Error("and_throw test"));
     this.mock.should_receive("test2").with_param(1,2).and_throw(new Error("and_throw test2"));
@@ -187,7 +188,7 @@
     //Then
     assert.equal(error_message,"and_throw test3");
   });
-  QUnit.test("The and_throw throw new exception when some function, same parameter, change exception.",function  (assert) {
+  test("The and_throw throw new exception when some function, same parameter, change exception.",function  (assert) {
     //Given
     this.mock.should_receive("test2").with_param(1,2,3).and_throw(new Error("and_throw test"));
     var error_message = "";
@@ -211,11 +212,11 @@
     assert.equal(error_message,"change throw"); 
   });
 
-  QUnit.test("The and_function run function when set new function",function  (assert) {
+  test("The and_function run function when set new function",function  (assert) {
 
     //Given
     var that = this;
-    this.mock.should_receive("test3").and_function(function(){
+    this.mock.should_receive("test3").and_function(()=>{
       that.mock_test1="first";
     });
     //Then
@@ -224,10 +225,10 @@
     assert.equal(that.mock_test1,"first");  
   });
 
-  QUnit.test("If set a with_param then the and_functon run function when only match parameter.",function(assert){
+  test("If set a with_param then the and_functon run function when only match parameter.",function(assert){
     //Given
     var that = this;
-    this.mock.should_receive("test3").with_param(1,2).and_function(function(){
+    this.mock.should_receive("test3").with_param(1,2).and_function(() => {
      that.mock_test2 = "second";
     });
     //Then
@@ -236,16 +237,16 @@
     assert.equal(that.mock_test2,"second");
   });
 
-  QUnit.test("Then and_function is well work when same function change parameter.",function(assert){
+  test("Then and_function is well work when same function change parameter.",function(assert){
     //Given
     var that = this;
-    this.mock.should_receive("test3").with_param().and_function(function(){
+    this.mock.should_receive("test3").with_param().and_function(() => {
      that.mock_test1="first";
     });
-    this.mock.should_receive("test3").with_param(1,2).and_function(function(){
+    this.mock.should_receive("test3").with_param(1,2).and_function(() => {
      that.mock_test2="second";
     });
-    this.mock.should_receive("test3").with_param(1,2,3).and_function(function(){
+    this.mock.should_receive("test3").with_param(1,2,3).and_function(() => {
      that.mock_test3="third";
     });
     //When
@@ -263,13 +264,13 @@
     //Then
     assert.equal(that.mock_test3,"third");
   });
-  QUnit.test("The and_function run new function when some function, same parameter, change and_function.",function(assert){
+  test("The and_function run new function when some function, same parameter, change and_function.",function(assert){
     //Given
     var that = this;
-    this.mock.should_receive("test3").with_param(1,2,3).and_function(function(){
+    this.mock.should_receive("test3").with_param(1,2,3).and_function(() => {
      that.mock_test3="third";
     });
-    this.mock.should_receive("test3").with_param(1,2,3).and_function(function(){
+    this.mock.should_receive("test3").with_param(1,2,3).and_function(() => {
      that.mock_test3="change third";
     });
     //When
@@ -277,7 +278,7 @@
     //Then
     assert.equal(that.mock_test3,"change third");
   });
-  QUnit.test("If use Mock.anything when run function without reference to parameter.",function(assert){
+  test("If use Mock.anything when run function without reference to parameter.",function(assert){
     //Given
     this.mock.should_receive("test").with_param(1,2).and_return("1");
     this.mock.should_receive("test").with_param(1,2,mock.anything()).and_return("2");
@@ -301,7 +302,7 @@
         
   //    },
 
-  QUnit.module("jsmock - other type",{
+  module("jsmock - other type",{
     "beforeEach":function(){
       
       this.mock_test1 = "";
@@ -310,17 +311,17 @@
     },
     "afterEach":function(){
       this.mock = undefined;
-      MockInstance = undefined;
+      global.MockInstance = undefined;
     }
   });
 
-  QUnit.test("The instance type is well work too.",function(assert){
+  test("The instance type is well work too.",function(assert){
     //Given
     var that = this;
     var receive = mock("MockInstance",mock.INSTANCE);
     receive.should_receive("test").with_param(1).and_return("1");
     receive.should_receive("test").with_param(2).and_throw(new Error("test"));
-    receive.should_receive("test").with_param(3).and_function(function(){
+    receive.should_receive("test").with_param(3).and_function(() => {
       that.mock_test1="test";
     });
     var errormessage = ""; 
@@ -345,13 +346,13 @@
     assert.equal(that.mock_test1,"test");
   });
 
-  QUnit.test("The normal functon is well work too.",function(assert){
+  test("The normal functon is well work too.",function(assert){
     //Given
     var that = this;
     var receive = mock(global);
     receive.should_receive("commonfunc").with_param(1).and_return("1");
     receive.should_receive("commonfunc").with_param(2).and_throw(new Error("test2"));
-    receive.should_receive("commonfunc").with_param(3).and_function(function(){
+    receive.should_receive("commonfunc").with_param(3).and_function(() => {
      that.mock_test1="commonfunc";
     });
     var errormessage = ""; 
@@ -360,6 +361,7 @@
     var returnVal = commonfunc(1);
     //When
     assert.equal(returnVal,"1");
+    
 
     //Then
     try{
@@ -375,7 +377,8 @@
     //When
     assert.equal(that.mock_test1,"commonfunc");
   });
-  QUnit.test("The namespace type is well work too.",function(assert){
+
+  test("The namespace type is well work too.",function(assert){
     //Given
     mock("aaa.bbb.ccc.ddd").should_receive("test").and_return("test");
     //Then,When
@@ -399,12 +402,12 @@
     assert.equal(aaaaa.bbbbb.ccccc.test(),"test");
   });
 
-  QUnit.test("The with_param well work when use namespace.",function(assert){
+  test("The with_param well work when use namespace.",function(assert){
     //Given
     var that = this;
     mock("param.test").should_receive("commonfunc").with_param(1).and_return("1");
     mock("param.test").should_receive("commonfunc").with_param(2).and_throw(new Error("test2"));
-    mock("param.test").should_receive("commonfunc").with_param(3).and_function(function(){
+    mock("param.test").should_receive("commonfunc").with_param(3).and_function(() => {
      that.mock_test1="commonfunc";
     });
 
@@ -427,7 +430,7 @@
     assert.equal(that.mock_test1,"commonfunc");  
   });
 
-  QUnit.module("jsmock - verify",{
+  module("jsmock - verify",{
     "beforeEach":function(){
       this.mock = mock("Verify");
       this.mock_test1 = "";
@@ -440,7 +443,7 @@
     }
   });
 
-  QUnit.test("The verify is well work.",function(assert){
+  test("The verify is well work.",function(assert){
     //Given
     this.mock.should_receive("kall").with_param(1,2).and_return("1");
     this.mock.should_receive("kall2").and_return("1");
@@ -458,7 +461,7 @@
       errormessage = e.message;
     }
     //When
-    assert.equal(errormessage,"kall2 is not called.");
+    assert.equal(errormessage,"kall2 isn't called.");
 
     //Then
     try{
@@ -469,7 +472,7 @@
     //When
     assert.equal(errormessage,"kall3 isn't method.");
   });
-  QUnit.test("The verify_all is check all method.",function(assert){
+  test("The verify_all is check all method.",function(assert){
 
     //Given
     mock("Verify2").should_receive("kall").with_param(1,2).and_return("1");
@@ -493,9 +496,9 @@
       errormessage = e.message;
     }
     //When
-    assert.equal(errormessage,"kall is not called.");
+    assert.equal(errormessage,"kall isn't called.");
   });
-  QUnit.test("The reset is remove info of function call.",function(assert){
+  test("The reset is remove info of function call.",function(assert){
     //Given
     mock("Verify4").should_receive("kall").with_param(1,2).and_return("1");
     Verify4.kall(1,2);
@@ -514,10 +517,10 @@
       errormessage = e.message;
     }
     //When
-    assert.equal(errormessage,"kall is not called.");
+    assert.equal(errormessage,"kall isn't called.");
   });
 
-  QUnit.test("The reset_all is remove all info of function call.",function(assert){
+  test("The reset_all is remove all info of function call.",function(assert){
     //Given
     mock("Verify5").should_receive("kall").with_param(1,2).and_return("1");
     mock("Verify5").should_receive("kall2").and_return("1");
@@ -538,7 +541,7 @@
       errormessage = e.message;
     }
     //When
-    assert.equal(errormessage,"kall is not called.");
+    assert.equal(errormessage,"kall isn't called.");
   });
 
 
