@@ -544,4 +544,34 @@
     assert.equal(errormessage,"kall isn't called.");
   });
 
+  module("jsmock - Support Class");
+
+  test("Add method to Class",function(assert){
+    //Given
+    class Test{
+
+    }
+    
+    //When
+    mock(Test,mock.INSTANCE).should_receive("kall").and_return("1");
+
+    //Then
+    let test = new Test();
+    assert.equal(test.kall(),"1");
+  });
+
+  test("Add method to Class instance",function(assert){
+    //Given
+    class Test{
+
+    }
+    let test = new Test();
+    
+    //When
+    mock(test).should_receive("kall").and_return("1");
+
+    //Then
+    assert.equal(test.kall(),"1");
+  });
+
 

@@ -562,9 +562,9 @@
 	
 	var _qunit = __webpack_require__(9);
 	
-	/**
-	 * @author mixed
-	 */
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+	                                                                                                                                                           * @author mixed
+	                                                                                                                                                           */
 	
 	var global = window;
 	
@@ -1101,6 +1101,41 @@
 	  }
 	  //When
 	  assert.equal(errormessage, "kall isn't called.");
+	});
+	
+	(0, _qunit.module)("jsmock - Support Class");
+	
+	(0, _qunit.test)("Add method to Class", function (assert) {
+	  //Given
+	
+	  var Test = function Test() {
+	    _classCallCheck(this, Test);
+	  };
+	
+	  //When
+	
+	
+	  (0, _jsmocktool.mock)(Test, _jsmocktool.mock.INSTANCE).should_receive("kall").and_return("1");
+	
+	  //Then
+	  var test = new Test();
+	  assert.equal(test.kall(), "1");
+	});
+	
+	(0, _qunit.test)("Add method to Class instance", function (assert) {
+	  //Given
+	
+	  var Test = function Test() {
+	    _classCallCheck(this, Test);
+	  };
+	
+	  var test = new Test();
+	
+	  //When
+	  (0, _jsmocktool.mock)(test).should_receive("kall").and_return("1");
+	
+	  //Then
+	  assert.equal(test.kall(), "1");
 	});
 
 /***/ },
