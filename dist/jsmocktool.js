@@ -367,101 +367,119 @@
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
-	var global = window;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	function Stub(vName, sType) {
-	    if (!(this instanceof Stub)) {
-	        return new Stub(vName, sType);
-	    } else {
-	        this.createStub(vName, sType || "object");
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Stub = function () {
+	    function Stub(name) {
+	        var type = arguments.length <= 1 || arguments[1] === undefined ? "object" : arguments[1];
+	
+	        _classCallCheck(this, Stub);
+	
+	        this.createStub(name, type);
 	    }
-	}
 	
-	Stub.prototype.createStub = function (vName, sType) {
-	    this._vReturnValue = "_js_stub_none";
-	    this._stubType = Stub.OBJECT;
-	    if (typeof vName == "string") {
-	        this.makeEnableObj(vName, sType);
-	        this._stubType = sType;
-	    } else if ((typeof vName === "undefined" ? "undefined" : _typeof(vName)) == "object" || typeof vName == "function") {
-	        this._stubObj = vName;
-	    } else {
-	        throw new Error("Name of Stub is incorrect.Type is String or Object or Function.");
-	    }
-	};
+	    _createClass(Stub, [{
+	        key: "createStub",
+	        value: function createStub(name, type) {
+	            this.returnValue = "_js_stub_none";
+	            this.stubType = Stub.OBJECT;
 	
-	Stub.prototype.getStub = function () {
-	    if (this._stubType == Stub.OBJECT) {
-	        return this._stubObj;
-	    } else {
-	        return this._stubObj.prototype;
-	    }
-	};
+	            if (typeof name == "string") {
+	                this.makeEnableObj(name, type);
+	                this.stubType = type;
+	            } else if ((typeof name === "undefined" ? "undefined" : _typeof(name)) == "object" || typeof name == "function") {
+	                this.stubObj = name;
+	            } else {
+	                throw new Error("Name of Stub is incorrect.Type is String or Object or Function.");
+	            }
+	        }
+	    }, {
+	        key: "getStub",
+	        value: function getStub() {
+	            if (this.stubType == Stub.OBJECT) {
+	                return this.stubObj;
+	            } else {
+	                return this.stubObj.prototype;
+	            }
+	        }
+	    }, {
+	        key: "makeEnableObj",
+	        value: function makeEnableObj(name, type) {
+	            var depth = name.split(".");
+	            var objectName = depth[0];
+	            var obj = window;
+	            var returnObj;
 	
-	Stub.prototype.makeEnableObj = function (sName, sType) {
-	    var depth = sName.split(".");
-	    var objectName = depth[0];
-	    var obj;
-	    if (depth.length > 1) {
-	        obj = global;
-	
-	        for (var i = 0, l = depth.length; i < l - 1; i++) {
-	            if (typeof obj[depth[i]] == "undefined") {
-	                obj[depth[i]] = {};
+	            if (depth.length > 1) {
+	                depth.splice(0, depth.length - 1).forEach(function (v, i) {
+	                    if (typeof obj[v] == "undefined") {
+	                        obj[v] = {};
+	                    }
+	                    obj = obj[v];
+	                });
+	                objectName = depth[depth.length - 1];
 	            }
 	
-	            obj = obj[depth[i]];
+	            returnObj = obj[objectName];
+	            this.stubObj = returnObj;
+	            if (type === Stub.OBJECT && !returnObj) {
+	                this.stubObj = obj[objectName] = {};
+	            } else if (type === Stub.INSTANCE && !returnObj) {
+	                this.stubObj = obj[objectName] = function () {};
+	                this.stubObj.prototype = obj[objectName].prototype = {};
+	            }
 	        }
-	        objectName = depth[depth.length - 1];
-	    } else {
-	        obj = global;
-	    }
-	    var returnObj;
-	    if (sType == Stub.OBJECT) {
-	        returnObj = obj[objectName];
-	        if (returnObj) {
-	            this._stubObj = returnObj;
-	        } else {
-	            this._stubObj = obj[objectName] = {};
-	        }
-	    } else if (sType == Stub.INSTANCE) {
-	        returnObj = obj[objectName];
-	        if (returnObj) {
-	            this._stubObj = returnObj;
-	        } else {
-	            this._stubObj = obj[objectName] = function () {};
-	            this._stubObj.prototype = obj[objectName].prototype = {};
-	        }
-	    }
-	};
+	    }, {
+	        key: "should_receive",
+	        value: function should_receive(functionName) {
+	            var _this = this;
 	
-	Stub.prototype.should_receive = function (sFunctionName) {
-	    var that = this;
-	    this.getStub()[sFunctionName] = function () {
-	        if (that._vReturnValue != "_js_stub_none") {
-	            return that._vReturnValue;
+	            this.getStub()[functionName] = function () {
+	                if (_this.returnValue != "_js_stub_none") {
+	                    return _this.returnValue;
+	                }
+	            };
+	            return new StubMethod(this);
 	        }
-	    };
-	    return new StubMethod(this);
-	};
+	    }]);
 	
-	function StubMethod(iStub) {
-	    this.iStub = iStub;
-	}
-	
-	StubMethod.prototype.and_return = function (vReturn) {
-	    this.iStub._vReturnValue = vReturn;
-	};
+	    return Stub;
+	}();
 	
 	Stub.INSTANCE = "instance";
 	Stub.OBJECT = "object";
 	
-	if (typeof module !== 'undefined' && module.exports) {
-	    module.exports = Stub;
-	} else {
-	    global.stub = global.Stub = Stub;
-	}
-	exports.default = Stub;
+	var StubMethod = function () {
+	    function StubMethod(stub) {
+	        _classCallCheck(this, StubMethod);
+	
+	        this.stub = stub;
+	    }
+	
+	    _createClass(StubMethod, [{
+	        key: "and_return",
+	        value: function and_return(returnValue) {
+	            this.stub.returnValue = returnValue;
+	        }
+	    }]);
+	
+	    return StubMethod;
+	}();
+	
+	function stubWrap(name, type) {
+	    if (!(this instanceof Stub)) {
+	        return new Stub(name, type);
+	    } else {
+	        this.createStub(name, type);
+	    }
+	};
+	
+	stubWrap.OBJECT = Stub.OBJECT;
+	stubWrap.INSTANCE = Stub.INSTANCE;
+	
+	exports.default = stubWrap;
 
 /***/ }
 /******/ ]);

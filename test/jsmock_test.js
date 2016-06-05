@@ -2,12 +2,10 @@
  * @author mixed
  */
 
-(function(){
-  var global = this;
-  if(typeof mock === "undefined"){
-    var mock = require("../src/jsmock");
-  }
+ import mock from '../src/jsmock';
 
+ var global = window;
+ var RECEIVE;
   
   QUnit.module("jsmock - Object type",{
     "beforeEach":function(){
@@ -304,6 +302,7 @@
         
   //    },
 
+  var MockInstance;
   QUnit.module("jsmock - other type",{
     "beforeEach":function(){
       
@@ -430,6 +429,7 @@
     assert.equal(that.mock_test1,"commonfunc");  
   });
 
+  var Verify;
   QUnit.module("jsmock - verify",{
     "beforeEach":function(){
       this.mock = mock("Verify");
@@ -542,7 +542,6 @@
     //When
     assert.equal(errormessage,"kall is not called.");
   });
-})();
 
 
 
