@@ -1,5 +1,8 @@
 var path = require('path');
 var webpack = require("webpack");
+const OFF = 0;
+const WARNING = 1;
+const ERROR = 2;
 
 module.exports = {
     entry: {
@@ -13,22 +16,15 @@ module.exports = {
         filename: '[name].js'
     },
     module: {
+        preLoaders: [
+            {
+                test: path.join(__dirname, 'src/'), 
+                loader: "eslint-loader"
+            }
+        ],
         loaders: [
             { 
-                test: path.join(__dirname, 'src/'),
-                loader: 'babel',
-                query: {
-                  presets: ['es2015', 'stage-0'],
-                  plugins: [
-                    "transform-class-properties",
-                    "transform-decorators-legacy",
-                    "transform-function-bind"
-                    ]
-                }
-
-            },
-            { 
-                test: path.join(__dirname, 'test/'),
+                test: [path.join(__dirname, 'src/'),path.join(__dirname, 'test/')],
                 loader: 'babel',
                 query: {
                   presets: ['es2015', 'stage-0'],

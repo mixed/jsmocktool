@@ -80,7 +80,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -103,48 +103,54 @@
 	
 	var global = window;
 	
+	function warn(msg) {
+		if (global.console && console.warn) {
+			console.warn(msg);
+		}
+	}
+	
 	var Stub = function (_TestDouble) {
-	    _inherits(Stub, _TestDouble);
+		_inherits(Stub, _TestDouble);
 	
-	    function Stub(name) {
-	        var type = arguments.length <= 1 || arguments[1] === undefined ? "object" : arguments[1];
+		function Stub(name) {
+			var type = arguments.length <= 1 || arguments[1] === undefined ? 'object' : arguments[1];
 	
-	        _classCallCheck(this, Stub);
+			_classCallCheck(this, Stub);
 	
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Stub).call(this, name, type));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Stub).call(this, name, type));
 	
-	        _this.type = "Stub";
-	        global.console && console.warn && console.warn("[WARN] : Deprecated Stub. You should be change to Mock.");
-	        return _this;
-	    }
+			_this.type = 'Stub';
+			warn('[WARN] : Deprecated Stub. You should be change to Mock.');
+			return _this;
+		}
 	
-	    _createClass(Stub, [{
-	        key: 'should_receive',
-	        value: function should_receive(functionName) {
-	            var _this2 = this;
+		_createClass(Stub, [{
+			key: 'should_receive',
+			value: function should_receive(functionName) {
+				var _this2 = this;
 	
-	            this.getTestDouble()[functionName] = function () {
-	                if (_this2.returnValue != "_js_stub_none") {
-	                    return _this2.returnValue;
-	                }
-	            };
-	            return new _jsstubMethod2.default(this);
-	        }
-	    }]);
+				this.getTestDouble()[functionName] = function () {
+					if (_this2.returnValue !== '_js_stub_none') {
+						return _this2.returnValue;
+					}
+				};
+				return new _jsstubMethod2.default(this);
+			}
+		}]);
 	
-	    return Stub;
+		return Stub;
 	}(_testDouble2.default);
 	
 	function stubWrap(name, type) {
-	    if (!(this instanceof Stub)) {
-	        return new Stub(name, type);
-	    } else {
-	        this.createTestDouble(name, type);
-	    }
-	};
+		if (this instanceof Stub) {
+			this.createTestDouble(name, type);
+		} else {
+			return new Stub(name, type);
+		}
+	}
 	
-	stubWrap.OBJECT = _testDouble2.default.OBJECT;
-	stubWrap.INSTANCE = _testDouble2.default.INSTANCE;
+	stubWrap.OBJECT = 'object';
+	stubWrap.INSTANCE = 'instance';
 	
 	exports.default = stubWrap;
 
@@ -155,7 +161,7 @@
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -163,20 +169,20 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var StubMethod = function () {
-	    function StubMethod(stub) {
-	        _classCallCheck(this, StubMethod);
+		function StubMethod(stub) {
+			_classCallCheck(this, StubMethod);
 	
-	        this.stub = stub;
-	    }
+			this.stub = stub;
+		}
 	
-	    _createClass(StubMethod, [{
-	        key: "and_return",
-	        value: function and_return(returnValue) {
-	            this.stub.returnValue = returnValue;
-	        }
-	    }]);
+		_createClass(StubMethod, [{
+			key: "and_return",
+			value: function and_return(returnValue) {
+				this.stub.returnValue = returnValue;
+			}
+		}]);
 	
-	    return StubMethod;
+		return StubMethod;
 	}();
 	
 	exports.default = StubMethod;
@@ -185,10 +191,10 @@
 /* 4 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -200,69 +206,64 @@
 	var global = window;
 	
 	var TestDouble = function () {
-	    function TestDouble(name, type) {
-	        _classCallCheck(this, TestDouble);
+		function TestDouble(name, type) {
+			_classCallCheck(this, TestDouble);
 	
-	        this.createTestDouble(name, type);
-	    }
+			this.createTestDouble(name, type);
+		}
 	
-	    _createClass(TestDouble, [{
-	        key: "createTestDouble",
-	        value: function createTestDouble(name, type) {
-	            this.returnValue = "_js_testDouble_none";
-	            this.testDoubleType = type;
+		_createClass(TestDouble, [{
+			key: 'createTestDouble',
+			value: function createTestDouble(name, type) {
+				this.returnValue = '_js_testDouble_none';
+				this.testDoubleType = type;
 	
-	            if (typeof name == "string") {
-	                this.makeEnableObj(name, type);
-	            } else if ((typeof name === "undefined" ? "undefined" : _typeof(name)) === "object" || typeof name == "function") {
-	                this.testDoubleObj = name;
-	            } else {
-	                throw new Error("Name of " + this.type + " is incorrect.The Type only have String or Object or Function.");
-	            }
-	        }
-	    }, {
-	        key: "getTestDouble",
-	        value: function getTestDouble() {
-	            if (this.testDoubleType === TestDouble.OBJECT) {
-	                return this.testDoubleObj;
-	            } else {
-	                return this.testDoubleObj.prototype;
-	            }
-	        }
-	    }, {
-	        key: "makeEnableObj",
-	        value: function makeEnableObj(name, type) {
-	            var depth = name.split(".");
-	            var objectName = depth[0];
-	            var obj = global;
-	            var returnObj;
+				if (typeof name === 'string') {
+					this.makeEnableObj(name, type);
+				} else if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'object' || typeof name === 'function') {
+					this.testDoubleObj = name;
+				} else {
+					throw new Error('Name of ' + this.type + ' is incorrect.\n\t\t\tThe Type only have String or Object or Function.');
+				}
+			}
+		}, {
+			key: 'getTestDouble',
+			value: function getTestDouble() {
+				if (this.testDoubleType === 'object') {
+					return this.testDoubleObj;
+				}
+				return this.testDoubleObj.prototype;
+			}
+		}, {
+			key: 'makeEnableObj',
+			value: function makeEnableObj(name, type) {
+				var depth = name.split('.');
+				var objectName = depth[0];
+				var obj = global;
+				if (depth.length > 1) {
+					depth.splice(0, depth.length - 1).forEach(function (v) {
+						if (typeof obj[v] === 'undefined') {
+							obj[v] = {};
+						}
+						obj = obj[v];
+					});
+					objectName = depth[depth.length - 1];
+				}
 	
-	            if (depth.length > 1) {
-	                depth.splice(0, depth.length - 1).forEach(function (v, i) {
-	                    if (typeof obj[v] == "undefined") {
-	                        obj[v] = {};
-	                    }
-	                    obj = obj[v];
-	                });
-	                objectName = depth[depth.length - 1];
-	            }
+				var returnObj = obj[objectName];
+				this.testDoubleObj = returnObj;
+				if (type === 'object' && !returnObj) {
+					this.testDoubleObj = obj[objectName] = {};
+				} else if (type === 'instance' && !returnObj) {
+					this.testDoubleObj = obj[objectName] = function () {};
+					this.testDoubleObj.prototype = obj[objectName].prototype = {};
+				}
+			}
+		}]);
 	
-	            returnObj = obj[objectName];
-	            this.testDoubleObj = returnObj;
-	            if (type === TestDouble.OBJECT && !returnObj) {
-	                this.testDoubleObj = obj[objectName] = {};
-	            } else if (type === TestDouble.INSTANCE && !returnObj) {
-	                this.testDoubleObj = obj[objectName] = function () {};
-	                this.testDoubleObj.prototype = obj[objectName].prototype = {};
-	            }
-	        }
-	    }]);
-	
-	    return TestDouble;
+		return TestDouble;
 	}();
 	
-	TestDouble.INSTANCE = "instance";
-	TestDouble.OBJECT = "object";
 	exports.default = TestDouble;
 
 /***/ },
@@ -272,7 +273,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -294,81 +295,81 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var Mock = function (_TestDouble) {
-	    _inherits(Mock, _TestDouble);
+		_inherits(Mock, _TestDouble);
 	
-	    function Mock(name) {
-	        var type = arguments.length <= 1 || arguments[1] === undefined ? "object" : arguments[1];
+		function Mock(name) {
+			var type = arguments.length <= 1 || arguments[1] === undefined ? 'object' : arguments[1];
 	
-	        _classCallCheck(this, Mock);
+			_classCallCheck(this, Mock);
 	
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Mock).call(this, name, type));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Mock).call(this, name, type));
 	
-	        _this.type = "Mock";
-	        return _this;
-	    }
+			_this.type = 'Mock';
+			return _this;
+		}
 	
-	    _createClass(Mock, [{
-	        key: 'should_receive',
-	        value: function should_receive(methodName) {
-	            return _jsmockMethodFactory2.default.getMethod(this.getTestDouble(), methodName);
-	        }
-	    }, {
-	        key: 'reset_all',
-	        value: function reset_all() {
-	            var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
-	            for (var i in obj) {
-	                if (i != "current_obj") {
-	                    obj[i].record = { "total": 0, "param": {} };
-	                }
-	            }
-	        }
-	    }, {
-	        key: 'reset',
-	        value: function reset(methodName) {
-	            var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
-	            obj[methodName].record = { "total": 0, "param": {} };
-	        }
-	    }, {
-	        key: 'verify',
-	        value: function verify(methodName) {
-	            var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
-	            if (obj[methodName]) {
-	                if (obj[methodName].record.total === 0) {
-	                    throw new Error(methodName + ' isn\'t called.');
-	                } else {
-	                    return obj[methodName].record;
-	                }
-	            } else {
-	                throw new Error(methodName + ' isn\'t method.');
-	            }
-	        }
-	    }, {
-	        key: 'verify_all',
-	        value: function verify_all() {
-	            var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
-	            var returnValue = {};
-	            for (var i in obj) {
-	                if (i != "current_obj") returnValue[i] = this.verify(i);
-	            }
-	            return returnValue;
-	        }
-	    }]);
+		_createClass(Mock, [{
+			key: 'should_receive',
+			value: function should_receive(methodName) {
+				return _jsmockMethodFactory2.default.getMethod(this.getTestDouble(), methodName);
+			}
+		}, {
+			key: 'reset_all',
+			value: function reset_all() {
+				var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
+				for (var i in obj) {
+					if (i !== 'current_obj') {
+						obj[i].record = { total: 0, param: {} };
+					}
+				}
+			}
+		}, {
+			key: 'reset',
+			value: function reset(methodName) {
+				var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
+				obj[methodName].record = { total: 0, param: {} };
+			}
+		}, {
+			key: 'verify',
+			value: function verify(methodName) {
+				var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
+				if (obj[methodName]) {
+					if (obj[methodName].record.total === 0) {
+						throw new Error(methodName + ' isn\'t called.');
+					} else {
+						return obj[methodName].record;
+					}
+				} else {
+					throw new Error(methodName + ' isn\'t method.');
+				}
+			}
+		}, {
+			key: 'verify_all',
+			value: function verify_all() {
+				var obj = _jsmockMethodFactory2.default.getData(this.getTestDouble());
+				var returnValue = {};
+				for (var i in obj) {
+					if (i !== 'current_obj') returnValue[i] = this.verify(i);
+				}
+				return returnValue;
+			}
+		}]);
 	
-	    return Mock;
+		return Mock;
 	}(_testDouble2.default);
 	
 	function mockWrap(name, type) {
-	    if (!(this instanceof Mock)) {
-	        return new Mock(name, type);
-	    } else {
-	        this.createTestDouble(name, type);
-	    }
-	};
+		if (this instanceof Mock) {
+			this.createTestDouble(name, type);
+		} else {
+			return new Mock(name, type);
+		}
+	}
 	
-	mockWrap.OBJECT = _testDouble2.default.OBJECT;
-	mockWrap.INSTANCE = _testDouble2.default.INSTANCE;
+	mockWrap.OBJECT = 'object';
+	mockWrap.INSTANCE = 'instance';
 	mockWrap.anything = function () {
-	    return "_js_mock_anything_param";
+		return '_js_mock_anything_param';
 	};
 	
 	exports.default = mockWrap;
@@ -380,7 +381,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 	
 	var _jsmockMethod = __webpack_require__(7);
@@ -390,39 +391,39 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var MockMethodFactory = {
-	    storage: [
-	        //      {
-	        //          current_obj : {}, object
-	        //          current_functions : {} mock method
-	        //      }
-	    ],
-	    createData: function createData(obj) {
-	        var dataObj = { current_obj: obj };
-	        this.storage.push(dataObj);
+		storage: [
+			//      {
+			//          current_obj : {}, object
+			//          current_functions : {} mock method
+			//      }
+		],
+		createData: function createData(obj) {
+			var dataObj = { current_obj: obj };
+			this.storage.push(dataObj);
 	
-	        return dataObj;
-	    },
-	    createMethod: function createMethod(obj, methodName) {
-	        var dataObj = this.getData(obj);
-	        dataObj[methodName] = new _jsmockMethod2.default(obj, methodName);
+			return dataObj;
+		},
+		createMethod: function createMethod(obj, methodName) {
+			var dataObj = this.getData(obj);
+			dataObj[methodName] = new _jsmockMethod2.default(obj, methodName);
 	
-	        return dataObj[methodName];
-	    },
-	    getData: function getData(obj) {
-	        for (var i = 0, l = this.storage.length; i < l; i++) {
-	            if (this.storage[i].current_obj == obj) {
-	                return this.storage[i];
-	            }
-	        }
-	        return this.createData(obj);
-	    },
-	    getMethod: function getMethod(obj, methodName) {
-	        var dataObj = this.getData(obj);
-	        if (!dataObj[methodName]) {
-	            dataObj[methodName] = this.createMethod(obj, methodName);
-	        }
-	        return dataObj[methodName];
-	    }
+			return dataObj[methodName];
+		},
+		getData: function getData(obj) {
+			for (var i = 0, l = this.storage.length; i < l; i++) {
+				if (this.storage[i].current_obj === obj) {
+					return this.storage[i];
+				}
+			}
+			return this.createData(obj);
+		},
+		getMethod: function getMethod(obj, methodName) {
+			var dataObj = this.getData(obj);
+			if (!dataObj[methodName]) {
+				dataObj[methodName] = this.createMethod(obj, methodName);
+			}
+			return dataObj[methodName];
+		}
 	};
 	
 	exports.default = MockMethodFactory;
@@ -431,127 +432,132 @@
 /* 7 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var MockMethod = function () {
-	    function MockMethod(obj, methodName) {
-	        _classCallCheck(this, MockMethod);
-	
-	        this.excuteObjs = {
-	            //      key:{
-	            //          arg:[],
-	            //          type:"function",
-	            //          excute : function(){}
-	            //      }
-	        };
-	        this.record = { "total": 0, "param": {} };
-	        this.currentParam = JSON.stringify([]);
-	        this.excuteObjs[this.currentParam] = {};
-	        this.setup(obj, methodName);
-	    }
-	
-	    _createClass(MockMethod, [{
-	        key: "setup",
-	        value: function setup(obj, methodName) {
-	            var that = this;
-	            obj[methodName] = function () {
-	                that.record.total++;
-	                var argString = JSON.stringify(argumentsToArray(arguments));
-	
-	                if (that.record.param[argString]) {
-	                    that.record.param[argString] += 1;
-	                } else {
-	                    that.record.param[argString] = 1;
-	                }
-	
-	                var dataObj = that.excuteObjs[argString];
-	
-	                if (dataObj) {
-	                    if (dataObj.type === "function") {
-	                        return dataObj.excute.apply(dataObj, argumentsToArray(arguments));
-	                    } else if (dataObj.type === "exception") {
-	                        throw dataObj.excute;
-	                    } else if (dataObj.type === "return") {
-	                        return dataObj.excute;
-	                    }
-	                } else {
-	                    for (var i in that.excuteObjs) {
-	                        var currentParam = argumentsToArray(arguments);
-	                        var arg = that.excuteObjs[i].arg;
-	
-	                        if (arg && arg.length === currentParam.length) {
-	                            var paramMatch = true;
-	                            for (var j = 0, l = arg.length; j < l; j++) {
-	                                if (arg[j] != currentParam[j] && arg[j] != "_js_mock_anything_param") {
-	                                    paramMatch = false;
-	                                    break;
-	                                }
-	                            }
-	                            if (paramMatch) {
-	                                return that.excuteObjs[i].excute;
-	                            }
-	                        }
-	                    }
-	                }
-	            };
-	        }
-	    }, {
-	        key: "with_param",
-	        value: function with_param() {
-	            var arg = argumentsToArray(arguments);
-	            this.currentParam = JSON.stringify(arg);
-	            this.excuteObjs[this.currentParam] = {
-	                arg: arg
-	            };
-	
-	            return this;
-	        }
-	    }, {
-	        key: "_and_template",
-	        value: function _and_template(type, excute) {
-	            this.excuteObjs[this.currentParam].type = type;
-	            this.excuteObjs[this.currentParam].excute = excute;
-	            this.currentParam = JSON.stringify([]);
-	        }
-	    }, {
-	        key: "and_return",
-	        value: function and_return(returnVal) {
-	            this._and_template("return", returnVal);
-	        }
-	    }, {
-	        key: "and_function",
-	        value: function and_function(returnFunction) {
-	            this._and_template("function", returnFunction);
-	        }
-	    }, {
-	        key: "and_throw",
-	        value: function and_throw(returnException) {
-	            this._and_template("exception", returnException);
-	        }
-	    }]);
-	
-	    return MockMethod;
-	}();
-	
-	;
-	
 	function argumentsToArray(arg) {
-	    var returnVal = [];
-	    if (!!arg.length) {
-	        for (var i = 0, l = arg.length; i < l; i++) {
-	            returnVal[i] = arg[i];
-	        }
-	    }
-	    return returnVal;
+		var returnVal = [];
+		if (!!arg.length) {
+			for (var i = 0, l = arg.length; i < l; i++) {
+				returnVal[i] = arg[i];
+			}
+		}
+		return returnVal;
 	}
+	
+	var MockMethod = function () {
+		function MockMethod(obj, methodName) {
+			_classCallCheck(this, MockMethod);
+	
+			this.excuteObjs = {
+				//      key:{
+				//          arg:[],
+				//          type:"function",
+				//          excute : function(){}
+				//      }
+			};
+			this.record = { total: 0, param: {} };
+			this.currentParam = JSON.stringify([]);
+			this.excuteObjs[this.currentParam] = {};
+			this.setup(obj, methodName);
+		}
+	
+		_createClass(MockMethod, [{
+			key: 'setup',
+			value: function setup(obj, methodName) {
+				var that = this;
+				var target = obj;
+				target[methodName] = function addFunc() {
+					that.record.total++;
+	
+					for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
+						params[_key] = arguments[_key];
+					}
+	
+					var argString = JSON.stringify(argumentsToArray(params));
+	
+					if (that.record.param[argString]) {
+						that.record.param[argString] += 1;
+					} else {
+						that.record.param[argString] = 1;
+					}
+	
+					var dataObj = that.excuteObjs[argString];
+	
+					if (dataObj) {
+						if (dataObj.type === 'function') {
+							return dataObj.excute.apply(dataObj, argumentsToArray(params));
+						} else if (dataObj.type === 'exception') {
+							throw dataObj.excute;
+						} else if (dataObj.type === 'return') {
+							return dataObj.excute;
+						}
+					} else {
+						for (var i in that.excuteObjs) {
+							var currentParam = argumentsToArray(params);
+							var arg = that.excuteObjs[i].arg;
+	
+							if (arg && arg.length === currentParam.length) {
+								var paramMatch = true;
+								for (var j = 0, l = arg.length; j < l; j++) {
+									if (arg[j] !== currentParam[j] && arg[j] !== '_js_mock_anything_param') {
+										paramMatch = false;
+										break;
+									}
+								}
+								if (paramMatch) {
+									return that.excuteObjs[i].excute;
+								}
+							}
+						}
+					}
+				};
+			}
+		}, {
+			key: 'with_param',
+			value: function with_param() {
+				for (var _len2 = arguments.length, params = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+					params[_key2] = arguments[_key2];
+				}
+	
+				var arg = argumentsToArray(params);
+				this.currentParam = JSON.stringify(arg);
+				this.excuteObjs[this.currentParam] = { arg: arg };
+				return this;
+			}
+		}, {
+			key: 'and_template',
+			value: function and_template(type, excute) {
+				this.excuteObjs[this.currentParam].type = type;
+				this.excuteObjs[this.currentParam].excute = excute;
+				this.currentParam = JSON.stringify([]);
+			}
+		}, {
+			key: 'and_return',
+			value: function and_return(returnVal) {
+				this.and_template('return', returnVal);
+			}
+		}, {
+			key: 'and_function',
+			value: function and_function(returnFunction) {
+				this.and_template('function', returnFunction);
+			}
+		}, {
+			key: 'and_throw',
+			value: function and_throw(returnException) {
+				this.and_template('exception', returnException);
+			}
+		}]);
+	
+		return MockMethod;
+	}();
 	
 	exports.default = MockMethod;
 
@@ -571,290 +577,290 @@
 	
 	var global = window;
 	
-	(0, _qunit.module)("jsmock - Object type", {
-	  "beforeEach": function beforeEach() {
-	    this.mock = (0, _jsmocktool.mock)("RECEIVE");
-	    this.mock_test1 = "";
-	    this.mock_test2 = "";
-	    this.mock_test3 = "";
+	(0, _qunit.module)('jsmock - Object type', {
+	  'beforeEach': function beforeEach() {
+	    this.mock = (0, _jsmocktool.mock)('RECEIVE');
+	    this.mock_test1 = '';
+	    this.mock_test2 = '';
+	    this.mock_test3 = '';
 	  },
-	  "afterEach": function afterEach() {
+	  'afterEach': function afterEach() {
 	    this.mock = undefined;
 	    RECEIVE = undefined;
 	  }
 	});
 	
-	(0, _qunit.test)("Must be first prameter is string or object", function (assert) {
-	  //Given
-	  //When
-	  (0, _jsmocktool.mock)("FOO");
-	  //Then
+	(0, _qunit.test)('Must be first prameter is string or object', function (assert) {
+	  // Given
+	  // When
+	  (0, _jsmocktool.mock)('FOO');
+	  // Then
 	  assert.deepEqual(FOO, {});
 	
-	  //Given
+	  // Given
 	  var BAR = {};
-	  //When
+	  // When
 	  (0, _jsmocktool.mock)(BAR);
-	  //Then
+	  // Then
 	  assert.deepEqual(BAR, BAR);
 	});
 	
 	(0, _qunit.test)("Must be second parameter is 'instance','object',none.", function (assert) {
-	  //Given
-	  //When
-	  (0, _jsmocktool.mock)("FOO2");
-	  //Then
+	  // Given
+	  // When
+	  (0, _jsmocktool.mock)('FOO2');
+	  // Then
 	  assert.deepEqual(FOO2, {});
 	
-	  //Given
-	  //When
-	  (0, _jsmocktool.mock)("FOO3", _jsmocktool.mock.INSTANCE);
-	  //Then
+	  // Given
+	  // When
+	  (0, _jsmocktool.mock)('FOO3', _jsmocktool.mock.INSTANCE);
+	  // Then
 	  assert.equal(FOO3.constructor, Function);
 	});
 	
-	(0, _qunit.test)("The should_receive is set method of mock Object.", function (assert) {
-	  //Given
-	  var receiveMock = (0, _jsmocktool.mock)("RECEIVE");
-	  //Then
-	  receiveMock.should_receive("test");
-	  //When
+	(0, _qunit.test)('The should_receive is set method of mock Object.', function (assert) {
+	  // Given
+	  var receiveMock = (0, _jsmocktool.mock)('RECEIVE');
+	  // Then
+	  receiveMock.should_receive('test');
+	  // When
 	  assert.equal(RECEIVE.test.constructor, Function);
 	
-	  //Given
-	  var receiveMock2 = (0, _jsmocktool.mock)("RECEIVE2", _jsmocktool.mock.INSTANCE);
-	  //Then
-	  receiveMock2.should_receive("test");
-	  //When
+	  // Given
+	  var receiveMock2 = (0, _jsmocktool.mock)('RECEIVE2', _jsmocktool.mock.INSTANCE);
+	  // Then
+	  receiveMock2.should_receive('test');
+	  // When
 	  assert.equal(RECEIVE2.prototype.test.constructor, Function);
 	});
 	
-	(0, _qunit.test)("Return value of should_receive is MockMethod.", function (assert) {
-	  //Given
-	  var receive = (0, _jsmocktool.mock)("RECEIVE3");
-	  //When
-	  var mock_method = receive.should_receive("test");
-	  //The MockMethod is private. so I can't test.
-	  //Instead, I made a Ducktyping test(?).
-	  //I believe correct when The return value of should_receive have and_return function.
+	(0, _qunit.test)('Return value of should_receive is MockMethod.', function (assert) {
+	  // Given
+	  var receive = (0, _jsmocktool.mock)('RECEIVE3');
+	  // When
+	  var mock_method = receive.should_receive('test');
+	  // The MockMethod is private. so I can't test.
+	  // Instead, I made a Ducktyping test(?).
+	  // I believe correct when The return value of should_receive have and_return function.
 	  // ok(stub_obj instanceof MockMethod);
-	  //Then
+	  // Then
 	  assert.equal(mock_method.and_return.constructor, Function);
 	});
 	
-	(0, _qunit.test)("The and_return is  setting value to return.", function (assert) {
-	  //Given
-	  (0, _jsmocktool.mock)("RECEIVE4").should_receive("test").and_return(3);
-	  //When
+	(0, _qunit.test)('The and_return is  setting value to return.', function (assert) {
+	  // Given
+	  (0, _jsmocktool.mock)('RECEIVE4').should_receive('test').and_return(3);
+	  // When
 	  var returnVal = RECEIVE4.test();
-	  //Then
+	  // Then
 	  assert.equal(returnVal, 3);
 	});
 	
-	(0, _qunit.test)("If use with_param, mock will return value when same param.", function (assert) {
-	  //Given
-	  (0, _jsmocktool.mock)("RECEIVE4").should_receive("test").with_param(1, 2).and_return(4);
-	  //When
+	(0, _qunit.test)('If use with_param, mock will return value when same param.', function (assert) {
+	  // Given
+	  (0, _jsmocktool.mock)('RECEIVE4').should_receive('test').with_param(1, 2).and_return(4);
+	  // When
 	  var returnVal = RECEIVE4.test(1, 2);
-	  //Then
+	  // Then
 	  assert.equal(returnVal, 4);
 	});
 	
-	(0, _qunit.test)("The Mock must be work mock before set parameter when add new parameter.", function (assert) {
-	  //Given
-	  this.mock.should_receive("test").and_return(3);
-	  this.mock.should_receive("test").with_param(1, 2).and_return(4);
-	  this.mock.should_receive("test").with_param(1, 2, 3).and_return(5);
-	  //When
+	(0, _qunit.test)('The Mock must be work mock before set parameter when add new parameter.', function (assert) {
+	  // Given
+	  this.mock.should_receive('test').and_return(3);
+	  this.mock.should_receive('test').with_param(1, 2).and_return(4);
+	  this.mock.should_receive('test').with_param(1, 2, 3).and_return(5);
+	  // When
 	  var noneParam = RECEIVE.test();
 	  var oneParam = RECEIVE.test(1, 2);
 	  var twoParam = RECEIVE.test(1, 2, 3);
-	  //Then
+	  // Then
 	  assert.equal(noneParam, 3);
 	  assert.equal(oneParam, 4);
 	  assert.equal(twoParam, 5);
 	});
 	
-	(0, _qunit.test)("The Mock must be change return value when add same parameter.", function (assert) {
-	  //Given
-	  this.mock.should_receive("test").and_return(3);
-	  this.mock.should_receive("test").with_param(1, 2).and_return(4);
-	  this.mock.should_receive("test").with_param(1, 2).and_return(5);
-	  //When
+	(0, _qunit.test)('The Mock must be change return value when add same parameter.', function (assert) {
+	  // Given
+	  this.mock.should_receive('test').and_return(3);
+	  this.mock.should_receive('test').with_param(1, 2).and_return(4);
+	  this.mock.should_receive('test').with_param(1, 2).and_return(5);
+	  // When
 	  var noneParam = RECEIVE.test();
 	  var twoParam = RECEIVE.test(1, 2);
-	  //Then
+	  // Then
 	  assert.equal(noneParam, 3);
 	  assert.equal(twoParam, 5);
 	});
 	
-	(0, _qunit.test)("The add_throw is throw exception when match param.", function (assert) {
-	  //Given
-	  var error_message = "";
-	  this.mock.should_receive("test2").and_throw(new Error("and_throw test."));
-	  //When
+	(0, _qunit.test)('The add_throw is throw exception when match param.', function (assert) {
+	  // Given
+	  var error_message = '';
+	  this.mock.should_receive('test2').and_throw(new Error('and_throw test.'));
+	  // When
 	  try {
 	    RECEIVE.test2();
 	  } catch (e) {
 	    error_message = e.message;
 	  }
-	  //Then
-	  assert.equal(error_message, "and_throw test.");
+	  // Then
+	  assert.equal(error_message, 'and_throw test.');
 	});
 	
-	(0, _qunit.test)("If set with_param of and_throw then throw exception when match parameter.", function (assert) {
-	  //Given
-	  this.mock.should_receive("test2").with_param(1, 2).and_throw(new Error("and_throw test2."));
-	  var error_message = "";
+	(0, _qunit.test)('If set with_param of and_throw then throw exception when match parameter.', function (assert) {
+	  // Given
+	  this.mock.should_receive('test2').with_param(1, 2).and_throw(new Error('and_throw test2.'));
+	  var error_message = '';
 	
-	  //When
+	  // When
 	  try {
 	    RECEIVE.test2(1, 2);
 	  } catch (e) {
 	    error_message = e.message;
 	  }
 	
-	  //Then
-	  assert.equal(error_message, "and_throw test2.");
+	  // Then
+	  assert.equal(error_message, 'and_throw test2.');
 	});
 	
-	(0, _qunit.test)("The and_throw is well work when change parameter", function (assert) {
-	  //Given
-	  this.mock.should_receive("test2").with_param().and_throw(new Error("and_throw test"));
-	  this.mock.should_receive("test2").with_param(1, 2).and_throw(new Error("and_throw test2"));
-	  this.mock.should_receive("test2").with_param(1, 2, 3).and_throw(new Error("and_throw test3"));
-	  var error_message = "";
+	(0, _qunit.test)('The and_throw is well work when change parameter', function (assert) {
+	  // Given
+	  this.mock.should_receive('test2').with_param().and_throw(new Error('and_throw test'));
+	  this.mock.should_receive('test2').with_param(1, 2).and_throw(new Error('and_throw test2'));
+	  this.mock.should_receive('test2').with_param(1, 2, 3).and_throw(new Error('and_throw test3'));
+	  var error_message = '';
 	
-	  //When
+	  // When
 	  try {
 	    RECEIVE.test2();
 	  } catch (e) {
 	    error_message = e.message;
 	  }
-	  //Then
-	  assert.equal(error_message, "and_throw test");
+	  // Then
+	  assert.equal(error_message, 'and_throw test');
 	
-	  //When
+	  // When
 	  try {
 	    RECEIVE.test2(1, 2);
 	  } catch (e) {
 	    error_message = e.message;
 	  }
-	  //Then
-	  assert.equal(error_message, "and_throw test2");
+	  // Then
+	  assert.equal(error_message, 'and_throw test2');
 	
-	  //When
+	  // When
 	  try {
 	    RECEIVE.test2(1, 2, 3);
 	  } catch (e) {
 	    error_message = e.message;
 	  }
-	  //Then
-	  assert.equal(error_message, "and_throw test3");
+	  // Then
+	  assert.equal(error_message, 'and_throw test3');
 	});
-	(0, _qunit.test)("The and_throw throw new exception when some function, same parameter, change exception.", function (assert) {
-	  //Given
-	  this.mock.should_receive("test2").with_param(1, 2, 3).and_throw(new Error("and_throw test"));
-	  var error_message = "";
-	  //When
+	(0, _qunit.test)('The and_throw throw new exception when some function, same parameter, change exception.', function (assert) {
+	  // Given
+	  this.mock.should_receive('test2').with_param(1, 2, 3).and_throw(new Error('and_throw test'));
+	  var error_message = '';
+	  // When
 	  try {
 	    RECEIVE.test2(1, 2, 3);
 	  } catch (e) {
 	    error_message = e.message;
 	  }
-	  //Then
-	  assert.equal(error_message, "and_throw test");
+	  // Then
+	  assert.equal(error_message, 'and_throw test');
 	
-	  //Then
-	  this.mock.should_receive("test2").with_param(1, 2, 3).and_throw(new Error("change throw"));
+	  // Then
+	  this.mock.should_receive('test2').with_param(1, 2, 3).and_throw(new Error('change throw'));
 	  try {
 	    RECEIVE.test2(1, 2, 3);
 	  } catch (e) {
 	    error_message = e.message;
 	  }
-	  //When
-	  assert.equal(error_message, "change throw");
+	  // When
+	  assert.equal(error_message, 'change throw');
 	});
 	
-	(0, _qunit.test)("The and_function run function when set new function", function (assert) {
+	(0, _qunit.test)('The and_function run function when set new function', function (assert) {
 	
-	  //Given
+	  // Given
 	  var that = this;
-	  this.mock.should_receive("test3").and_function(function () {
-	    that.mock_test1 = "first";
+	  this.mock.should_receive('test3').and_function(function () {
+	    that.mock_test1 = 'first';
 	  });
-	  //Then
+	  // Then
 	  RECEIVE.test3();
-	  //When
-	  assert.equal(that.mock_test1, "first");
+	  // When
+	  assert.equal(that.mock_test1, 'first');
 	});
 	
-	(0, _qunit.test)("If set a with_param then the and_functon run function when only match parameter.", function (assert) {
-	  //Given
+	(0, _qunit.test)('If set a with_param then the and_functon run function when only match parameter.', function (assert) {
+	  // Given
 	  var that = this;
-	  this.mock.should_receive("test3").with_param(1, 2).and_function(function () {
-	    that.mock_test2 = "second";
+	  this.mock.should_receive('test3').with_param(1, 2).and_function(function () {
+	    that.mock_test2 = 'second';
 	  });
-	  //Then
+	  // Then
 	  RECEIVE.test3(1, 2);
-	  //When
-	  assert.equal(that.mock_test2, "second");
+	  // When
+	  assert.equal(that.mock_test2, 'second');
 	});
 	
-	(0, _qunit.test)("Then and_function is well work when same function change parameter.", function (assert) {
-	  //Given
+	(0, _qunit.test)('Then and_function is well work when same function change parameter.', function (assert) {
+	  // Given
 	  var that = this;
-	  this.mock.should_receive("test3").with_param().and_function(function () {
-	    that.mock_test1 = "first";
+	  this.mock.should_receive('test3').with_param().and_function(function () {
+	    that.mock_test1 = 'first';
 	  });
-	  this.mock.should_receive("test3").with_param(1, 2).and_function(function () {
-	    that.mock_test2 = "second";
+	  this.mock.should_receive('test3').with_param(1, 2).and_function(function () {
+	    that.mock_test2 = 'second';
 	  });
-	  this.mock.should_receive("test3").with_param(1, 2, 3).and_function(function () {
-	    that.mock_test3 = "third";
+	  this.mock.should_receive('test3').with_param(1, 2, 3).and_function(function () {
+	    that.mock_test3 = 'third';
 	  });
-	  //When
+	  // When
 	  RECEIVE.test3();
-	  //Then
-	  assert.equal(that.mock_test1, "first");
+	  // Then
+	  assert.equal(that.mock_test1, 'first');
 	
-	  //When
+	  // When
 	  RECEIVE.test3(1, 2);
-	  //Then
-	  assert.equal(that.mock_test2, "second");
+	  // Then
+	  assert.equal(that.mock_test2, 'second');
 	
-	  //When
+	  // When
 	  RECEIVE.test3(1, 2, 3);
-	  //Then
-	  assert.equal(that.mock_test3, "third");
+	  // Then
+	  assert.equal(that.mock_test3, 'third');
 	});
-	(0, _qunit.test)("The and_function run new function when some function, same parameter, change and_function.", function (assert) {
-	  //Given
+	(0, _qunit.test)('The and_function run new function when some function, same parameter, change and_function.', function (assert) {
+	  // Given
 	  var that = this;
-	  this.mock.should_receive("test3").with_param(1, 2, 3).and_function(function () {
-	    that.mock_test3 = "third";
+	  this.mock.should_receive('test3').with_param(1, 2, 3).and_function(function () {
+	    that.mock_test3 = 'third';
 	  });
-	  this.mock.should_receive("test3").with_param(1, 2, 3).and_function(function () {
-	    that.mock_test3 = "change third";
+	  this.mock.should_receive('test3').with_param(1, 2, 3).and_function(function () {
+	    that.mock_test3 = 'change third';
 	  });
-	  //When
+	  // When
 	  RECEIVE.test3(1, 2, 3);
-	  //Then
-	  assert.equal(that.mock_test3, "change third");
+	  // Then
+	  assert.equal(that.mock_test3, 'change third');
 	});
-	(0, _qunit.test)("If use Mock.anything when run function without reference to parameter.", function (assert) {
-	  //Given
-	  this.mock.should_receive("test").with_param(1, 2).and_return("1");
-	  this.mock.should_receive("test").with_param(1, 2, _jsmocktool.mock.anything()).and_return("2");
-	  this.mock.should_receive("test").with_param(1, 2, _jsmocktool.mock.anything(), _jsmocktool.mock.anything()).and_return("3");
+	(0, _qunit.test)('If use Mock.anything when run function without reference to parameter.', function (assert) {
+	  // Given
+	  this.mock.should_receive('test').with_param(1, 2).and_return('1');
+	  this.mock.should_receive('test').with_param(1, 2, _jsmocktool.mock.anything()).and_return('2');
+	  this.mock.should_receive('test').with_param(1, 2, _jsmocktool.mock.anything(), _jsmocktool.mock.anything()).and_return('3');
 	
-	  //When, Then
-	  assert.equal(RECEIVE.test(1, 2), "1");
-	  assert.equal(RECEIVE.test(1, 2, 3), "2");
-	  assert.equal(RECEIVE.test(1, 2, 1), "2");
-	  assert.equal(RECEIVE.test(1, 2, 4), "2");
-	  assert.equal(RECEIVE.test(1, 2, 4, 5), "3");
-	  assert.equal(RECEIVE.test(1, 2, 4, 6), "3");
+	  // When, Then
+	  assert.equal(RECEIVE.test(1, 2), '1');
+	  assert.equal(RECEIVE.test(1, 2, 3), '2');
+	  assert.equal(RECEIVE.test(1, 2, 1), '2');
+	  assert.equal(RECEIVE.test(1, 2, 4), '2');
+	  assert.equal(RECEIVE.test(1, 2, 4, 5), '3');
+	  assert.equal(RECEIVE.test(1, 2, 4, 6), '3');
 	});
 	
 	//    'param에 anything이 들어간 파라메터에서 다시 설정한 경우에 다시 설정한 값으로 반환 해야 한다.':function(){
@@ -866,267 +872,267 @@
 	
 	//    },
 	
-	(0, _qunit.module)("jsmock - other type", {
-	  "beforeEach": function beforeEach() {
+	(0, _qunit.module)('jsmock - other type', {
+	  'beforeEach': function beforeEach() {
 	
-	    this.mock_test1 = "";
-	    this.mock_test2 = "";
-	    this.mock_test3 = "";
+	    this.mock_test1 = '';
+	    this.mock_test2 = '';
+	    this.mock_test3 = '';
 	  },
-	  "afterEach": function afterEach() {
+	  'afterEach': function afterEach() {
 	    this.mock = undefined;
 	    global.MockInstance = undefined;
 	  }
 	});
 	
-	(0, _qunit.test)("The instance type is well work too.", function (assert) {
-	  //Given
+	(0, _qunit.test)('The instance type is well work too.', function (assert) {
+	  // Given
 	  var that = this;
-	  var receive = (0, _jsmocktool.mock)("MockInstance", _jsmocktool.mock.INSTANCE);
-	  receive.should_receive("test").with_param(1).and_return("1");
-	  receive.should_receive("test").with_param(2).and_throw(new Error("test"));
-	  receive.should_receive("test").with_param(3).and_function(function () {
-	    that.mock_test1 = "test";
+	  var receive = (0, _jsmocktool.mock)('MockInstance', _jsmocktool.mock.INSTANCE);
+	  receive.should_receive('test').with_param(1).and_return('1');
+	  receive.should_receive('test').with_param(2).and_throw(new Error('test'));
+	  receive.should_receive('test').with_param(3).and_function(function () {
+	    that.mock_test1 = 'test';
 	  });
-	  var errormessage = "";
+	  var errormessage = '';
 	
-	  //When
+	  // When
 	  var mockInstance = new MockInstance();
-	  //Then
-	  assert.equal(mockInstance.test(1), "1");
+	  // Then
+	  assert.equal(mockInstance.test(1), '1');
 	
-	  //When
+	  // When
 	  try {
 	    mockInstance.test(2);
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //Then
-	  assert.equal(errormessage, "test");
+	  // Then
+	  assert.equal(errormessage, 'test');
 	
-	  //When
+	  // When
 	  mockInstance.test(3);
-	  //Then
-	  assert.equal(that.mock_test1, "test");
+	  // Then
+	  assert.equal(that.mock_test1, 'test');
 	});
 	
-	(0, _qunit.test)("The normal functon is well work too.", function (assert) {
-	  //Given
+	(0, _qunit.test)('The normal functon is well work too.', function (assert) {
+	  // Given
 	  var that = this;
 	  var receive = (0, _jsmocktool.mock)(global);
-	  receive.should_receive("commonfunc").with_param(1).and_return("1");
-	  receive.should_receive("commonfunc").with_param(2).and_throw(new Error("test2"));
-	  receive.should_receive("commonfunc").with_param(3).and_function(function () {
-	    that.mock_test1 = "commonfunc";
+	  receive.should_receive('commonfunc').with_param(1).and_return('1');
+	  receive.should_receive('commonfunc').with_param(2).and_throw(new Error('test2'));
+	  receive.should_receive('commonfunc').with_param(3).and_function(function () {
+	    that.mock_test1 = 'commonfunc';
 	  });
-	  var errormessage = "";
+	  var errormessage = '';
 	
-	  //When
+	  // When
 	  var returnVal = commonfunc(1);
-	  //Then
-	  assert.equal(returnVal, "1");
+	  // Then
+	  assert.equal(returnVal, '1');
 	
-	  //When
+	  // When
 	  try {
 	    commonfunc(2);
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //Then
-	  assert.equal(errormessage, "test2");
+	  // Then
+	  assert.equal(errormessage, 'test2');
 	
-	  //When
+	  // When
 	  commonfunc(3);
-	  //Then
-	  assert.equal(that.mock_test1, "commonfunc");
+	  // Then
+	  assert.equal(that.mock_test1, 'commonfunc');
 	});
 	
-	(0, _qunit.test)("The namespace type is well work too.", function (assert) {
-	  //Given
-	  (0, _jsmocktool.mock)("aaa.bbb.ccc.ddd").should_receive("test").and_return("test");
-	  //When, Then
-	  assert.equal(aaa.bbb.ccc.ddd.test(), "test");
+	(0, _qunit.test)('The namespace type is well work too.', function (assert) {
+	  // Given
+	  (0, _jsmocktool.mock)('aaa.bbb.ccc.ddd').should_receive('test').and_return('test');
+	  // When, Then
+	  assert.equal(aaa.bbb.ccc.ddd.test(), 'test');
 	
-	  //Given
-	  (0, _jsmocktool.mock)("aaaa.bbbb.cccc", _jsmocktool.mock.INSTANCE).should_receive("test").and_return("test");
-	  //When, Then
-	  assert.equal(new aaaa.bbbb.cccc().test(), "test");
+	  // Given
+	  (0, _jsmocktool.mock)('aaaa.bbbb.cccc', _jsmocktool.mock.INSTANCE).should_receive('test').and_return('test');
+	  // When, Then
+	  assert.equal(new aaaa.bbbb.cccc().test(), 'test');
 	
-	  //Given
-	  global["aaaaa"] = {};
+	  // Given
+	  global['aaaaa'] = {};
 	  aaaaa.bbbbb = {};
-	  (0, _jsmocktool.mock)("aaaaa.bbbbb").should_receive("test").and_return("test");
-	  //When, Then
-	  assert.equal(aaaaa.bbbbb.test(), "test");
+	  (0, _jsmocktool.mock)('aaaaa.bbbbb').should_receive('test').and_return('test');
+	  // When, Then
+	  assert.equal(aaaaa.bbbbb.test(), 'test');
 	
-	  //Given
-	  (0, _jsmocktool.mock)("aaaaa.bbbbb.ccccc").should_receive("test").and_return("test");
-	  //When,Then
-	  assert.equal(aaaaa.bbbbb.ccccc.test(), "test");
+	  // Given
+	  (0, _jsmocktool.mock)('aaaaa.bbbbb.ccccc').should_receive('test').and_return('test');
+	  // When,Then
+	  assert.equal(aaaaa.bbbbb.ccccc.test(), 'test');
 	});
 	
-	(0, _qunit.test)("The with_param well work when use namespace.", function (assert) {
-	  //Given
+	(0, _qunit.test)('The with_param well work when use namespace.', function (assert) {
+	  // Given
 	  var that = this;
-	  (0, _jsmocktool.mock)("param.test").should_receive("commonfunc").with_param(1).and_return("1");
-	  (0, _jsmocktool.mock)("param.test").should_receive("commonfunc").with_param(2).and_throw(new Error("test2"));
-	  (0, _jsmocktool.mock)("param.test").should_receive("commonfunc").with_param(3).and_function(function () {
-	    that.mock_test1 = "commonfunc";
+	  (0, _jsmocktool.mock)('param.test').should_receive('commonfunc').with_param(1).and_return('1');
+	  (0, _jsmocktool.mock)('param.test').should_receive('commonfunc').with_param(2).and_throw(new Error('test2'));
+	  (0, _jsmocktool.mock)('param.test').should_receive('commonfunc').with_param(3).and_function(function () {
+	    that.mock_test1 = 'commonfunc';
 	  });
 	
-	  //When, Then
-	  assert.equal(param.test.commonfunc(1), "1");
+	  // When, Then
+	  assert.equal(param.test.commonfunc(1), '1');
 	
-	  //Given
-	  var errormessage = "";
+	  // Given
+	  var errormessage = '';
 	  try {
 	    param.test.commonfunc(2);
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //When, Then
-	  assert.equal(errormessage, "test2");
+	  // When, Then
+	  assert.equal(errormessage, 'test2');
 	
-	  //When
+	  // When
 	  param.test.commonfunc(3);
-	  //Then
-	  assert.equal(that.mock_test1, "commonfunc");
+	  // Then
+	  assert.equal(that.mock_test1, 'commonfunc');
 	});
 	
-	(0, _qunit.module)("jsmock - verify", {
-	  "beforeEach": function beforeEach() {
-	    this.mock = (0, _jsmocktool.mock)("Verify");
-	    this.mock_test1 = "";
-	    this.mock_test2 = "";
-	    this.mock_test3 = "";
+	(0, _qunit.module)('jsmock - verify', {
+	  'beforeEach': function beforeEach() {
+	    this.mock = (0, _jsmocktool.mock)('Verify');
+	    this.mock_test1 = '';
+	    this.mock_test2 = '';
+	    this.mock_test3 = '';
 	  },
-	  "afterEach": function afterEach() {
+	  'afterEach': function afterEach() {
 	    this.mock = undefined;
 	    Verify = undefined;
 	  }
 	});
 	
-	(0, _qunit.test)("The verify is well work.", function (assert) {
-	  //Given
-	  this.mock.should_receive("kall").with_param(1, 2).and_return("1");
-	  this.mock.should_receive("kall2").and_return("1");
+	(0, _qunit.test)('The verify is well work.', function (assert) {
+	  // Given
+	  this.mock.should_receive('kall').with_param(1, 2).and_return('1');
+	  this.mock.should_receive('kall2').and_return('1');
 	  Verify.kall(1, 2);
-	  var errormessage = "";
-	  //When
-	  var result = this.mock.verify("kall");
-	  //Then
-	  assert.deepEqual(result, { "total": 1, "param": { "[1,2]": 1 } });
+	  var errormessage = '';
+	  // When
+	  var result = this.mock.verify('kall');
+	  // Then
+	  assert.deepEqual(result, { 'total': 1, 'param': { '[1,2]': 1 } });
 	
-	  //When
+	  // When
 	  try {
-	    (0, _jsmocktool.mock)("Verify").verify("kall2");
+	    (0, _jsmocktool.mock)('Verify').verify('kall2');
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //Then
+	  // Then
 	  assert.equal(errormessage, "kall2 isn't called.");
 	
-	  //When
+	  // When
 	  try {
-	    (0, _jsmocktool.mock)("Verify").verify("kall3");
+	    (0, _jsmocktool.mock)('Verify').verify('kall3');
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //Then
+	  // Then
 	  assert.equal(errormessage, "kall3 isn't method.");
 	});
-	(0, _qunit.test)("The verify_all is check all method.", function (assert) {
+	(0, _qunit.test)('The verify_all is check all method.', function (assert) {
 	
-	  //Given
-	  (0, _jsmocktool.mock)("Verify2").should_receive("kall").with_param(1, 2).and_return("1");
-	  (0, _jsmocktool.mock)("Verify2").should_receive("kall2").and_return("1");
+	  // Given
+	  (0, _jsmocktool.mock)('Verify2').should_receive('kall').with_param(1, 2).and_return('1');
+	  (0, _jsmocktool.mock)('Verify2').should_receive('kall2').and_return('1');
 	  Verify2.kall(1, 2);
 	  Verify2.kall2();
 	  var returnVal;
-	  //When
-	  returnVal = (0, _jsmocktool.mock)("Verify2").verify_all();
-	  //Then
-	  assert.deepEqual(returnVal, { "kall": { "total": 1, "param": { "[1,2]": 1 } }, "kall2": { "total": 1, "param": { "[]": 1 } } });
+	  // When
+	  returnVal = (0, _jsmocktool.mock)('Verify2').verify_all();
+	  // Then
+	  assert.deepEqual(returnVal, { 'kall': { 'total': 1, 'param': { '[1,2]': 1 } }, 'kall2': { 'total': 1, 'param': { '[]': 1 } } });
 	
-	  //Given
-	  (0, _jsmocktool.mock)("Verify3").should_receive("kall").with_param(1, 2).and_return("1");
+	  // Given
+	  (0, _jsmocktool.mock)('Verify3').should_receive('kall').with_param(1, 2).and_return('1');
 	  var errormessage;
-	  //When
+	  // When
 	  try {
-	    (0, _jsmocktool.mock)("Verify3").verify_all();
+	    (0, _jsmocktool.mock)('Verify3').verify_all();
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //Then
+	  // Then
 	  assert.equal(errormessage, "kall isn't called.");
 	});
-	(0, _qunit.test)("The reset is remove info of function call.", function (assert) {
-	  //Given
-	  (0, _jsmocktool.mock)("Verify4").should_receive("kall").with_param(1, 2).and_return("1");
+	(0, _qunit.test)('The reset is remove info of function call.', function (assert) {
+	  // Given
+	  (0, _jsmocktool.mock)('Verify4').should_receive('kall').with_param(1, 2).and_return('1');
 	  Verify4.kall(1, 2);
-	  //When
-	  var returnVal = (0, _jsmocktool.mock)("Verify4").verify_all();
-	  //Then
-	  assert.deepEqual(returnVal, { "kall": { "total": 1, "param": { "[1,2]": 1 } } });
+	  // When
+	  var returnVal = (0, _jsmocktool.mock)('Verify4').verify_all();
+	  // Then
+	  assert.deepEqual(returnVal, { 'kall': { 'total': 1, 'param': { '[1,2]': 1 } } });
 	
-	  //Given
+	  // Given
 	  var errormessage;
-	  //When
-	  (0, _jsmocktool.mock)("Verify4").reset("kall");
+	  // When
+	  (0, _jsmocktool.mock)('Verify4').reset('kall');
 	  try {
-	    (0, _jsmocktool.mock)("Verify4").verify("kall");
+	    (0, _jsmocktool.mock)('Verify4').verify('kall');
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //Then
+	  // Then
 	  assert.equal(errormessage, "kall isn't called.");
 	});
 	
-	(0, _qunit.test)("The reset_all is remove all info of function call.", function (assert) {
-	  //Given
-	  (0, _jsmocktool.mock)("Verify5").should_receive("kall").with_param(1, 2).and_return("1");
-	  (0, _jsmocktool.mock)("Verify5").should_receive("kall2").and_return("1");
+	(0, _qunit.test)('The reset_all is remove all info of function call.', function (assert) {
+	  // Given
+	  (0, _jsmocktool.mock)('Verify5').should_receive('kall').with_param(1, 2).and_return('1');
+	  (0, _jsmocktool.mock)('Verify5').should_receive('kall2').and_return('1');
 	  Verify5.kall(1, 2);
 	  Verify5.kall2();
-	  //When
-	  var returnVal = (0, _jsmocktool.mock)("Verify5").verify_all();
-	  //Then
-	  assert.deepEqual(returnVal, { "kall": { "total": 1, "param": { "[1,2]": 1 } }, "kall2": { "total": 1, "param": { "[]": 1 } } });
+	  // When
+	  var returnVal = (0, _jsmocktool.mock)('Verify5').verify_all();
+	  // Then
+	  assert.deepEqual(returnVal, { 'kall': { 'total': 1, 'param': { '[1,2]': 1 } }, 'kall2': { 'total': 1, 'param': { '[]': 1 } } });
 	
-	  //Given
+	  // Given
 	  var errormessage;
-	  //When
-	  (0, _jsmocktool.mock)("Verify5").reset_all();
+	  // When
+	  (0, _jsmocktool.mock)('Verify5').reset_all();
 	  try {
-	    (0, _jsmocktool.mock)("Verify5").verify_all();
+	    (0, _jsmocktool.mock)('Verify5').verify_all();
 	  } catch (e) {
 	    errormessage = e.message;
 	  }
-	  //Then
+	  // Then
 	  assert.equal(errormessage, "kall isn't called.");
 	});
 	
-	(0, _qunit.module)("jsmock - Support Class");
+	(0, _qunit.module)('jsmock - Support Class');
 	
-	(0, _qunit.test)("Add method to Class", function (assert) {
-	  //Given
+	(0, _qunit.test)('Add method to Class', function (assert) {
+	  // Given
 	
 	  var Test = function Test() {
 	    _classCallCheck(this, Test);
 	  };
 	
-	  //When
+	  // When
 	
 	
-	  (0, _jsmocktool.mock)(Test, _jsmocktool.mock.INSTANCE).should_receive("kall").and_return("1");
+	  (0, _jsmocktool.mock)(Test, _jsmocktool.mock.INSTANCE).should_receive('kall').and_return('1');
 	
-	  //Then
+	  // Then
 	  var test = new Test();
-	  assert.equal(test.kall(), "1");
+	  assert.equal(test.kall(), '1');
 	});
 	
-	(0, _qunit.test)("Add method to Class instance", function (assert) {
-	  //Given
+	(0, _qunit.test)('Add method to Class instance', function (assert) {
+	  // Given
 	
 	  var Test = function Test() {
 	    _classCallCheck(this, Test);
@@ -1134,11 +1140,11 @@
 	
 	  var test = new Test();
 	
-	  //When
-	  (0, _jsmocktool.mock)(test).should_receive("kall").and_return("1");
+	  // When
+	  (0, _jsmocktool.mock)(test).should_receive('kall').and_return('1');
 	
-	  //Then
-	  assert.equal(test.kall(), "1");
+	  // Then
+	  assert.equal(test.kall(), '1');
 	});
 
 /***/ },
@@ -5606,150 +5612,150 @@
 	
 	var global = window;
 	
-	(0, _qunit.module)("jsstub", {
-		"beforeEach": function beforeEach() {
-			this.stub = (0, _jsmocktool.stub)("STUB");
+	(0, _qunit.module)('jsstub', {
+		'beforeEach': function beforeEach() {
+			this.stub = (0, _jsmocktool.stub)('STUB');
 		},
-		"afterEach": function afterEach() {
+		'afterEach': function afterEach() {
 			this.stub = undefined;
 			STUB = undefined;
 		}
 	});
 	
-	(0, _qunit.test)("The first parameter of stub is must be string,object.", function (assert) {
-		//Given, When
-		(0, _jsmocktool.stub)("FOO");
-		//Then
+	(0, _qunit.test)('The first parameter of stub is must be string,object.', function (assert) {
+		// Given, When
+		(0, _jsmocktool.stub)('FOO');
+		// Then
 		assert.deepEqual(FOO, {});
 	
-		//Given
+		// Given
 		var BAR = {};
-		//When
+		// When
 		(0, _jsmocktool.stub)(BAR);
-		//Then
+		// Then
 		assert.deepEqual(BAR, BAR);
 	});
 	
-	(0, _qunit.test)("The Stub is only add function when already made object.", function (assert) {
-		//Given
+	(0, _qunit.test)('The Stub is only add function when already made object.', function (assert) {
+		// Given
 		var Obj = { test: function test() {} };
-		//When
-		(0, _jsmocktool.stub)("Obj");
-		//Then
+		// When
+		(0, _jsmocktool.stub)('Obj');
+		// Then
 		assert.equal(Obj, Obj);
 	
-		//When
+		// When
 		(0, _jsmocktool.stub)(Obj);
-		//Then
+		// Then
 		assert.equal(Obj, Obj);
 	});
 	
 	(0, _qunit.test)("The second parameter of stub is must be none, 'instance' or 'object'", function (assert) {
-		//Given
-		//When
-		(0, _jsmocktool.stub)("FOO2");
-		//Then
+		// Given
+		// When
+		(0, _jsmocktool.stub)('FOO2');
+		// Then
 		assert.deepEqual(FOO2, {});
 	
-		//when
-		(0, _jsmocktool.stub)("FOO3", _jsmocktool.stub.INSTANCE);
-		//Then
+		// when
+		(0, _jsmocktool.stub)('FOO3', _jsmocktool.stub.INSTANCE);
+		// Then
 		assert.equal(FOO3.constructor, Function);
 	});
 	
-	(0, _qunit.test)("The should_receive is set empty function", function (assert) {
-		//Given
-		//When
-		this.stub.should_receive("test");
-		//Then
+	(0, _qunit.test)('The should_receive is set empty function', function (assert) {
+		// Given
+		// When
+		this.stub.should_receive('test');
+		// Then
 		assert.equal(STUB.test.constructor, Function);
 	
-		//Given
-		//When
-		(0, _jsmocktool.stub)("STUB2", _jsmocktool.stub.INSTANCE).should_receive("test");
-		//Then
+		// Given
+		// When
+		(0, _jsmocktool.stub)('STUB2', _jsmocktool.stub.INSTANCE).should_receive('test');
+		// Then
 		assert.equal(STUB2.prototype.test.constructor, Function);
 	});
 	
-	(0, _qunit.test)("The should_receive is change function when already function.", function (assert) {
-		//Given
+	(0, _qunit.test)('The should_receive is change function when already function.', function (assert) {
+		// Given
 		var funcObj = { test: function test() {
 				return false;
 			} };
-		//When
-		(0, _jsmocktool.stub)("funcObj").should_receive("test");
-		//Then
-		assert.equal(funcObj.test(), "");
+		// When
+		(0, _jsmocktool.stub)('funcObj').should_receive('test');
+		// Then
+		assert.equal(funcObj.test(), '');
 	});
 	
-	(0, _qunit.test)("Return value of should_receive is StubMethod.", function (assert) {
-		//Given
-		//When
-		var stub_obj = this.stub.should_receive("test");
-		//Then
-		//The StubMethod is private. so I can't test.
-		//Instead, I made a Ducktyping test(?).
-		//I believe correct when The return value of should_receive have and_return function.
+	(0, _qunit.test)('Return value of should_receive is StubMethod.', function (assert) {
+		// Given
+		// When
+		var stub_obj = this.stub.should_receive('test');
+		// Then
+		// The StubMethod is private. so I can't test.
+		// Instead, I made a Ducktyping test(?).
+		// I believe correct when The return value of should_receive have and_return function.
 		// ok(stub_obj instanceof StubMethod);
 		assert.equal(stub_obj.and_return.constructor, Function);
 	});
 	
-	(0, _qunit.test)("The and_return is return value when and_return set value.", function (assert) {
-		//Given
-		//When
-		this.stub.should_receive("test").and_return("test");
-		//Then
-		assert.equal(STUB.test(), "test");
+	(0, _qunit.test)('The and_return is return value when and_return set value.', function (assert) {
+		// Given
+		// When
+		this.stub.should_receive('test').and_return('test');
+		// Then
+		assert.equal(STUB.test(), 'test');
 	});
 	
-	(0, _qunit.test)("The namespace type is well work too.", function (assert) {
-		//Given
-		//When
-		this.stub.should_receive("test").and_return("test");
-		//Then
-		assert.equal(STUB.test(), "test");
+	(0, _qunit.test)('The namespace type is well work too.', function (assert) {
+		// Given
+		// When
+		this.stub.should_receive('test').and_return('test');
+		// Then
+		assert.equal(STUB.test(), 'test');
 	
-		//Given
-		//When
-		(0, _jsmocktool.stub)("aaa.bbb.ccc.ddd").should_receive("test").and_return("test");
-		//Then
-		assert.equal(aaa.bbb.ccc.ddd.test(), "test");
+		// Given
+		// When
+		(0, _jsmocktool.stub)('aaa.bbb.ccc.ddd').should_receive('test').and_return('test');
+		// Then
+		assert.equal(aaa.bbb.ccc.ddd.test(), 'test');
 	
-		//Given
-		//When
-		(0, _jsmocktool.stub)("aaaa.bbbb.cccc", _jsmocktool.stub.INSTANCE).should_receive("test").and_return("test");
-		//Then
-		assert.equal(new aaaa.bbbb.cccc().test(), "test");
+		// Given
+		// When
+		(0, _jsmocktool.stub)('aaaa.bbbb.cccc', _jsmocktool.stub.INSTANCE).should_receive('test').and_return('test');
+		// Then
+		assert.equal(new aaaa.bbbb.cccc().test(), 'test');
 	
-		//Given
-		global["aaaaa"] = {};
+		// Given
+		global['aaaaa'] = {};
 		aaaaa.bbbbb = {};
 	
-		//When
-		(0, _jsmocktool.stub)("aaaaa.bbbbb").should_receive("test").and_return("test");
-		//Then
-		assert.equal(aaaaa.bbbbb.test(), "test");
+		// When
+		(0, _jsmocktool.stub)('aaaaa.bbbbb').should_receive('test').and_return('test');
+		// Then
+		assert.equal(aaaaa.bbbbb.test(), 'test');
 	
-		//When
-		(0, _jsmocktool.stub)("aaaaa.bbbbb.ccccc").should_receive("test").and_return("test");
-		//Then
-		assert.equal(aaaaa.bbbbb.ccccc.test(), "test");
+		// When
+		(0, _jsmocktool.stub)('aaaaa.bbbbb.ccccc').should_receive('test').and_return('test');
+		// Then
+		assert.equal(aaaaa.bbbbb.ccccc.test(), 'test');
 	});
 	
-	(0, _qunit.test)("deprecated stub.", function (assert) {
-		//Given
-		var message = "";
+	(0, _qunit.test)('deprecated stub.', function (assert) {
+		// Given
+		var message = '';
 		var originConsole = global.console;
 		global.console = {
-			"warn": function warn(msg) {
+			'warn': function warn(msg) {
 				message = msg;
 			}
 		};
 		// When
-		(0, _jsmocktool.stub)("FOO");
+		(0, _jsmocktool.stub)('FOO');
 	
-		//Then
-		assert.equal(message, "[WARN] : Deprecated Stub. You should be change to Mock.");
+		// Then
+		assert.equal(message, '[WARN] : Deprecated Stub. You should be change to Mock.');
 	
 		global.console = originConsole;
 	});
