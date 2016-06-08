@@ -5,14 +5,19 @@ const WARNING = 1;
 const ERROR = 2;
 
 module.exports = {
+    // "env": {
+    //     "test": {
+    //         "plugins": [ "__coverage__" ]
+    //     }
+    // },
     entry: {
-        "jsmocktool" : ['./src/jsmocktool.js','./src/testDouble.js',
+        "dist/jsmocktool" : ['./src/jsmocktool.js','./src/testDouble.js',
                         './src/mock/jsmock.js','./src/mock/jsmockMethodFactory.js','./src/mock/jsmockMethod.js',
                         './src/stub/jsstub.js','./src/stub/jsstubMethod.js'],
-        "jsmocktool.test" : ['./test/jsmock.js','./test/jsstub.js','./test/start.js']
+        "test/dist/jsmocktool.test" : ['./test/jsmock.js','./test/jsstub.js','./test/start.js']
     },
     output: {
-        path: __dirname+"/dist/",
+        path: __dirname+"/",
         filename: '[name].js'
     },
     module: {
@@ -39,6 +44,7 @@ module.exports = {
         ]
     },
     plugins: [
+        // [ "__coverage__", { "only": "src/" } ]
         // new webpack.optimize.DedupePlugin(),
         // new webpack.optimize.OccurenceOrderPlugin(),
         // new webpack.optimize.UglifyJsPlugin({
