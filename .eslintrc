@@ -1,0 +1,11 @@
+{
+	"extends": "airbnb-base",
+	"rules" :{
+		"indent": ["error", "tab"],
+		"camelcase" : "off",
+		"prefer-const" : "warn",
+		"no-restricted-syntax" : "warn",
+		"consistent-return": "warn",
+		"guard-for-in": "warn"
+	}
+}
