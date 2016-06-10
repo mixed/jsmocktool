@@ -1,7 +1,6 @@
 import StubMethod from './jsstubMethod';
 import TestDouble from '../testDouble';
-
-const global = window;
+import global from '../global';
 
 function warn(msg) {
 	if (global.console && console.warn) {
@@ -25,7 +24,7 @@ class Stub extends TestDouble {
 	}
 }
 
-function stubWrap(name, type) {
+export default function stubWrap(name, type) {
 	if (this instanceof Stub) {
 		this.createTestDouble(name, type);
 	} else {
@@ -35,5 +34,3 @@ function stubWrap(name, type) {
 
 stubWrap.OBJECT = 'object';
 stubWrap.INSTANCE = 'instance';
-
-export default stubWrap;

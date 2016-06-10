@@ -1,6 +1,6 @@
-const global = window;
+import global from './global';
 
-class TestDouble {
+export default class TestDouble {
 	constructor(name, type) {
 		this.createTestDouble(name, type);
 	}
@@ -51,5 +51,3 @@ class TestDouble {
 		}
 	}
 }
-
-export default TestDouble;

@@ -24,13 +24,13 @@ module.exports = function( grunt ) {
 			options: webpackConfig,
 			build: {
 				plugins: webpackConfig.plugins.concat(
-					new webpack.optimize.DedupePlugin(),
-			        new webpack.optimize.OccurenceOrderPlugin(),
-			        new webpack.optimize.UglifyJsPlugin({
-			            mangle: true,
-			            compress: {warnings: false}
-			        }),
-			        new webpack.BannerPlugin(banner.join("\n\r"), { raw: true, entryOnly: true })
+					// new webpack.optimize.DedupePlugin(),
+			  //       new webpack.optimize.OccurenceOrderPlugin(),
+			  //       new webpack.optimize.UglifyJsPlugin({
+			  //           mangle: true,
+			  //           compress: {warnings: false}
+			  //       }),
+			  //       new webpack.BannerPlugin(banner.join("\n\r"), { raw: true, entryOnly: true })
 				)
 			}
 		}
@@ -52,6 +52,7 @@ module.exports = function( grunt ) {
 	});
 
 	grunt.registerTask("default", "qunit");
-	grunt.registerTask("travis", ["webpack:build","qunit"]);
+	grunt.registerTask("build", "webpack:build");
+	grunt.registerTask("travis", ["build","qunit"]);
 
 }

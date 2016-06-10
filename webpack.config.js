@@ -11,10 +11,14 @@ module.exports = {
     //     }
     // },
     entry: {
-        "dist/jsmocktool" : ['./src/jsmocktool.js','./src/testDouble.js',
+        "dist/jsmocktool" : ['./src/global.js','./src/jsmocktool.js','./src/testDouble.js',
                         './src/mock/jsmock.js','./src/mock/jsmockMethodFactory.js','./src/mock/jsmockMethod.js',
                         './src/stub/jsstub.js','./src/stub/jsstubMethod.js'],
-        "test/dist/jsmocktool.test" : ['./test/jsmock.js','./test/jsstub.js','./test/start.js']
+        "test/dist/jsmocktool.test" : [
+            './test/jsmock.js',
+            './test/jsstub.js',
+            './test/start.js'
+        ]
     },
     output: {
         path: __dirname+"/",

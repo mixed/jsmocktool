@@ -1,4 +1,4 @@
-class StubMethod {
+export default class StubMethod {
 	constructor(stub) {
 		this.stub = stub;
 	}
@@ -7,5 +7,3 @@ class StubMethod {
 		this.stub.returnValue = returnValue;
 	}
 }
-
-export default StubMethod;
