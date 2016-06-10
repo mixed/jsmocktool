@@ -318,13 +318,6 @@
 		}, {
 			key: 'reset_all',
 			value: function reset_all() {
-				// Not yet support for-of.
-				// MockMethodFactory.getData(this.getTestDouble()).forEach(function(value,key){
-				// 	if (key !== 'current_obj') {
-				// 		value.record = { total: 0, param: {} };
-				// 	}
-				// });
-	
 				var _iteratorNormalCompletion = true;
 				var _didIteratorError = false;
 				var _iteratorError = undefined;

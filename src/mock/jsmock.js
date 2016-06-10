@@ -12,13 +12,6 @@ class Mock extends TestDouble {
 	}
 
 	reset_all() {
-		// Not yet support for-of.
-		// MockMethodFactory.getData(this.getTestDouble()).forEach(function(value,key){
-		// 	if (key !== 'current_obj') {
-		// 		value.record = { total: 0, param: {} };
-		// 	}
-		// });
-
 		for (const [key, value] of MockMethodFactory.getData(this.getTestDouble())) {
 			if (key !== 'current_obj') {
 				value.record = { total: 0, param: {} };
