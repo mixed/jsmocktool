@@ -12,26 +12,32 @@ class Mock extends TestDouble {
 	}
 
 	reset_all() {
-		const obj = MockMethodFactory.getData(this.getTestDouble());
-		for (const i in obj) {
-			if (i !== 'current_obj') {
-				obj[i].record = { total: 0, param: {} };
+		// Not yet support for-of.
+		// MockMethodFactory.getData(this.getTestDouble()).forEach(function(value,key){
+		// 	if (key !== 'current_obj') {
+		// 		value.record = { total: 0, param: {} };
+		// 	}
+		// });
+
+		for (const [key, value] of MockMethodFactory.getData(this.getTestDouble())) {
+			if (key !== 'current_obj') {
+				value.record = { total: 0, param: {} };
 			}
 		}
 	}
 
 	reset(methodName) {
 		const obj = MockMethodFactory.getData(this.getTestDouble());
-		obj[methodName].record = { total: 0, param: {} };
+		obj.get(methodName).record = { total: 0, param: {} };
 	}
 
 	verify(methodName) {
-		const obj = MockMethodFactory.getData(this.getTestDouble());
-		if (obj[methodName]) {
-			if (obj[methodName].record.total === 0) {
+		const methodInfo = MockMethodFactory.getData(this.getTestDouble()).get(methodName);
+		if (methodInfo) {
+			if (methodInfo.record.total === 0) {
 				throw new Error(`${methodName} isn't called.`);
 			} else {
-				return obj[methodName].record;
+				return methodInfo.record;
 			}
 		} else {
 			throw new Error(`${methodName} isn't method.`);
@@ -41,9 +47,11 @@ class Mock extends TestDouble {
 	verify_all() {
 		const obj = MockMethodFactory.getData(this.getTestDouble());
 		const returnValue = {};
-		for (const i in obj) {
+
+		obj.forEach((v, i) => {
 			if (i !== 'current_obj') returnValue[i] = this.verify(i);
-		}
+		});
+
 		return returnValue;
 	}
 

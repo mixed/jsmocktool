@@ -1,3 +1,26 @@
+What is the jsmocktools?
+
+How to use it?
+
+API
+mock
+: sdfsfs
+
+method
+ - should_receive
+ 
+ - with_param
+
+ - and_return
+ - and_function
+ - and_throw
+
+stub
+: Deprecated Object. If you use it you have to migrate to mock.
+
+
+
+
 Javascript Mock Tool is Mock library of RSpec style.
 ============================================================
 RSpec 스타일의 자바스크립트 Mock 라이브러리.

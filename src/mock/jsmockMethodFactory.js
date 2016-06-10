@@ -8,31 +8,30 @@ const MockMethodFactory = {
 		//      }
 	],
 	createData(obj) {
-		const dataObj = { current_obj: obj };
+		const dataObj = (new Map()).set('current_obj', obj);
 		this.storage.push(dataObj);
 
 		return dataObj;
 	},
 	createMethod(obj, methodName) {
-		const dataObj = this.getData(obj);
-		dataObj[methodName] = new MockMethod(obj, methodName);
-
-		return dataObj[methodName];
+		return new MockMethod(obj, methodName);
 	},
 	getData(obj) {
-		for (let i = 0, l = this.storage.length; i < l; i++) {
-			if (this.storage[i].current_obj === obj) {
-				return this.storage[i];
+		for (const value of this.storage) {
+			if (value.get('current_obj') === obj) {
+				return value;
 			}
 		}
 		return this.createData(obj);
 	},
 	getMethod(obj, methodName) {
 		const dataObj = this.getData(obj);
-		if (!dataObj[methodName]) {
-			dataObj[methodName] = this.createMethod(obj, methodName);
+		let methodObj = dataObj.get(methodName);
+		if (!methodObj) {
+			methodObj = this.createMethod(obj, methodName);
+			dataObj.set(methodName, methodObj);
 		}
-		return dataObj[methodName];
+		return methodObj;
 	},
 };
 

@@ -1,29 +1,23 @@
 
-
-function argumentsToArray(arg) {
-	const returnVal = [];
-	if (!!arg.length) {
-		for (let i = 0, l = arg.length; i < l; i++) {
-			returnVal[i] = arg[i];
-		}
-	}
-	return returnVal;
-}
-
 class MockMethod {
 
 	constructor(obj, methodName) {
-		this.excuteObjs = {
+		this.excuteObjs = new Map();
+		// {
 		//      key:{
 		//          arg:[],
-		//          type:"function",
+		//          type:'function',
 		//          excute : function(){}
 		//      }
-		};
+		// };
 		this.record = { total: 0, param: {} };
-		this.currentParam = JSON.stringify([]);
-		this.excuteObjs[this.currentParam] = {};
+		this.currentParam = this.transformParamToString([]);
+		this.excuteObjs.set(this.currentParam, new Map());
 		this.setup(obj, methodName);
+	}
+
+	transformParamToString(obj) {
+		return JSON.stringify(obj);
 	}
 
 	setup(obj, methodName) {
@@ -31,7 +25,7 @@ class MockMethod {
 		const target = obj;
 		target[methodName] = function addFunc(...params) {
 			that.record.total++;
-			const argString = JSON.stringify(argumentsToArray(params));
+			const argString = that.transformParamToString(params);
 
 			if (that.record.param[argString]) {
 				that.record.param[argString] += 1;
@@ -39,31 +33,33 @@ class MockMethod {
 				that.record.param[argString] = 1;
 			}
 
-			const dataObj = that.excuteObjs[argString];
+			const dataObj = that.excuteObjs.get(argString);
 
 			if (dataObj) {
-				if (dataObj.type === 'function') {
-					return dataObj.excute.apply(dataObj, argumentsToArray(params));
-				} else if (dataObj.type === 'exception') {
-					throw dataObj.excute;
-				} else if (dataObj.type === 'return') {
-					return dataObj.excute;
+				const type = dataObj.get('type');
+				const excute = dataObj.get('excute');
+				if (type === 'function') {
+					return excute.apply(dataObj, params);
+				} else if (type === 'exception') {
+					throw excute;
+				} else if (type === 'return') {
+					return excute;
 				}
 			} else {
-				for (const i in that.excuteObjs) {
-					const currentParam = argumentsToArray(params);
-					const arg = that.excuteObjs[i].arg;
+				for (const [, v] of that.excuteObjs) {
+					const arg = v.get('arg');
+					const excute = v.get('excute');
 
-					if (arg && (arg.length === currentParam.length)) {
+					if (arg && (arg.length === params.length)) {
 						let paramMatch = true;
 						for (let j = 0, l = arg.length; j < l; j++) {
-							if (arg[j] !== currentParam[j] && arg[j] !== '_js_mock_anything_param') {
+							if (arg[j] !== params[j] && arg[j] !== '_js_mock_anything_param') {
 								paramMatch = false;
 								break;
 							}
 						}
 						if (paramMatch) {
-							return that.excuteObjs[i].excute;
+							return excute;
 						}
 					}
 				}
@@ -72,16 +68,18 @@ class MockMethod {
 	}
 
 	with_param(...params) {
-		const arg = argumentsToArray(params);
-		this.currentParam = JSON.stringify(arg);
-		this.excuteObjs[this.currentParam] = { arg };
+		this.currentParam = this.transformParamToString(params);
+		this.excuteObjs.set(this.currentParam, (new Map()).set('arg', params));
 		return this;
 	}
 
 	and_template(type, excute) {
-		this.excuteObjs[this.currentParam].type = type;
-		this.excuteObjs[this.currentParam].excute = excute;
-		this.currentParam = JSON.stringify([]);
+		this.excuteObjs
+			.get(this.currentParam)
+			.set('type', type)
+			.set('excute', excute);
+
+		this.currentParam = this.transformParamToString([]);
 	}
 
 	and_return(returnVal) {
