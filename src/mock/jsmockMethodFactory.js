@@ -1,6 +1,6 @@
 import MockMethod from './jsmockMethod';
 
-const MockMethodFactory = {
+export default {
 	storage: [
 		//      {
 		//          current_obj : {}, object
@@ -28,7 +28,5 @@ const MockMethodFactory = {
 			dataObj.set(methodName, methodObj);
 		}
 		return methodObj;
-	},
+	}
 };
-
-export default MockMethodFactory;

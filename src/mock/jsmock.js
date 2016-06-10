@@ -50,7 +50,7 @@ class Mock extends TestDouble {
 
 }
 
-function mockWrap(name, type) {
+export default function mockWrap(name, type) {
 	if (this instanceof Mock) {
 		this.createTestDouble(name, type);
 	} else {
@@ -61,5 +61,3 @@ function mockWrap(name, type) {
 mockWrap.OBJECT = 'object';
 mockWrap.INSTANCE = 'instance';
 mockWrap.anything = () => '_js_mock_anything_param';
-
-export default mockWrap;

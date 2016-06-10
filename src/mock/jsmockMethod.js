@@ -1,5 +1,5 @@
 
-class MockMethod {
+export default class MockMethod {
 
 	constructor(obj, methodName) {
 		this.excuteObjs = new Map();
@@ -23,7 +23,7 @@ class MockMethod {
 	setup(obj, methodName) {
 		const that = this;
 		const target = obj;
-		target[methodName] = function addFunc(...params) {
+		target[methodName] = (...params) => {
 			that.record.total++;
 			const argString = that.transformParamToString(params);
 
@@ -48,10 +48,11 @@ class MockMethod {
 			} else {
 				for (const [, info] of that.excuteObjs) {
 					const arg = info.get('arg');
-					if (arg && (arg.length === params.length)) {
-						if (!arg.find((v, i) => (v !== params[i] && v !== '_js_mock_anything_param'))) {
-							return info.get('excute');
-						}
+					if (
+						arg && (arg.length === params.length) &&
+						!arg.find((v, i) => (v !== params[i] && v !== '_js_mock_anything_param'))
+						) {
+						return info.get('excute');
 					}
 				}
 			}
@@ -86,5 +87,3 @@ class MockMethod {
 	}
 
 }
-
-export default MockMethod;

@@ -24,7 +24,7 @@ class Stub extends TestDouble {
 	}
 }
 
-function stubWrap(name, type) {
+export default function stubWrap(name, type) {
 	if (this instanceof Stub) {
 		this.createTestDouble(name, type);
 	} else {
@@ -34,5 +34,3 @@ function stubWrap(name, type) {
 
 stubWrap.OBJECT = 'object';
 stubWrap.INSTANCE = 'instance';
-
-export default stubWrap;
