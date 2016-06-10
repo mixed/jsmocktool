@@ -17,12 +17,8 @@ const MockMethodFactory = {
 		return new MockMethod(obj, methodName);
 	},
 	getData(obj) {
-		for (const value of this.storage) {
-			if (value.get('current_obj') === obj) {
-				return value;
-			}
-		}
-		return this.createData(obj);
+		const data = this.storage.find(value => value.get('current_obj') === obj);
+		return data || this.createData(obj);
 	},
 	getMethod(obj, methodName) {
 		const dataObj = this.getData(obj);
