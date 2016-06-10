@@ -28,5 +28,5 @@ export default {
 			dataObj.set(methodName, methodObj);
 		}
 		return methodObj;
-	}
+	},
 };
