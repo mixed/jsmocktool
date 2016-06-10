@@ -1,4 +1,4 @@
-const global = window;
+import global from './global';
 
 class TestDouble {
 	constructor(name, type) {

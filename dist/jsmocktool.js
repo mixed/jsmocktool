@@ -45,16 +45,28 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(4);
+	__webpack_require__(2);
 	__webpack_require__(5);
 	__webpack_require__(6);
 	__webpack_require__(7);
-	__webpack_require__(2);
-	module.exports = __webpack_require__(3);
+	__webpack_require__(8);
+	__webpack_require__(3);
+	module.exports = __webpack_require__(4);
 
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+	/* eslint-disable */
+	module.exports = typeof window !== 'undefined' && window.Math === Math ? window : typeof self !== 'undefined' && self.Math === Math ? self : Function('return this')();
+	/* eslint-enable */
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64,11 +76,11 @@
 	});
 	exports.mock = exports.stub = undefined;
 	
-	var _jsstub = __webpack_require__(2);
+	var _jsstub = __webpack_require__(3);
 	
 	var _jsstub2 = _interopRequireDefault(_jsstub);
 	
-	var _jsmock = __webpack_require__(5);
+	var _jsmock = __webpack_require__(6);
 	
 	var _jsmock2 = _interopRequireDefault(_jsmock);
 	
@@ -78,7 +90,7 @@
 	exports.mock = _jsmock2.default;
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -89,13 +101,17 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _jsstubMethod = __webpack_require__(3);
+	var _jsstubMethod = __webpack_require__(4);
 	
 	var _jsstubMethod2 = _interopRequireDefault(_jsstubMethod);
 	
-	var _testDouble = __webpack_require__(4);
+	var _testDouble = __webpack_require__(5);
 	
 	var _testDouble2 = _interopRequireDefault(_testDouble);
+	
+	var _global = __webpack_require__(1);
+	
+	var _global2 = _interopRequireDefault(_global);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -105,10 +121,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var global = window;
-	
 	function warn(msg) {
-		if (global.console && console.warn) {
+		if (_global2.default.console && console.warn) {
 			console.warn(msg);
 		}
 	}
@@ -159,7 +173,7 @@
 	exports.default = stubWrap;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -192,8 +206,8 @@
 	exports.default = StubMethod;
 
 /***/ },
-/* 4 */
-/***/ function(module, exports) {
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -205,9 +219,13 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var _global = __webpack_require__(1);
 	
-	var global = window;
+	var _global2 = _interopRequireDefault(_global);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var TestDouble = function () {
 		function TestDouble(name, type) {
@@ -243,7 +261,7 @@
 			value: function makeEnableObj(name, type) {
 				var depth = name.split('.');
 				var objectName = depth[0];
-				var obj = global;
+				var obj = _global2.default;
 				if (depth.length > 1) {
 					depth.splice(0, depth.length - 1).forEach(function (v) {
 						if (typeof obj[v] === 'undefined') {
@@ -271,7 +289,7 @@
 	exports.default = TestDouble;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -284,11 +302,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _jsmockMethodFactory = __webpack_require__(6);
+	var _jsmockMethodFactory = __webpack_require__(7);
 	
 	var _jsmockMethodFactory2 = _interopRequireDefault(_jsmockMethodFactory);
 	
-	var _testDouble = __webpack_require__(4);
+	var _testDouble = __webpack_require__(5);
 	
 	var _testDouble2 = _interopRequireDefault(_testDouble);
 	
@@ -408,7 +426,7 @@
 	exports.default = mockWrap;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -417,7 +435,7 @@
 		value: true
 	});
 	
-	var _jsmockMethod = __webpack_require__(7);
+	var _jsmockMethod = __webpack_require__(8);
 	
 	var _jsmockMethod2 = _interopRequireDefault(_jsmockMethod);
 	
@@ -459,7 +477,7 @@
 	exports.default = MockMethodFactory;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';

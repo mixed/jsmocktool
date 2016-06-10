@@ -1,7 +1,6 @@
 import StubMethod from './jsstubMethod';
 import TestDouble from '../testDouble';
-
-const global = window;
+import global from '../global';
 
 function warn(msg) {
 	if (global.console && console.warn) {
