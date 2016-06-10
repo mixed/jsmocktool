@@ -46,20 +46,11 @@ class MockMethod {
 					return excute;
 				}
 			} else {
-				for (const [, v] of that.excuteObjs) {
-					const arg = v.get('arg');
-					const excute = v.get('excute');
-
+				for (const [, info] of that.excuteObjs) {
+					const arg = info.get('arg');
 					if (arg && (arg.length === params.length)) {
-						let paramMatch = true;
-						for (let j = 0, l = arg.length; j < l; j++) {
-							if (arg[j] !== params[j] && arg[j] !== '_js_mock_anything_param') {
-								paramMatch = false;
-								break;
-							}
-						}
-						if (paramMatch) {
-							return excute;
+						if (!arg.find((v, i) => (v !== params[i] && v !== '_js_mock_anything_param'))) {
+							return info.get('excute');
 						}
 					}
 				}

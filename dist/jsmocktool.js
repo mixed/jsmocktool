@@ -521,12 +521,11 @@
 				var that = this;
 				var target = obj;
 				target[methodName] = function addFunc() {
-					that.record.total++;
-	
 					for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
 						params[_key] = arguments[_key];
 					}
 	
+					that.record.total++;
 					var argString = that.transformParamToString(params);
 	
 					if (that.record.param[argString]) {
@@ -556,21 +555,14 @@
 							for (var _iterator = that.excuteObjs[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 								var _step$value = _slicedToArray(_step.value, 2);
 	
-								var v = _step$value[1];
+								var info = _step$value[1];
 	
-								var arg = v.get('arg');
-								var _excute = v.get('excute');
-	
+								var arg = info.get('arg');
 								if (arg && arg.length === params.length) {
-									var paramMatch = true;
-									for (var j = 0, l = arg.length; j < l; j++) {
-										if (arg[j] !== params[j] && arg[j] !== '_js_mock_anything_param') {
-											paramMatch = false;
-											break;
-										}
-									}
-									if (paramMatch) {
-										return _excute;
+									if (!arg.find(function (v, i) {
+										return v !== params[i] && v !== '_js_mock_anything_param';
+									})) {
+										return info.get('excute');
 									}
 								}
 							}
