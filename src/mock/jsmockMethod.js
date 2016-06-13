@@ -1,6 +1,8 @@
 
 export default class MockMethod {
-
+	/**
+	 * @access private
+	 **/
 	constructor(obj, methodName) {
 		this.excuteObjs = new Map();
 		// {
@@ -16,10 +18,16 @@ export default class MockMethod {
 		this.setup(obj, methodName);
 	}
 
+	/**
+	 * @access private
+	 **/
 	transformParamToString(obj) {
 		return JSON.stringify(obj);
 	}
 
+	/**
+	 * @access private
+	 **/
 	setup(obj, methodName) {
 		const that = this;
 		const target = obj;
@@ -58,13 +66,33 @@ export default class MockMethod {
 			}
 		};
 	}
+	/**
+	 * set parameters of should_receive. 
+	 * If you use `with_param` that `and_xxx` method execute matching param.
+	 * @param {...anything} params - list up parameters.
+	 * @function with_param
+	 * @returns {MockMethod}
+	 * @example
+	
+	mock("obj").should_receive("something").with_param(1,2).and_return("1"); 
+	// obj.something(1); => not return anything
+	// obj.something(1, 2); => "1"
 
+	// You can use `mock.anything`.
+	mock("obj").should_receive("something").with_param(1,mock.anything()).and_return("1"); 
+	// obj.something(1, 1); => "1"
+	// obj.something(1, 2); => "1"
+	// obj.something(1, 3); => "1"
+	 **/
 	with_param(...params) {
 		this.currentParam = this.transformParamToString(params);
 		this.excuteObjs.set(this.currentParam, (new Map()).set('arg', params));
 		return this;
 	}
-
+	
+	/**
+	 * @access private
+	 **/
 	and_template(type, excute) {
 		this.excuteObjs
 			.get(this.currentParam)

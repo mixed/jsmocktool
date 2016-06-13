@@ -3,7 +3,7 @@
  */
 
  import { mock } from '../src/jsmocktool';
- import { module, test } from '../node_modules/qunitjs/qunit/qunit';
+ import { module, test } from 'qunitjs/qunit/qunit';
 
  var global = window;
 

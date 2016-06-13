@@ -1,3 +1,3 @@
-import { start } from '../node_modules/qunitjs/qunit/qunit';
+import { start } from 'qunitjs/qunit/qunit';
 
 start();

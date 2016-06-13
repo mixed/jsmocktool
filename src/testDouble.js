@@ -1,5 +1,8 @@
 import global from './global';
 
+/**
+ * @access private
+ **/
 export default class TestDouble {
 	constructor(name, type) {
 		this.createTestDouble(name, type);

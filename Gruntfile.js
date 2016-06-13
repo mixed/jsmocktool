@@ -22,23 +22,22 @@ module.exports = function( grunt ) {
 		},
 		webpack : {
 			options: webpackConfig,
-			build: {
+			development: {
+				
+			},
+			product: {
 				plugins: webpackConfig.plugins.concat(
-					// new webpack.optimize.DedupePlugin(),
-			  //       new webpack.optimize.OccurenceOrderPlugin(),
-			  //       new webpack.optimize.UglifyJsPlugin({
-			  //           mangle: true,
-			  //           compress: {warnings: false}
-			  //       }),
-			  //       new webpack.BannerPlugin(banner.join("\n\r"), { raw: true, entryOnly: true })
+					new webpack.optimize.DedupePlugin(),
+			        new webpack.optimize.OccurenceOrderPlugin(),
+			        new webpack.optimize.UglifyJsPlugin({
+			            mangle: true,
+			            compress: {warnings: false}
+			        }),
+			        new webpack.BannerPlugin(banner.join("\n\r"), { raw: true, entryOnly: true })
 				)
 			}
 		}
 	});
-
-
-	
-
 
 	grunt.event.on('qunit.done', function (failed, passed, total, runtime) {
 		console.log(clc.blue("==============================="));
@@ -51,8 +50,8 @@ module.exports = function( grunt ) {
 
 	});
 
-	grunt.registerTask("default", "qunit");
-	grunt.registerTask("build", "webpack:build");
+	grunt.registerTask("default", ["webpack:development","qunit"]);
+	grunt.registerTask("build", "webpack:product");
 	grunt.registerTask("travis", ["build","qunit"]);
 
 }

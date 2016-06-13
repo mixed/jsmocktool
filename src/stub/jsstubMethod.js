@@ -1,3 +1,6 @@
+/**
+ * @access private
+ **/
 export default class StubMethod {
 	constructor(stub) {
 		this.stub = stub;

@@ -47,14 +47,6 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        // [ "__coverage__", { "only": "src/" } ]
-        // new webpack.optimize.DedupePlugin(),
-        // new webpack.optimize.OccurenceOrderPlugin(),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     mangle: true,
-        //     compress: {warnings: false}
-        // })
-    ],
+    plugins:[],
     devtool: 'source-map'
 };

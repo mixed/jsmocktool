@@ -1,3 +1,58 @@
+
+# What is the jsmocktools?
+`jsmocktool` is a JavaScript mock framework inspired by RSpec. Consequently, API is very similar to [RSpec Mock](http://rspec.info/documentation/3.4/rspec-mocks/). If you are rubyist, easy to use it. 
+
+
+# Install
+`jsmocktool` supports browers and node.js. Browser compatibility is IE9+, chrome(newest), safari(newest), opera(newest), firefox(newest) and Node.js 0.10+.
+```
+npm install jsmocktool --save-dev
+bower install jsmocktool --save-dev
+```
+or You can build using grunt.
+```
+git clone https://github.com/your-id/jsmocktool
+cd jsmocktool
+npm install
+grunt
+```
+
+# How to use it?
+`jsmocktool` support es6 and global.
+```html
+// ES6 Style
+<script type="text/javascript">
+import {mock} from 'jsmocktool/dist/jsmocktool';
+</script>
+
+// insert script
+<script type="text/javascript" src="node_modules/jsmocktool/dist/jsmocktool.global.js"></script>
+```
+If you use `jsmocktool.global.js` `mock` is expose to global.
+
+# API
+API is very simple.
+mock
+: `mock` method can create 2type object.
+: *parameters* - name, type
+- name
+```
+
+method
+ - should_receive
+ 
+ - with_param
+
+ - and_return
+ - and_function
+ - and_throw
+
+stub
+: Deprecated Object. If you use it you have to migrate to mock.
+
+
+
+
 Javascript Mock Tool is Mock library of RSpec style.
 ============================================================
 RSpec 스타일의 자바스크립트 Mock 라이브러리.
