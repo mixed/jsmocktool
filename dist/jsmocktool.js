@@ -123,11 +123,18 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/**
+	 * @access private
+	 **/
 	function warn(msg) {
 		if (_global2.default.console && console.warn) {
 			console.warn(msg);
 		}
 	}
+	
+	/**
+	 * @access private
+	 **/
 	
 	var Stub = function (_TestDouble) {
 		_inherits(Stub, _TestDouble);
@@ -161,6 +168,11 @@
 		return Stub;
 	}(_testDouble2.default);
 	
+	/**
+	 * @access private
+	 **/
+	
+	
 	function stubWrap(name, type) {
 		if (this instanceof Stub) {
 			this.createTestDouble(name, type);
@@ -169,7 +181,13 @@
 		}
 	}
 	
+	/**
+	 * @access private
+	 **/
 	stubWrap.OBJECT = 'object';
+	/**
+	 * @access private
+	 **/
 	stubWrap.INSTANCE = 'instance';
 
 /***/ },
@@ -185,6 +203,10 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * @access private
+	 **/
 	
 	var StubMethod = function () {
 		function StubMethod(stub) {
@@ -227,6 +249,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * @access private
+	 **/
 	
 	var TestDouble = function () {
 		function TestDouble(name, type) {
@@ -324,6 +350,10 @@
 	var Mock = function (_TestDouble) {
 		_inherits(Mock, _TestDouble);
 	
+		/**
+	  * @access private
+	  **/
+	
 		function Mock(name) {
 			var type = arguments.length <= 1 || arguments[1] === undefined ? 'object' : arguments[1];
 	
@@ -334,6 +364,27 @@
 			_this.type = 'Mock';
 			return _this;
 		}
+		/**
+	  * should_receive make method in mock.
+	  * @param {string} methodName - method name in mock.
+	  * @function should_receive
+	  * @returns {MockMethod}
+	  * @example
+	 mock("obj").should_receive("something");
+	 // obj.something();
+	 mock("Sample",mock.INSTANCE).should_receive("something");
+	 // let sample = new Sample();
+	 // sample.something();
+	 // class Test
+	 // end
+	 // let test = new Test();
+	 mock(test).should_receive("something");
+	 // test.something();
+	 mock(Test,mock.INSTANCE).should_receive("instance");
+	 // let test = new Test();
+	 // test.instance()
+	  **/
+	
 	
 		_createClass(Mock, [{
 			key: 'should_receive',
@@ -412,6 +463,23 @@
 		return Mock;
 	}(_testDouble2.default);
 	
+	/**
+	 * @desc create mock in global.
+	 * @param {string|object|function|class} name - Mock object of name, object, function or class.
+	 * @param {string} type - Mock object of type. - mock.INSTANCE, mock.OBJECT(defalut)
+	 * @function mock
+	 * @returns {Mock}
+	 * @example
+	// If `name` is string and `global` not found `name` object that mock create object in global.
+	mock("obj").should_receive("something");
+	mock("Sample",mock.INSTANCE).should_receive("something");
+	
+	// If `name` is object that mock don`t create object.
+	mock(obj).should_receive("something");
+	mock(zlass).should_receive("something");
+	 **/
+	
+	
 	function mockWrap(name, type) {
 		if (this instanceof Mock) {
 			this.createTestDouble(name, type);
@@ -422,6 +490,13 @@
 	
 	mockWrap.OBJECT = 'object';
 	mockWrap.INSTANCE = 'instance';
+	/**
+	 * `anything` return special string.
+	 * If you use `anything` in `with_param` that
+	 * `should_receive` execute method regardless of parameter value.
+	 * @function anything
+	 * @returns {String} - '_js_mock_anything_param'
+	 **/
 	mockWrap.anything = function () {
 		return '_js_mock_anything_param';
 	};
@@ -442,6 +517,9 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	/**
+	 * @access private
+	 **/
 	exports.default = {
 		storage: [
 			//      {
@@ -492,6 +570,10 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var MockMethod = function () {
+		/**
+	  * @access private
+	  **/
+	
 		function MockMethod(obj, methodName) {
 			_classCallCheck(this, MockMethod);
 	
@@ -509,11 +591,21 @@
 			this.setup(obj, methodName);
 		}
 	
+		/**
+	  * @access private
+	  **/
+	
+	
 		_createClass(MockMethod, [{
 			key: 'transformParamToString',
 			value: function transformParamToString(obj) {
 				return JSON.stringify(obj);
 			}
+	
+			/**
+	   * @access private
+	   **/
+	
 		}, {
 			key: 'setup',
 			value: function setup(obj, methodName) {
@@ -580,6 +672,23 @@
 					}
 				};
 			}
+			/**
+	   * set parameters of should_receive.
+	   * If you use `with_param` that `and_xxx` method execute matching param.
+	   * @param {...anything} params - list up parameters.
+	   * @function with_param
+	   * @returns {MockMethod}
+	   * @example
+	  mock("obj").should_receive("something").with_param(1,2).and_return("1");
+	  // obj.something(1); => not return anything
+	  // obj.something(1, 2); => "1"
+	  	// You can use `mock.anything`.
+	  mock("obj").should_receive("something").with_param(1,mock.anything()).and_return("1");
+	  // obj.something(1, 1); => "1"
+	  // obj.something(1, 2); => "1"
+	  // obj.something(1, 3); => "1"
+	   **/
+	
 		}, {
 			key: 'with_param',
 			value: function with_param() {
@@ -591,6 +700,11 @@
 				this.excuteObjs.set(this.currentParam, new Map().set('arg', params));
 				return this;
 			}
+	
+			/**
+	   * @access private
+	   **/
+	
 		}, {
 			key: 'and_template',
 			value: function and_template(type, excute) {

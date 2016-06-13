@@ -15,24 +15,22 @@ class Mock extends TestDouble {
 	 * @function should_receive
 	 * @returns {MockMethod}
 	 * @example
-	
-	mock("obj").should_receive("something"); 
-	// obj.something();
+mock("obj").should_receive("something");
+// obj.something();
 
-	mock("Sample",mock.INSTANCE).should_receive("something");
-	// let sample = new Sample();
-	// sample.something();
+mock("Sample",mock.INSTANCE).should_receive("something");
+// let sample = new Sample();
+// sample.something();
 
-	// class Test
-	// end
-	// let test = new Test();
-	mock(test).should_receive("something");
-	// test.something();
+// class Test
+// end
+// let test = new Test();
+mock(test).should_receive("something");
+// test.something();
 
-	mock(Test,mock.INSTANCE).should_receive("instance");
-	// let test = new Test();
-	// test.instance()
-
+mock(Test,mock.INSTANCE).should_receive("instance");
+// let test = new Test();
+// test.instance()
 	 **/
 	should_receive(methodName) {
 		return MockMethodFactory.getMethod(this.getTestDouble(), methodName);
@@ -78,21 +76,19 @@ class Mock extends TestDouble {
 }
 
 /**
- * @desc create mock in global.  
+ * @desc create mock in global.
  * @param {string|object|function|class} name - Mock object of name, object, function or class.
  * @param {string} type - Mock object of type. - mock.INSTANCE, mock.OBJECT(defalut)
  * @function mock
  * @returns {Mock}
  * @example
-
 // If `name` is string and `global` not found `name` object that mock create object in global.
-mock("obj").should_receive("something"); 
+mock("obj").should_receive("something");
 mock("Sample",mock.INSTANCE).should_receive("something");
 
 // If `name` is object that mock don`t create object.
 mock(obj).should_receive("something");
 mock(zlass).should_receive("something");
-
  **/
 export default function mockWrap(name, type) {
 	if (this instanceof Mock) {
@@ -105,8 +101,9 @@ export default function mockWrap(name, type) {
 mockWrap.OBJECT = 'object';
 mockWrap.INSTANCE = 'instance';
 /**
- * `anything` return special string. 
- * If you use `anything` in `with_param` that `should_receive` execute method regardless of parameter value. 
+ * `anything` return special string.
+ * If you use `anything` in `with_param` that
+ * `should_receive` execute method regardless of parameter value.
  * @function anything
  * @returns {String} - '_js_mock_anything_param'
  **/

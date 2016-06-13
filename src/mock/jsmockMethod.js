@@ -67,19 +67,18 @@ export default class MockMethod {
 		};
 	}
 	/**
-	 * set parameters of should_receive. 
+	 * set parameters of should_receive.
 	 * If you use `with_param` that `and_xxx` method execute matching param.
 	 * @param {...anything} params - list up parameters.
 	 * @function with_param
 	 * @returns {MockMethod}
 	 * @example
-	
-	mock("obj").should_receive("something").with_param(1,2).and_return("1"); 
+	mock("obj").should_receive("something").with_param(1,2).and_return("1");
 	// obj.something(1); => not return anything
 	// obj.something(1, 2); => "1"
 
 	// You can use `mock.anything`.
-	mock("obj").should_receive("something").with_param(1,mock.anything()).and_return("1"); 
+	mock("obj").should_receive("something").with_param(1,mock.anything()).and_return("1");
 	// obj.something(1, 1); => "1"
 	// obj.something(1, 2); => "1"
 	// obj.something(1, 3); => "1"
@@ -89,7 +88,7 @@ export default class MockMethod {
 		this.excuteObjs.set(this.currentParam, (new Map()).set('arg', params));
 		return this;
 	}
-	
+
 	/**
 	 * @access private
 	 **/
