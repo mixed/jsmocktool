@@ -1,4 +1,6 @@
 
+![ScreenShot](https://travis-ci.org/mixed/jsmocktool.png)
+
 # What is the jsmocktools?
 `jsmocktool` is a JavaScript mock framework inspired by RSpec. Consequently, API is very similar to [RSpec Mock](http://rspec.info/documentation/3.4/rspec-mocks/). If you are rubyist, easy to use it. 
 
@@ -18,7 +20,7 @@ grunt
 ```
 
 # How to use it?
-`jsmocktool` support es6 and global.
+`jsmocktool` support es6 and global. If you use `jsmocktool.global.js` that `mock` is expose to global.
 ```html
 // ES6 Style
 <script type="text/javascript">
@@ -28,27 +30,27 @@ import {mock} from 'jsmocktool/dist/jsmocktool';
 // insert script
 <script type="text/javascript" src="node_modules/jsmocktool/dist/jsmocktool.global.js"></script>
 ```
-If you use `jsmocktool.global.js` `mock` is expose to global.
 
 # API
 API is very simple.
-mock
-: `mock` method can create 2type object.
-: *parameters* - name, type
-- name
-```
 
-method
- - should_receive
- 
- - with_param
+## mock
+ - create mock object or set mock object.
 
- - and_return
- - and_function
- - and_throw
+### method
+ - should_receive : create method.
+ - with_param : set parameters of `should_receive`.
+ - and_return : return something when `should_receive` called.
+ - and_function : called function when `should_receive` called.
+ - and_throw : throw exception when `should_receive` called.
 
-stub
-: Deprecated Object. If you use it you have to migrate to mock.
+### etc
+ - mock.OBJECT : object type of mock.(default)
+ - mock.INSTANCE : instance type of mock.
+ - mock.anything() : spacial parameter in `with_param`.
+
+## stub
+ - Deprecated Object. If you use it you have to migrate to mock.
 
 
 
@@ -205,23 +207,4 @@ License
 -------
 The MIT License
 
-Copyright (c) 2011 Arunoda Susiripala
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
 
