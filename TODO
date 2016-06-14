@@ -1,0 +1,100 @@
+mock("Foo",MOCK.INSTANCE).with(1).should_receive("").and_return().and_throw().and_yaild()
+mock("Foo").with(1).should_receive("").and_return().and_throw().and_yaild()
+
+mock(Foo).shold_receive("test").with(2).and_return()
+mock(Foo).shold_receive("test").with(2,3).and_return()
+
+
+mock("Foo",{
+	a : funcion(){}
+})
+
+
+특정 파라메터에 특정 리턴값을 반환하도록 좀더 쉽게 구조화 할것.
+{
+	method_name : [
+		{
+			current_key : [],//unique key,
+			type :"function||exception||return",
+			excute : function(){},
+			return_throw : function(){}
+		}
+	]
+}
+
+function(){
+	for(var i = 0, l = arg.length ; i < l ; i++){
+		if(isSameParam(arg[i].currentKey ,arguments)){
+			if(arg[i].type == "function"){
+				arg[i].excute().apply(arg[i],arg[i].currentKey);
+			}else if(arg[i].type == "exception"){
+				throw arg[i].excute;
+			}else if(arg[i].type == "return"){
+				return arg[i].excute;
+			}
+			break;
+		}
+	}
+}
+
+
+stub("FOO").should_receive("test");
+stub(FOO).should_receive("test");
+stub("FOO",Stub.INSTANCE).should_receive("test");
+stub(FOO,Stub.INSTANCE).should_receive("test");
+
+stub("FOO").should_receive("test").and_return();
+
+
+
+mock("FOO").should_receive("test");
+mock(FOO).should_receive("test");
+mock("FOO",Mock.INSTANCE).should_receive("test");
+mock(FOO,Mock.INSTANCE).should_receive("test");
+
+mock("FOO").should_receive("test").with_param(1,2).and_return({});
+mock("FOO").should_receive("test").with_param(1,2).and_exception(new Error()||"");
+mock("FOO").should_receive("test").with_param(1,2).and_run(function(){});
+
+
+
+$Ajax("aaa.com"{
+	onload : function
+});
+
+
+mock("jindo.$Ajax",Mock.INSTANCE).should_receive("request).with_param(1,2,3).and_function(
+	function(){
+		this.oOption.onload({
+			json :"{}"
+		});
+	}
+);
+
+http://weblogs.asp.net/rosherove/archive/2007/09/16/mocks-and-stubs-the-difference-is-in-the-flow-of-information.aspx
+
+
+var Test = {
+	"some" : function(A){
+		var aaa = A.call();
+		var bbb = B.call();
+		return aaa + bbb;
+	}
+}
+
+mock("A").should_recive("call").and_return("a");
+mock("B").should_recive("call").and_return("b");
+
+mock(A).verify_all();
+mock(A).verify("call");
+mock(A).reset("call");
+mock(A).reset_all();
+
+
+
+
+
+
+
+
+
