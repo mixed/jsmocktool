@@ -14,6 +14,7 @@ module.exports = function( grunt ) {
 
 	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-webpack');
+	grunt.loadNpmTasks('grunt-jsdoc');
 	
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
@@ -36,7 +37,17 @@ module.exports = function( grunt ) {
 			        new webpack.BannerPlugin(banner.join("\n\r"), { raw: true, entryOnly: true })
 				)
 			}
-		}
+		},
+		jsdoc : {
+	        dist : {
+	            src: ['src/*.js', 'src/*/*.js'],
+	            options: {
+	                destination: 'doc',
+					template : "node_modules/ink-docstrap/template",
+              		configure : "node_modules/ink-docstrap/template/jsdoc.conf.json"
+	            }
+	        }
+	    }
 	});
 
 	grunt.event.on('qunit.done', function (failed, passed, total, runtime) {

@@ -1,4 +1,5 @@
 
+/** @class MockMethod */
 export default class MockMethod {
 	/**
 	 * @access private
@@ -69,6 +70,8 @@ export default class MockMethod {
 	/**
 	 * set parameters of should_receive.
 	 * If you use `with_param` that `and_xxx` method execute matching param.
+	 * @instance
+	 * @memberof MockMethod
 	 * @param {...anything} params - list up parameters.
 	 * @function with_param
 	 * @returns {MockMethod}
@@ -102,6 +105,8 @@ export default class MockMethod {
 	}
 	/**
 	 * set return value when should_receive called.
+	 * @instance
+	 * @memberof MockMethod
 	 * @param {Object} returnVal - return value
 	 * @function and_return
 	 * @example
@@ -114,6 +119,8 @@ export default class MockMethod {
 	}
 	/**
 	 * Set execution function when should_receive called.
+	 * @instance
+	 * @memberof MockMethod
 	 * @param {Function} returnFunction - execute function
 	 * @function and_function
 	 * @example
@@ -128,6 +135,8 @@ export default class MockMethod {
 	}
 	/**
 	 * Set exception error when should_receive called.
+	 * @instance
+	 * @memberof MockMethod
 	 * @param {String} returnException - exception message
 	 * @function and_throw
 	 * @example

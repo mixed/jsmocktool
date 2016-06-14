@@ -1,6 +1,7 @@
 import MockMethodFactory from './jsmockMethodFactory';
 import TestDouble from '../testDouble';
 
+/** @class Mock */
 class Mock extends TestDouble {
 	/**
 	 * @access private
@@ -11,6 +12,8 @@ class Mock extends TestDouble {
 	}
 	/**
 	 * should_receive make method in mock.
+	 * @memberof Mock
+	 * @instance
 	 * @param {string} methodName - method name in mock.
 	 * @function should_receive
 	 * @returns {MockMethod}
@@ -98,13 +101,22 @@ export default function mockWrap(name, type) {
 	}
 }
 
+/**
+ * @property {string} OBJECT
+ **/
 mockWrap.OBJECT = 'object';
+/**
+ * @property {string} INSTANCE
+ **/
 mockWrap.INSTANCE = 'instance';
 /**
  * `anything` return special string.
  * If you use `anything` in `with_param` that
  * `should_receive` execute method regardless of parameter value.
+ * @property anything
  * @function anything
  * @returns {String} - '_js_mock_anything_param'
+ * @example
+mock("obj").should_receive("something").with_param(1,mock.anything()).and_return("1");
  **/
 mockWrap.anything = () => '_js_mock_anything_param';
