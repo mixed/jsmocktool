@@ -2,12 +2,18 @@ import StubMethod from './jsstubMethod';
 import TestDouble from '../testDouble';
 import global from '../global';
 
+/**
+ * @access private
+ **/
 function warn(msg) {
 	if (global.console && console.warn) {
 		console.warn(msg);
 	}
 }
 
+/**
+ * @access private
+ **/
 class Stub extends TestDouble {
 	constructor(name, type = 'object') {
 		super(name, type);
@@ -24,6 +30,9 @@ class Stub extends TestDouble {
 	}
 }
 
+/**
+ * @access private
+ **/
 export default function stubWrap(name, type) {
 	if (this instanceof Stub) {
 		this.createTestDouble(name, type);
@@ -32,5 +41,11 @@ export default function stubWrap(name, type) {
 	}
 }
 
+/**
+ * @access private
+ **/
 stubWrap.OBJECT = 'object';
+/**
+ * @access private
+ **/
 stubWrap.INSTANCE = 'instance';

@@ -5,11 +5,6 @@ const WARNING = 1;
 const ERROR = 2;
 
 module.exports = {
-    // "env": {
-    //     "test": {
-    //         "plugins": [ "__coverage__" ]
-    //     }
-    // },
     entry: {
         "dist/jsmocktool" : ['./src/global.js','./src/jsmocktool.js','./src/testDouble.js',
                         './src/mock/jsmock.js','./src/mock/jsmockMethodFactory.js','./src/mock/jsmockMethod.js',
@@ -47,14 +42,6 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        // [ "__coverage__", { "only": "src/" } ]
-        // new webpack.optimize.DedupePlugin(),
-        // new webpack.optimize.OccurenceOrderPlugin(),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     mangle: true,
-        //     compress: {warnings: false}
-        // })
-    ],
+    plugins:[],
     devtool: 'source-map'
 };

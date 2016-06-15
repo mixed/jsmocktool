@@ -1,5 +1,7 @@
 import MockMethod from './jsmockMethod';
-
+/**
+ * @access private
+ **/
 export default {
 	storage: [
 		//      {
