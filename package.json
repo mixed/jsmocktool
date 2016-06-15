@@ -1,6 +1,6 @@
 {
   "name": "jsmocktool-page",
-  "version": "master",
+  "version": "2.0.0",
   "description": "Javascript Mock Tool of RSpec Style",
   "keywords": [
     "JavaScript",
