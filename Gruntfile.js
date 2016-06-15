@@ -15,7 +15,7 @@ module.exports = function( grunt ) {
 			src : {
 				 options: {
 					repository: 'https://github.com/mixed/jsmocktool',
-					branch: 'master',
+					branch: version,
 	                directory: 'v/temp'
 	            }
 			}
@@ -23,9 +23,9 @@ module.exports = function( grunt ) {
 		copy: {
 			src: {
 				expand: true,
-				flatten: true,
-				src: 'v/temp/src/*',
-				dest: src,
+				cwd : "v/temp/src/",
+				src: '**',
+				dest: src
 			}
 		},
 		clean: ['v/temp'],
