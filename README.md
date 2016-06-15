@@ -35,19 +35,23 @@ import {mock} from 'jsmocktool/dist/jsmocktool';
 API is very simple.
 
 ## mock
- - create mock object or set mock object.
+ - create mock object or set mock object. [[link]](https://mixed.github.io/jsmocktool/v/2.0.0/doc/global.html#mock__anchor)
 
 ### method
- - should_receive : create method.
- - with_param : set parameters of `should_receive`.
- - and_return : return something when `should_receive` called.
- - and_function : called function when `should_receive` called.
- - and_throw : throw exception when `should_receive` called.
+ - [should_receive()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/Mock.html#should_receive__anchor) : create method.
+ - [with_param()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/MockMethod.html#with_param__anchor) : set parameters of `should_receive`.
+ - [and_return()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/MockMethod.html#and_return__anchor) : return something when `should_receive` called.
+ - [and_function()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/MockMethod.html#and_function__anchor) : called function when `should_receive` called.
+ - [and_throw()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/MockMethod.html#and_throw__anchor) : throw exception when `should_receive` called.
+ - [reset()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/Mock.html#reset__anchor) : resets specific information called method.
+ - [reset_all()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/Mock.html#reset_all__anchor) : resets all information called methods.
+ - [verify()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/Mock.html#verify__anchor) : return specific information called method.
+ - [verify_all()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/Mock.html#verify_all__anchor) : return all information called methods.
 
 ### etc
- - mock.OBJECT : object type of mock.(default)
- - mock.INSTANCE : instance type of mock.
- - mock.anything() : spacial parameter in `with_param`.
+ - [mock.OBJECT](https://mixed.github.io/jsmocktool/v/2.0.0/doc/global.html#OBJECT) : object type of mock.(default)
+ - [mock.INSTANCE](https://mixed.github.io/jsmocktool/v/2.0.0/doc/global.html#INSTANCE) : instance type of mock.
+ - [mock.anything()](https://mixed.github.io/jsmocktool/v/2.0.0/doc/global.html#anything) : spacial parameter in `with_param`.
 
 ## stub
  - Deprecated Object. If you use it you have to migrate to mock.
